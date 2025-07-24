@@ -22,7 +22,8 @@
 		{
 			"binding": "DB",
 			"database_name": "ricktcal",
-			"database_id": "ebf278eb-f2c3-45e6-93a2-1aa2d8c91150"
+			"database_id": "ebf278eb-f2c3-45e6-93a2-1aa2d8c91150",
+			"migrations_dir": "drizzle/migrations"
 		}
 	]
 	/**

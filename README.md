@@ -34,6 +34,7 @@ https://developers.cloudflare.com/workers/configuration/secrets/#via-wrangler
 _데이터베이스_
 클라우드플레어 d1 (sqlite3)
 drizzle orm
+https://orm.drizzle.team/docs/connect-cloudflare-d1#step-2---initialize-the-driver-and-make-a-query
 
 ## 피쳐
 
@@ -42,10 +43,22 @@ drizzle orm
 
 ## 테스트
 
+워커 환경 모킹
+
+```sh
+pnpm preview
+```
+
 크론
 
 ```sh
 "cron:dev": "curl --request POST  --url 'http://localhost:3000/api/webhook'  --header 'Authorization: Bearer test-key'"
+```
+
+## 배포
+
+```sh
+pnpm dep
 ```
 
 ## 레퍼런스
