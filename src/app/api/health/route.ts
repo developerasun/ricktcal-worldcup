@@ -1,9 +1,3 @@
-// export const runtime = "edge"; // Cloudflare Workers에서 동작하게!
-// import { promisify } from 'node:util';
-// import * as _ from 'sqlite3'
-// const db = new _.Database('rictcal.db')
-// const run = promisify(db.run)
-// import { env } from "cloudflare:workers"
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export async function GET(request: Request, context: any) {
