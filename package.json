@@ -9,7 +9,8 @@
     "lint": "next lint",
     "dep": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts"
+    "gen:type": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
+    "cron:dev": "curl --request POST  --url 'http://localhost:3000/api/webhook'  --header 'Authorization: Bearer 0580907ac1f77f186c3b553aabb1a82bfefd2fca15d09f1d0c393c47ec8c8640'"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.5.3",
@@ -20,7 +21,6 @@
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sqlite3": "^5.1.7",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
