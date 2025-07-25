@@ -14,6 +14,10 @@ export function TypographyH4({ text }: { text: string }) {
   return <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{text}</h4>;
 }
 
-export function TypographyP({ text }: { text: string }) {
-  return <p className="leading-7 text-center [&:not(:first-child)]:mt-6">{text}</p>;
+export function TypographyP({ text, align = 'text-center' }: { text: string; align?: 'text-center' | 'text-left' }) {
+  return (
+    <p className={`leading-7 ${align} [&:not(:first-child)]:mt-6 max-w-md w-full break-words whitespace-normal`}>
+      {text}
+    </p>
+  );
 }
