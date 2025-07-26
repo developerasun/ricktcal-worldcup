@@ -48,7 +48,7 @@ export const proposals = sqliteTable(
     endAt: text(),
   },
   (table) => [
-    check('status_type', sql`${table.status} IN ('active', 'approved', 'rejected')`),
+    check('status_type', sql`${table.status} IN ('pending', 'active', 'approved', 'rejected')`),
     check('activeness_type', sql`${table.isActive} IN (0, 1)`),
   ]
 );

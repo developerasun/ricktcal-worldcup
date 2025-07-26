@@ -8,6 +8,13 @@
       "when": 1753506247883,
       "tag": "0000_heavy_magma",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1753528218305,
+      "tag": "0001_nasty_salo",
+      "breakpoints": true
     }
   ]
 }

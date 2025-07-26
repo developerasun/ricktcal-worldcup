@@ -1,5 +1,5 @@
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
-export type ProposalStatusType = 'active' | 'approved' | 'rejected';
+export type ProposalStatusType = 'pending' | 'active' | 'approved' | 'rejected';
 
 export type ProposalListType = {
   id: number;
