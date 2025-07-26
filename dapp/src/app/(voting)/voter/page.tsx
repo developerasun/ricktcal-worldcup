@@ -33,7 +33,7 @@ export default async function VotersPage({}: Props) {
   return (
     <>
       <TypographyH1 text={`투표자`} />
-      <TypographyP text={'Lorem ipsum dolor sit amet.'} />
+      <TypographyP text={'현재 릭트컬 거버넌스에 참여 중인 볼따구 교주님들입니다.'} />
 
       {data.length === 0 && (
         <Alert variant="default">
