@@ -2,7 +2,7 @@
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState, ReactNode, useEffect, useActionState } from 'react';
-import { Moon, Sun, Wallet } from 'lucide-react';
+import { Moon, Siren, Sun, Wallet } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -18,7 +18,8 @@ import {
 } from '@/components/ui/dialog';
 import Form from 'next/form';
 import { generateWallet } from '@/app/actions/index';
-import { TypographyP } from './typography';
+import { Alert, AlertTitle, AlertDescription } from './alert';
+import { Spacer } from './spacer';
 
 interface Props {
   children: ReactNode;
@@ -72,9 +73,25 @@ export default function Navigation({ children }: Props) {
               <DialogDescription>포인트를 엘리프 토큰으로 교환하고, 나만의 최애 사도에게 투표하세요!</DialogDescription>
             </DialogHeader>
             <Form action={formAction}>
-              {state && <TypographyP text={state} align="text-left" />}
-              {/* {state && <Alert} */}
-              <Button type="submit">생성하기</Button>
+              {state && <p className="my-2">지갑 주소: {JSON.parse(state).address}</p>}
+              {state && <p className="my-2">지갑 패스키: {JSON.parse(state).mnemonic}</p>}
+              <Spacer v={1.5} />
+              {state && (
+                <Alert variant="destructive">
+                  <Siren />
+                  <AlertTitle>경고</AlertTitle>
+                  <AlertDescription>
+                    생성된 지갑은 테스트넷 전용으로만 사용하고, 지갑 패스키를 타인과 공유하지 마십시오. 패스키 정보는
+                    모달을 닫으면 다시 볼 수 없습니다.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <Spacer v={1.5} />
+              <div className="flex justify-end">
+                <Button type="submit" className="m-auto">
+                  생성하기
+                </Button>
+              </div>
             </Form>
           </DialogContent>
         </Dialog>
