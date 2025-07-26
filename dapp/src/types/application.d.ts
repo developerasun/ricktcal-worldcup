@@ -10,6 +10,8 @@ export type ProposalListType = {
   description: string;
   startAt: string | null;
   endAt: string | null;
+  leftCharacterName: string;
+  rightCharacterName: string;
 }[];
 
 export type VoterListType = {
