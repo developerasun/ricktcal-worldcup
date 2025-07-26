@@ -29,9 +29,21 @@ export default async function ProposalPage({ params }: Props) {
 
       <Spacer v={2} />
       <div className="flex justify-center items-center gap-2">
-        <Image width={200} height={200} style={{ borderRadius: '50%' }} src={'/캐릭터/버터.webp'} alt="dummy" />
+        <Image
+          width={200}
+          height={200}
+          style={{ borderRadius: '50%' }}
+          src={`/캐릭터/${data.leftCharacterName}.webp`}
+          alt="left-character"
+        />
         <p style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>VS</p>
-        <Image width={200} height={200} style={{ borderRadius: '50%' }} src={'/캐릭터/버터.webp'} alt="dummy" />
+        <Image
+          width={200}
+          height={200}
+          style={{ borderRadius: '50%' }}
+          src={`/캐릭터/${data.rightCharacterName}.webp`}
+          alt="right-character"
+        />
       </div>
       <Spacer v={2} />
 
