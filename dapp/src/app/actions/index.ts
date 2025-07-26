@@ -1,6 +1,6 @@
 'use server';
 import { Wallet } from 'ethers';
-import { ADJECTIVES, HEROS } from '@/server/constants/nickname';
+import { ADJECTIVES, HEROS } from '@/constants/nickname';
 import { getConnection, proposals, users } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
@@ -72,21 +72,25 @@ export async function createNewProposal(prevState: string | undefined, formData:
   const leftCharacterName = formData.get('left-character') as string;
   const rightCharacterName = formData.get('right-character') as string;
 
-  console.log({ title, description, startAt, endAt, leftCharacterName });
+  console.log({ title, description, startAt, endAt, leftCharacterName, rightCharacterName });
 
   const { connection } = await getConnection();
-  const { error, results } = await connection.insert(proposals).values({
-    title,
-    description,
-    status: 'pending',
-    startAt,
-    endAt,
-    leftCharacterName,
-    rightCharacterName,
-  });
+  const proposal = await connection
+    .insert(proposals)
+    .values({
+      title,
+      description,
+      status: 'pending',
+      startAt,
+      endAt,
+      leftCharacterName,
+      rightCharacterName,
+    })
+    .returning()
+    .get();
 
-  if (error) throw new Error(error);
+  // if (error) throw new Error(error);
 
-  console.log({ results });
+  redirect(`/proposal/${proposal.id}`);
   return '';
 }
