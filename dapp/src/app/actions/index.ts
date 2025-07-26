@@ -46,8 +46,11 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
     const result = await connection.select().from(users).where(eq(users.wallet, recovered.address)).get();
 
     if (!result) throw new Error('recoverAndSignIn: invalid match for mnemonic and database');
+    const { id, wallet } = result;
+    const payload = JSON.stringify({ id, wallet });
 
-    (await cookies()).set('ricktcal.session', 'true', {
+    // TODO @dev do cookie encryption later
+    (await cookies()).set('ricktcal.session', payload, {
       httpOnly: true,
       path: '/',
       secure: true,
