@@ -16,6 +16,7 @@ interface Props {}
 
 export default function ProposalPage({}: Props) {
   const isActive = true;
+
   return (
     <>
       <TypographyH1 text="중요한 안건" />
