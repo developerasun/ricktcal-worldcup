@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Form from 'next/form';
-import { increment } from '@/server/actions/index';
+import { generateWallet } from '@/app/actions/index';
 import { TypographyP } from './typography';
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
 export default function Navigation({ children }: Props) {
   const { setTheme } = useTheme();
   const [isDark, setIsDark] = useState(true);
-  const [state, formAction] = useActionState(increment, undefined);
+  const [state, formAction] = useActionState(generateWallet, undefined);
 
   const router = useRouter();
   useEffect(() => {
@@ -73,6 +73,7 @@ export default function Navigation({ children }: Props) {
             </DialogHeader>
             <Form action={formAction}>
               {state && <TypographyP text={state} align="text-left" />}
+              {/* {state && <Alert} */}
               <Button type="submit">생성하기</Button>
             </Form>
           </DialogContent>

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
+import { PointClaimActionType } from '@/types/application';
 
 interface Props {}
 
@@ -20,7 +21,7 @@ export default function PointPage({}: Props) {
  *
  * @doc https://github.com/pmndrs/use-gesture?tab=readme-ov-file#simple-example
  */
-function InteractWithCharacter({ type }: { type: 'headpat' | 'cheekpulling' }) {
+function InteractWithCharacter({ type }: { type: PointClaimActionType }) {
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
   const isDragDone = useRef<boolean>(null);
 
