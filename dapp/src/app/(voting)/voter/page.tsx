@@ -51,6 +51,10 @@ export default async function VotersPage({}: Props) {
                     <CardDescription>{d.nickname}</CardDescription>
                   </div>
                   <div>
+                    <CardTitle>포인트 보유량</CardTitle>
+                    <CardDescription>{d.point}</CardDescription>
+                  </div>
+                  <div>
                     <CardTitle>토큰 보유량</CardTitle>
                     <CardDescription>{d.elif}</CardDescription>
                   </div>
@@ -60,7 +64,7 @@ export default async function VotersPage({}: Props) {
                   </div>
                 </div>
               </Link>
-              <CardAction>asdf</CardAction>
+              {/* <CardAction>temp</CardAction> */}
             </CardHeader>
           </Card>
         );
