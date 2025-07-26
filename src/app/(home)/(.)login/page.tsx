@@ -8,7 +8,6 @@ import Form from 'next/form';
 import { Input } from '@/components/ui/input';
 import { TypographyH1 } from '@/components/ui/typography';
 import { recoverAndSignIn } from '@/app/actions';
-
 interface Props {}
 
 export default function SignIn({}: Props) {
@@ -37,6 +36,10 @@ export default function SignIn({}: Props) {
           </Button>
         </div>
       </Form>
+      <p style={{ opacity: 0.7, marginTop: '1rem', textAlign: 'center' }}>
+        *패스키가 없을 경우, <br />
+        우측 상단 지갑 아이콘을 눌러 패스키를 생성하세요
+      </p>
     </div>
   );
 }

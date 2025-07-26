@@ -89,7 +89,7 @@ export default function Navigation({ children }: Props) {
               <Spacer v={1.5} />
               <div className="flex justify-end">
                 <Button type="submit" className="m-auto">
-                  생성하기
+                  패스키 생성하기
                 </Button>
               </div>
             </Form>

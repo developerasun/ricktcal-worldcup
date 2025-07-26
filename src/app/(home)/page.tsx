@@ -6,6 +6,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Siren } from 'lucide-react';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
+import { Button } from '@/components/ui/button';
 
 export default async function Home() {
   const isLogin = (await cookies()).get('ricktcal.session');
@@ -24,11 +25,19 @@ export default async function Home() {
   const data = raw as ProposalListType;
 
   return (
-    <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main className="flex flex-col gap-[32px] row-start-2 items-center">
       <TypographyH1 text={'릭트컬 거버넌스'} />
       <p className="my-3 text-center m-auto">
         귀염 뽀작 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
+      <div className="sm:self-end">
+        {isLogin && <Button>투표 만들기</Button>}
+        {!isLogin && (
+          <Link href="/login">
+            <Button variant={'secondary'}>로그인하고 투표 만들기</Button>
+          </Link>
+        )}
+      </div>
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
@@ -43,11 +52,6 @@ export default async function Home() {
           <RowOverview data={data} />
         </TableBody>
       </Table>
-
-      {isLogin ? 'ee' : 'll'}
-      <Link href="/login">
-        <p>만들기</p>
-      </Link>
     </main>
   );
 }
