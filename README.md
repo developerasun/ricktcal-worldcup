@@ -38,8 +38,11 @@ https://orm.drizzle.team/docs/connect-cloudflare-d1#step-2---initialize-the-driv
 
 ## 피쳐
 
-지갑 생성
-닉네임 맵핑
+- 지갑 생성
+- 닉네임 맵핑
+- 포인트 클레임
+- 잔고 확인
+- 신규 거버넌스 안건 생성
 
 ## 테스트
 
