@@ -6,7 +6,7 @@ import { PointClaimActionType } from '@/types/application';
 import Image from 'next/image';
 import { TypographyH1, TypographyP } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
-import { ArrowDownUp, ArrowLeft, ArrowRightLeft, Move } from 'lucide-react';
+import { ArrowLeft, Move } from 'lucide-react';
 
 interface Props {}
 
@@ -17,7 +17,7 @@ export default function PointPage({}: Props) {
   return (
     <>
       <TypographyH1 text="릭트컬 재화 얻기" />
-      <TypographyP text="캐릭터의 볼을 당기거나 머리를 쓰다듬고 포인트를 획득하세요." align="text-left" />
+      <p className="my-6 text-center">캐릭터의 볼을 당기거나 머리를 쓰다듬고 포인트를 획득하세요.</p>
 
       <Spacer v={1} />
       <div

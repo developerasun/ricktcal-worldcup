@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/ui/navigation';
 import { ThemeProvider } from '@/components/ui/theme-provider';
+import { Spacer } from '@/components/ui/spacer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,7 +29,10 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navigation>{children}</Navigation>
+          <Navigation>
+            <Spacer v={2} />
+            {children}
+          </Navigation>
         </ThemeProvider>
       </body>
     </html>

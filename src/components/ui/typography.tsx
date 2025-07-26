@@ -1,5 +1,5 @@
 export function TypographyH1({ text }: { text: string }) {
-  return <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">{text}</h1>;
+  return <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance m-auto">{text}</h1>;
 }
 
 export function TypographyH2({ text }: { text: string }) {
