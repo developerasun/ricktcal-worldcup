@@ -31,7 +31,11 @@ export default async function Home() {
         귀염 뽀작 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
       <div className="sm:self-end">
-        {isLogin && <Button>투표 만들기</Button>}
+        {isLogin && (
+          <Link href={'/proposal/new'}>
+            <Button>투표 만들기</Button>
+          </Link>
+        )}
         {!isLogin && (
           <Link href="/login">
             <Button variant={'secondary'}>로그인하고 투표 만들기</Button>

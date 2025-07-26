@@ -1,7 +1,7 @@
 'use server';
 import { Wallet } from 'ethers';
 import { ADJECTIVES, HEROS } from '@/server/constants/nickname';
-import { getConnection, users } from '@/server/database/schema';
+import { getConnection, proposals, users } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -62,4 +62,26 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
 
     redirect('/');
   }
+}
+
+export async function createNewProposal(prevState: string | undefined, formData: FormData) {
+  const title = formData.get('title') as string;
+  const description = formData.get('description') as string;
+  const startAt = formData.get('startAt') as string;
+  const endAt = formData.get('endAt') as string;
+  console.log({ title, description, startAt, endAt });
+
+  const { connection } = await getConnection();
+  const { error, results } = await connection.insert(proposals).values({
+    title,
+    description,
+    status: 'pending',
+    startAt,
+    endAt,
+  });
+
+  if (error) throw new Error(error);
+
+  console.log({ results });
+  return '';
 }
