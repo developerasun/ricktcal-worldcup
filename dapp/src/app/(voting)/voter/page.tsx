@@ -9,9 +9,16 @@ import { VoterListType } from '@/types/application';
 
 interface Props {}
 
-export default async function VotersPage({}: Props) {
-  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/voter`);
+async function getVoterList() {
+  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/voter`, {
+    cache: 'no-store', // @dev prevent calling fetch build-time
+  });
   const raw = await response.json();
+  return { raw };
+}
+
+export default async function VotersPage({}: Props) {
+  const { raw } = await getVoterList();
 
   if (!raw)
     return (
