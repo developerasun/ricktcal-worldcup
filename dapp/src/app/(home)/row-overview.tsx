@@ -22,16 +22,19 @@ export default function RowOverview({ data }: Props) {
       )}
       {data.map((d) => {
         return (
-          <>
-            <TableRow style={{ cursor: 'pointer' }} onClick={() => router.push('/proposal/1')}>
-              <TableCell className="font-medium">{d.title}</TableCell>
-              <TableCell>{d.status}</TableCell>
-              <TableCell>{d.description}</TableCell>
-              <TableCell className="text-right">
-                {d.startAt}~{d.endAt}
-              </TableCell>
-            </TableRow>
-          </>
+          <TableRow
+            className="text-center"
+            key={d.id}
+            style={{ cursor: 'pointer' }}
+            onClick={() => router.push(`proposal/${d.id}`)}
+          >
+            <TableCell className="text-center">{d.title}</TableCell>
+            <TableCell className="text-center">{d.status}</TableCell>
+            <TableCell className="text-center">{d.description}</TableCell>
+            <TableCell className="text-center">
+              {d.startAt}~{d.endAt}
+            </TableCell>
+          </TableRow>
         );
       })}
     </>

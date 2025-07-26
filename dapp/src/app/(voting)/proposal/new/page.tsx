@@ -8,6 +8,7 @@ import { TypographyH1 } from '@/components/ui/typography';
 import Form from 'next/form';
 import React, { useActionState } from 'react';
 import { shuffle } from 'es-toolkit';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Props {}
 
@@ -23,6 +24,14 @@ export default function NewProposalPage({}: Props) {
         <Input className="w-full max-w-md m-auto" name="description" placeholder="패스키를 입력하세요" type="text" />
         <Input className="w-full max-w-md m-auto" name="startAt" placeholder="시작 날짜를 입력하세요" type="date" />
         <Input className="w-full max-w-md m-auto" name="endAt" placeholder="종료 날짜를 입력하세요" type="date" />
+        <Select name="left-character">
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="left-character" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Light</SelectItem>
+          </SelectContent>
+        </Select>
         <Spacer v={1.5} />
         <div className="flex justify-end">
           <Button type="submit" className="m-auto">

@@ -69,7 +69,10 @@ export async function createNewProposal(prevState: string | undefined, formData:
   const description = formData.get('description') as string;
   const startAt = formData.get('startAt') as string;
   const endAt = formData.get('endAt') as string;
-  console.log({ title, description, startAt, endAt });
+  const leftCharacterName = formData.get('left-character') as string;
+  const rightCharacterName = formData.get('right-character') as string;
+
+  console.log({ title, description, startAt, endAt, leftCharacterName });
 
   const { connection } = await getConnection();
   const { error, results } = await connection.insert(proposals).values({
@@ -78,6 +81,8 @@ export async function createNewProposal(prevState: string | undefined, formData:
     status: 'pending',
     startAt,
     endAt,
+    leftCharacterName,
+    rightCharacterName,
   });
 
   if (error) throw new Error(error);

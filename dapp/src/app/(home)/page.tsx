@@ -43,13 +43,13 @@ export default async function Home() {
         )}
       </div>
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableCaption>클릭 시 의제 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">의제</TableHead>
-            <TableHead>상태</TableHead>
-            <TableHead>개요</TableHead>
-            <TableHead className="text-right">기간</TableHead>
+            <TableHead className="w-[100px] text-center">의제</TableHead>
+            <TableHead className="text-center">상태</TableHead>
+            <TableHead className="text-center">개요</TableHead>
+            <TableHead className="text-center">기간</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
