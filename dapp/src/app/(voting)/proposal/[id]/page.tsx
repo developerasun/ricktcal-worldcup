@@ -13,7 +13,7 @@ interface Props {
 }
 
 async function getProposalDetail({ id }: { id: number }) {
-  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal?proposalId=${id}`);
+  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal/${id}`);
   const data = (await response.json()) as { proposal: IProposal; voteHistory: VoteListType };
 
   return data;
