@@ -1,5 +1,4 @@
 import { getConnection, users } from '@/server/database/schema';
-import { UnauthorizedException } from '@/server/error';
 import { lt } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
 
