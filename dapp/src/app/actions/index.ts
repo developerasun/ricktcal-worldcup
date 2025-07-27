@@ -1,10 +1,11 @@
 'use server';
 import { Wallet } from 'ethers';
-import { ADJECTIVES, HEROS } from '@/constants/nickname';
+import { ADJECTIVES, COOKIE_NAME, HEROS } from '@/constants/index';
 import { getConnection, proposals, users } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 export async function generateWallet(formData: any) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -50,7 +51,7 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
     const payload = JSON.stringify({ id, wallet });
 
     // TODO @dev do cookie encryption later
-    (await cookies()).set('ricktcal.session', payload, {
+    (await cookies()).set(COOKIE_NAME.auth, payload, {
       httpOnly: true,
       path: '/',
       secure: true,
@@ -63,6 +64,8 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
   } finally {
     if (!isSuccess) return message;
 
+    // @dev revalidate cache before redirect ends a req-res cycle
+    revalidatePath('/');
     redirect('/');
   }
 }

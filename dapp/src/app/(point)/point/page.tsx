@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import { PointClaimActionType } from '@/types/application';
@@ -7,11 +7,15 @@ import Image from 'next/image';
 import { TypographyH1, TypographyP } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
 import { ArrowLeft, Move } from 'lucide-react';
-import { POINT_RATE } from '@/constants/point';
+import { POINT_RATE } from '@/constants/index';
+import { useAuth } from '@/app/store';
+import { LoginRequired } from '@/components/ui/intercept';
 
 interface Props {}
 
 export default function PointPage({}: Props) {
+  const { auth } = useAuth();
+
   const [isHeadpatDrag, setIsHeadpatDrag] = useState(false);
   const [isCheekPullingDrag, setIsCheekPullingDrag] = useState(false);
   const requestPointForCheekPulling = async () => {
@@ -44,38 +48,71 @@ export default function PointPage({}: Props) {
     <>
       <TypographyH1 text="릭트컬 재화 얻기" />
       <p className="my-6 text-center">캐릭터의 볼을 당기거나 머리를 쓰다듬고 포인트를 획득하세요.</p>
-      <p className="my-1 text-center">볼 당기기: 10 point</p>
-      <p className="my-1 text-center">머리 쓰다듬기: 5 point</p>
+      <p className="my-1 text-center">볼 당기기: {POINT_RATE.cheekpulling} point</p>
+      <p className="my-1 text-center">머리 쓰다듬기: {POINT_RATE.headpat} point</p>
 
       <Spacer v={1.5} />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexFlow: 'row wrap',
-          alignItems: 'flex-start',
-          gap: '2rem',
-        }}
-      >
-        <div>
-          <TypographyP text="버터의 볼을 당긴다" />
-          <InteractWithCharacter
-            type="cheekpulling"
-            onDragStateChange={setIsCheekPullingDrag}
-            onFinish={requestPointForCheekPulling}
-          />
-          <RenderReaction type="cheekpulling" isDragging={isCheekPullingDrag} />
+      {!auth ? (
+        <LoginRequired message="로그인하고 볼 당기기">
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              flexFlow: 'row wrap',
+              alignItems: 'flex-start',
+              gap: '2rem',
+            }}
+          >
+            <div>
+              <TypographyP text="버터의 볼을 당긴다" />
+              <InteractWithCharacter
+                type="cheekpulling"
+                onDragStateChange={setIsCheekPullingDrag}
+                onFinish={requestPointForCheekPulling}
+              />
+              <RenderReaction type="cheekpulling" isDragging={isCheekPullingDrag} />
+            </div>
+            <div>
+              <TypographyP text="버터의 머리를 쓰다듬는다" />
+              <InteractWithCharacter
+                type="headpat"
+                onDragStateChange={setIsHeadpatDrag}
+                onFinish={requestPointForHeadpat}
+              />
+              <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
+            </div>
+          </div>
+        </LoginRequired>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexFlow: 'row wrap',
+            alignItems: 'flex-start',
+            gap: '2rem',
+          }}
+        >
+          <div>
+            <TypographyP text="버터의 볼을 당긴다" />
+            <InteractWithCharacter
+              type="cheekpulling"
+              onDragStateChange={setIsCheekPullingDrag}
+              onFinish={requestPointForCheekPulling}
+            />
+            <RenderReaction type="cheekpulling" isDragging={isCheekPullingDrag} />
+          </div>
+          <div>
+            <TypographyP text="버터의 머리를 쓰다듬는다" />
+            <InteractWithCharacter
+              type="headpat"
+              onDragStateChange={setIsHeadpatDrag}
+              onFinish={requestPointForHeadpat}
+            />
+            <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
+          </div>
         </div>
-        <div>
-          <TypographyP text="버터의 머리를 쓰다듬는다" />
-          <InteractWithCharacter
-            type="headpat"
-            onDragStateChange={setIsHeadpatDrag}
-            onFinish={requestPointForHeadpat}
-          />
-          <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
-        </div>
-      </div>
+      )}
     </>
   );
 }
@@ -149,7 +186,7 @@ function InteractWithCharacter({
           touchAction: 'none',
           width: 50,
           height: 50,
-          cursor: 'pointer',
+          cursor: "url('/브랜드/로고.webp') 2 2 auto",
           backgroundColor: 'red',
           borderRadius: '50%',
         }}
