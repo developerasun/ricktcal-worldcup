@@ -29,7 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const hasLoginCookie = (await cookies()).get(COOKIE_NAME.auth);
-  const isLogin = hasLoginCookie ? hasLoginCookie.value : undefined;
+  const isLogin = hasLoginCookie ? hasLoginCookie.value : null;
 
   return (
     <html lang="ko" suppressHydrationWarning>

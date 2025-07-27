@@ -19,12 +19,16 @@ const AuthContext = createContext<IAuthContext>({
 
 interface AuthContextProviderProps {
   children: ReactNode;
-  isLogin: string | undefined;
+  isLogin: string | null;
 }
 
 function AuthContextProvider({ children, isLogin }: AuthContextProviderProps) {
   const hasAuth = isLogin ? (JSON.parse(isLogin) as IAuth) : undefined;
   const [auth, setAuth] = useState<IAuth | undefined>(hasAuth);
+
+  useEffect(() => {
+    isLogin ? setAuth(hasAuth) : setAuth(undefined);
+  }, [isLogin]);
 
   return <AuthContext.Provider value={{ auth, setAuth }}>{children}</AuthContext.Provider>;
 }
