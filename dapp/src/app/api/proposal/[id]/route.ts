@@ -2,8 +2,8 @@ import { getConnection, proposals, votes } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   const proposalId = +id;
 
   const { connection } = await getConnection();
