@@ -1,4 +1,4 @@
-import { Github, Hand } from 'lucide-react';
+import { Github, Hand, Construction } from 'lucide-react';
 
 export const IconGithub = Github;
-export const IconHand = Hand;
+export const IconConstruction = Construction;
