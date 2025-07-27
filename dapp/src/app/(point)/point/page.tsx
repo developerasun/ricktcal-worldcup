@@ -15,9 +15,9 @@ interface Props {}
 
 export default function PointPage({}: Props) {
   const { auth } = useAuth();
-
-  const [isHeadpatDrag, setIsHeadpatDrag] = useState(false);
   const [isCheekPullingDrag, setIsCheekPullingDrag] = useState(false);
+  const [isHeadpatDrag, setIsHeadpatDrag] = useState(false);
+
   const requestPointForCheekPulling = async () => {
     alert('볼을 당기셨습니다');
     await fetch('/api/point', {
@@ -67,6 +67,7 @@ export default function PointPage({}: Props) {
               <TypographyP text="버터의 볼을 당긴다" />
               <InteractWithCharacter
                 type="cheekpulling"
+                isDragging={isCheekPullingDrag}
                 onDragStateChange={setIsCheekPullingDrag}
                 onFinish={requestPointForCheekPulling}
               />
@@ -76,6 +77,7 @@ export default function PointPage({}: Props) {
               <TypographyP text="버터의 머리를 쓰다듬는다" />
               <InteractWithCharacter
                 type="headpat"
+                isDragging={isHeadpatDrag}
                 onDragStateChange={setIsHeadpatDrag}
                 onFinish={requestPointForHeadpat}
               />
@@ -97,6 +99,7 @@ export default function PointPage({}: Props) {
             <TypographyP text="버터의 볼을 당긴다" />
             <InteractWithCharacter
               type="cheekpulling"
+              isDragging={isCheekPullingDrag}
               onDragStateChange={setIsCheekPullingDrag}
               onFinish={requestPointForCheekPulling}
             />
@@ -106,6 +109,7 @@ export default function PointPage({}: Props) {
             <TypographyP text="버터의 머리를 쓰다듬는다" />
             <InteractWithCharacter
               type="headpat"
+              isDragging={isHeadpatDrag}
               onDragStateChange={setIsHeadpatDrag}
               onFinish={requestPointForHeadpat}
             />
@@ -123,10 +127,12 @@ export default function PointPage({}: Props) {
  */
 function InteractWithCharacter({
   type,
+  isDragging,
   onDragStateChange,
   onFinish,
 }: {
   type: PointClaimActionType;
+  isDragging: boolean;
   onDragStateChange: (isDragging: boolean) => void;
   onFinish: () => Promise<void>;
 }) {
@@ -186,29 +192,32 @@ function InteractWithCharacter({
           touchAction: 'none',
           width: 50,
           height: 50,
-          cursor: "url('/브랜드/로고.webp') 2 2 auto",
-          backgroundColor: 'red',
+          cursor: `url('/포인트/커서/${isDragging ? '드래그' : '기본'}.webp'), auto`,
+          backgroundColor: 'wheat',
           borderRadius: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        {type === 'cheekpulling' && <ArrowLeft />}
-        {type === 'headpat' && <Move />}
+        {type === 'cheekpulling' && <ArrowLeft color="black" />}
+        {type === 'headpat' && <Move color="black" />}
       </animated.div>
     </>
   );
 }
 
 function RenderReaction({ type, isDragging }: { type: PointClaimActionType; isDragging: boolean }) {
-  if (!isDragging) return <Image src={'/포인트/기본.webp'} width={200} height={200} alt="기본" />;
+  if (!isDragging) return <Image src={'/포인트/버터/기본.webp'} width={200} height={200} alt="기본" />;
 
   switch (type) {
     case 'cheekpulling':
-      return <Image src={'/포인트/볼당기기.webp'} width={200} height={200} alt="볼당기기" />;
+      return <Image src={'/포인트/버터/볼당기기.webp'} width={200} height={200} alt="볼당기기" />;
 
     case 'headpat':
-      return <Image src={'/포인트/쓰다듬기.webp'} width={200} height={200} alt="쓰다듬기" />;
+      return <Image src={'/포인트/버터/쓰다듬기.webp'} width={200} height={200} alt="쓰다듬기" />;
 
     default:
-      <Image src={'/포인트/기본.webp'} width={200} height={200} alt="기본" />;
+      <Image src={'/포인트/버터/기본.webp'} width={200} height={200} alt="기본" />;
   }
 }
