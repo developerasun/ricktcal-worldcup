@@ -54,3 +54,14 @@ export const proposals = sqliteTable(
     check('activeness_type', sql`${table.isActive} IN (0, 1)`),
   ]
 );
+
+export const votes = sqliteTable(
+  'votes',
+  {
+    id: integer().primaryKey({ autoIncrement: true }),
+    userId: integer('userId').references(() => users.id),
+    proposalId: integer('proposalId').references(() => proposals.id),
+    voteCast: text().notNull().default('left'),
+  },
+  (table) => [check('votecast_type', sql`${table.voteCast} IN ('left', 'right')`)]
+);
