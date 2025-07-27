@@ -1,4 +1,4 @@
-export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS };
+export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME };
 
 const ADJECTIVES = [
   '존재하지 않는',
@@ -754,3 +754,12 @@ const TRICKCAL_CHARACTERS = [
   '헤일리',
   '힐데',
 ];
+
+const POINT_RATE = {
+  cheekpulling: 10,
+  headpat: 5,
+} as const;
+
+const COOKIE_NAME = {
+  auth: 'ricktcal.session',
+} as const;
