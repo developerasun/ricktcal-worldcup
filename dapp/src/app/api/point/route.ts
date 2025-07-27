@@ -1,4 +1,4 @@
-import { POINT_RATE } from '@/constants/point';
+import { POINT_RATE } from '@/constants/index';
 import { getConnection, points, users } from '@/server/database/schema';
 import { UnauthorizedException } from '@/server/error';
 import { PointClaimActionType } from '@/types/application';

@@ -7,12 +7,21 @@ import { Siren } from 'lucide-react';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { Button } from '@/components/ui/button';
+import { COOKIE_NAME } from '@/constants/index';
+import { LoginRequired } from '@/components/ui/intercept';
+
+async function getProposalList() {
+  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal`, {
+    cache: 'no-store', // @dev prevent calling fetch build-time
+  });
+  const raw = await response.json();
+
+  return { raw };
+}
 
 export default async function Home() {
-  const isLogin = (await cookies()).get('ricktcal.session');
-
-  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal`);
-  const raw = await response.json();
+  const isLogin = (await cookies()).get(COOKIE_NAME.auth);
+  const { raw } = await getProposalList();
 
   if (!raw)
     return (
@@ -30,17 +39,14 @@ export default async function Home() {
       <p className="my-3 text-center m-auto">
         귀염 뽀작 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
+
       <div className="sm:self-end">
         {isLogin && (
           <Link href={'/proposal/new'}>
             <Button>투표 만들기</Button>
           </Link>
         )}
-        {!isLogin && (
-          <Link href="/login">
-            <Button variant={'secondary'}>로그인하고 투표 만들기</Button>
-          </Link>
-        )}
+        {!isLogin && <LoginRequired message="로그인하고 투표 만들기" />}
       </div>
       <Table>
         <TableCaption>클릭 시 의제 개요 페이지로 이동합니다.</TableCaption>

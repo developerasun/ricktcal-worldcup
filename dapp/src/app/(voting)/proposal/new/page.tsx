@@ -7,9 +7,8 @@ import { Spacer } from '@/components/ui/spacer';
 import { TypographyH1 } from '@/components/ui/typography';
 import Form from 'next/form';
 import React, { useActionState } from 'react';
-import { shuffle } from 'es-toolkit';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TRICKCAL_CHARACTERS } from '@/constants/nickname';
+import { TRICKCAL_CHARACTERS } from '@/constants/index';
 
 interface Props {}
 
