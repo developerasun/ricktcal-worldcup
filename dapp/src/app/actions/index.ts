@@ -6,6 +6,7 @@ import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { AuthManager } from '@/server/hook';
 
 export async function generateWallet(formData: any) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -47,11 +48,11 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
     const result = await connection.select().from(users).where(eq(users.wallet, recovered.address)).get();
 
     if (!result) throw new Error('recoverAndSignIn: invalid match for mnemonic and database');
-    const { id, wallet } = result;
-    const payload = JSON.stringify({ id, wallet });
+    const { wallet } = result;
+    const am = new AuthManager();
+    const { token } = await am._useTokenEncryption({ wallet });
 
-    // TODO @dev do cookie encryption later
-    (await cookies()).set(COOKIE_NAME.auth, payload, {
+    (await cookies()).set(COOKIE_NAME.auth, token, {
       httpOnly: true,
       path: '/',
       secure: true,

@@ -1,10 +1,11 @@
 'use client';
 
+import { ILoginCookiePayload } from '@/types/application';
+import { AddressLike } from 'ethers';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 interface IAuth {
-  id: number;
-  wallet: string;
+  wallet: AddressLike;
 }
 
 interface IAuthContext {
@@ -19,11 +20,11 @@ const AuthContext = createContext<IAuthContext>({
 
 interface AuthContextProviderProps {
   children: ReactNode;
-  isLogin: string | null;
+  isLogin: ILoginCookiePayload | null;
 }
 
 function AuthContextProvider({ children, isLogin }: AuthContextProviderProps) {
-  const hasAuth = isLogin ? (JSON.parse(isLogin) as IAuth) : undefined;
+  const hasAuth = isLogin ? (isLogin satisfies IAuth) : undefined;
   const [auth, setAuth] = useState<IAuth | undefined>(hasAuth);
 
   useEffect(() => {

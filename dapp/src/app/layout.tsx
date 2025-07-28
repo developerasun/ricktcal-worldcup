@@ -7,6 +7,8 @@ import { Spacer } from '@/components/ui/spacer';
 import { AuthContextProvider } from './store';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/constants/index';
+import { AuthManager } from '@/server/hook';
+import { ILoginCookiePayload } from '@/types/application';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,8 +30,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let isLogin: ILoginCookiePayload | null = null;
   const hasLoginCookie = (await cookies()).get(COOKIE_NAME.auth);
-  const isLogin = hasLoginCookie ? hasLoginCookie.value : null;
+  if (hasLoginCookie) {
+    const am = new AuthManager();
+    const { payload } = await am._useTokenVerify({ token: hasLoginCookie.value });
+    payload ? (isLogin = { wallet: payload.wallet }) : (isLogin = null);
+  }
 
   return (
     <html lang="ko" suppressHydrationWarning>
