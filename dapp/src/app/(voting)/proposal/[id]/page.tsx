@@ -7,6 +7,8 @@ import { IProposal, VoteListType } from '@/types/application';
 import { notFound } from 'next/navigation';
 import { Spacer } from '@/components/ui/spacer';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { LoginRequired } from '@/components/ui/intercept';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -97,7 +99,9 @@ export default async function ProposalPage({ params }: Props) {
               })}
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Button className="self-end">투표하기</Button>
+              <LoginRequired message="로그인하고 투표하기">
+                <Button className="self-end">투표하기</Button>
+              </LoginRequired>
             </CardFooter>
           </Card>
         </div>

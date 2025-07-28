@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useActionState } from 'react';
-import { recoverAndSignIn } from '../actions';
+import { recoverAndSignIn } from '../../actions';
 import { Button } from '@/components/ui/button';
 import { Spacer } from '@/components/ui/spacer';
 import Form from 'next/form';

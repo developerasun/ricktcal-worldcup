@@ -96,8 +96,5 @@ export async function createNewProposal(prevState: string | undefined, formData:
     .returning()
     .get();
 
-  // if (error) throw new Error(error);
-
   redirect(`/proposal/${proposal.id}`);
-  return '';
 }
