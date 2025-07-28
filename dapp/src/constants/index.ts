@@ -1,4 +1,4 @@
-export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME };
+export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME, BRAND_NAME };
 
 const ADJECTIVES = [
   '존재하지 않는',
@@ -760,6 +760,11 @@ const POINT_RATE = {
   headpat: 5,
 } as const;
 
+const BRAND_NAME = {
+  project: 'ricktcal',
+  audience: 'balddagu',
+};
+
 const COOKIE_NAME = {
-  auth: 'ricktcal.session',
+  auth: `${BRAND_NAME.project}.session`,
 } as const;

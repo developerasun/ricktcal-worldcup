@@ -1,3 +1,5 @@
+import { AddressLike } from 'ethers';
+
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
 export type ProposalStatusType = 'pending' | 'active' | 'approved' | 'rejected';
 
@@ -34,3 +36,7 @@ export type VoterListType = IVoter[];
 export type VoteListType = IVote[];
 
 export type VoteCastType = 'left' | 'right';
+
+export interface ILoginCookiePayload {
+  wallet: AddressLike;
+}
