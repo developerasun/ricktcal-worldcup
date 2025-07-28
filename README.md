@@ -20,6 +20,7 @@
 _클라이언트&서버_
 
 - 풀스택: nextjs
+- ui: shadcn, tailwind
 
 _블록체인_
 
@@ -43,15 +44,19 @@ _데이터베이스_
 
 ## 피쳐
 
-- 지갑 생성
+- 라이트/다크 모드 설정하기
+- 내 블록체인 지갑 생성하기
 - 지갑으로 로그인하기(experimental)
-- 포인트 클레임
-- 잔고 확인
-- 신규 거버넌스 안건 생성
+- 거버넌스 포인트 클레임하기
+- 내 지갑 잔고 확인하기
+- 신규 거버넌스 안건 생성하기
 
 ## TODO
 
-- 거버넌스 토큰 컨트랙트
+- 거버넌스 토큰 클레임하기
+- 거버넌스 안건 투표하기
+- 거버넌스 투표 현황 확인하기
+- 최애사도 8강 월드컵 생성하기
 
 ## 실행/테스트 환경
 
@@ -66,6 +71,14 @@ nextjs 로컬 https, 프로덕션 쿠키 옵션 모킹
 # run
 pnpm dev
 ```
+
+[next-swagger-doc](https://github.com/jellydn/next-swagger-doc), 스웨거 api 테스트
+
+```sh
+# move to /apidoc page, unavailable on production
+```
+
+_stage_
 
 워커 배포 환경 모킹, 스테이징
 
