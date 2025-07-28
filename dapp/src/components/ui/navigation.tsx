@@ -57,6 +57,9 @@ export default function Navigation({ children }: Props) {
             <TabsTrigger value="투표자" onClick={() => router.push('/voter')}>
               투표자
             </TabsTrigger>
+            <TabsTrigger value="개발자도구" onClick={() => router.push('/apidoc')}>
+              개발자도구
+            </TabsTrigger>
           </TabsList>
         </Tabs>
         <Button variant="outline" size="icon" onClick={() => setIsDark(!isDark)}>
