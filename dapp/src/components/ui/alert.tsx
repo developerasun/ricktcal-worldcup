@@ -2,6 +2,9 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { IconConstruction } from './icon';
+import Link from 'next/link';
+import { Button } from './button';
 
 const alertVariants = cva(
   'relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current',
@@ -46,4 +49,26 @@ function AlertDescription({ className, ...props }: React.ComponentProps<'div'>) 
   );
 }
 
-export { Alert, AlertTitle, AlertDescription };
+function AlertUnderConsturction({ message }: { message?: string }) {
+  return (
+    <Alert
+      className="flex flex-col justify-center items-center gap-2 w-1/2 h-1/2 sm:w-1/3 sm:h-1/3"
+      variant="default"
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
+      <IconConstruction />
+      <AlertTitle className="text-xl font-bold">공사 중</AlertTitle>
+      <AlertDescription>{message ? message : '준비 중인 페이지입니다.'}</AlertDescription>
+      <Link href={'/'}>
+        <Button>돌아가기</Button>
+      </Link>
+    </Alert>
+  );
+}
+
+export { Alert, AlertTitle, AlertDescription, AlertUnderConsturction };
