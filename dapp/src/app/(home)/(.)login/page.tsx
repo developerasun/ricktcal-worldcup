@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { useActionState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Spacer } from '@/components/ui/spacer';
@@ -13,8 +13,13 @@ interface Props {}
 export default function SignIn({}: Props) {
   const [state, formAction] = useActionState(recoverAndSignIn, undefined);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <div
+      className="w-3/4 sm:w-auto"
       style={{
         border: '1px solid white',
         borderRadius: '15px',

@@ -36,7 +36,7 @@ export default function Navigation({ children }: Props) {
   }, [isDark]);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <div className="top-0 w-full flex justify-center items-center p-4">
         <Image
           style={{ cursor: 'pointer' }}
@@ -99,8 +99,12 @@ export default function Navigation({ children }: Props) {
           </DialogContent>
         </Dialog>
       </div>
-      <div style={{ minHeight: '90vh', width: '60vw', margin: '0 auto' }}>{children}</div>
-      <footer className=" bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
+
+      {/* prettier-ignore */}
+      {/* @dev flex-1 for claiming extra room for children */}
+      <div className="flex-1 w-3/4 sm:w-2/4 m-auto">{children}</div>
+
+      <footer className="bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://github.com/developerasun/ricktcal-worldcup"

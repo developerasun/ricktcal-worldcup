@@ -50,7 +50,7 @@ export default async function Home() {
       </div>
       <Table>
         <TableCaption>클릭 시 의제 개요 페이지로 이동합니다.</TableCaption>
-        <TableHeader>
+        <TableHeader className="w-3/4 sm:w-auto">
           <TableRow>
             <TableHead className="w-[100px] text-center">의제</TableHead>
             <TableHead className="text-center">상태</TableHead>
