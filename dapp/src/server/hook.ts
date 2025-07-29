@@ -1,6 +1,6 @@
 import { BRAND_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
-import { AddressLike } from 'ethers';
+import { AddressLike, Signature, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
 
 export class AuthManager {
@@ -55,5 +55,17 @@ export class AuthManager {
     } finally {
       return { payload };
     }
+  }
+
+  async _useDigitalSignature({ mnemonic, message }: { mnemonic: string; message: string }) {
+    const recovered = Wallet.fromPhrase(mnemonic);
+    const signature = await recovered.signMessage(message);
+
+    return { signature };
+  }
+
+  async _useVerification({ message, signature }: { message: string; signature: string }) {
+    const realSigner = verifyMessage(message, signature);
+    return { realSigner };
   }
 }
