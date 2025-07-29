@@ -279,7 +279,7 @@ const ADJECTIVES = [
   '머리가 떡진',
   '소설 쓰는',
   '휴가 간',
-];
+] as const;
 
 const ANIMALS = [
   '쿼카',
@@ -455,7 +455,7 @@ const ANIMALS = [
   '샐러맨더',
   '바실리스크',
   '와이번',
-];
+] as const;
 
 const HEROS = [
   '피터 파커',
@@ -558,7 +558,7 @@ const HEROS = [
   '율리시스 클로',
   '욘두 우돈타',
   '로난',
-];
+] as const;
 
 const MONSTERS = [
   '파이리',
@@ -661,7 +661,7 @@ const MONSTERS = [
   '암나이트',
   '신뇽',
   '질뻐기',
-];
+] as const;
 
 const TRICKCAL_CHARACTERS = [
   '가비아',
@@ -753,7 +753,7 @@ const TRICKCAL_CHARACTERS = [
   '피코라',
   '헤일리',
   '힐데',
-];
+] as const;
 
 const POINT_RATE = {
   cheekpulling: 10,
@@ -763,7 +763,7 @@ const POINT_RATE = {
 const BRAND_NAME = {
   project: 'ricktcal',
   audience: 'balddagu',
-};
+} as const;
 
 const COOKIE_NAME = {
   auth: `${BRAND_NAME.project}.session`,
