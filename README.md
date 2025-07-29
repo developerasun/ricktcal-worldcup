@@ -13,7 +13,7 @@
 
 <div align="center" style="width: 1080px; height: 1920px;">
     
-https://github.com/user-attachments/assets/8efe99cf-0f1b-46e8-99d1-e0796c9f6178
+https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
 
 </div>
 
