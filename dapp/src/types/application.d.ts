@@ -1,3 +1,4 @@
+import { TRICKCAL_CHARACTERS } from '@/constants';
 import { AddressLike } from 'ethers';
 
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
@@ -35,8 +36,20 @@ export type ProposalListType = IProposal[];
 export type VoterListType = IVoter[];
 export type VoteListType = IVote[];
 
-export type VoteCastType = 'left' | 'right';
+export type VoteCastType = (typeof TRICKCAL_CHARACTERS)[number];
 
 export interface ILoginCookiePayload {
   wallet: AddressLike;
+}
+
+export interface IVoteSignPayload {
+  issuer: string;
+  signer: AddressLike | null;
+  url: string;
+  network: string;
+  version: number;
+  chainId: number;
+  nonce: string; // @dev prevent signature replay
+  timestamp: string;
+  voteCast: VoteCastType;
 }
