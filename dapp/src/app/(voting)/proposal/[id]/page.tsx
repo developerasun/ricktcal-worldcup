@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { IProposal, VoteListType } from '@/types/application';
 import { notFound } from 'next/navigation';
 import { Spacer } from '@/components/ui/spacer';
-import { LoginRequired } from '@/components/ui/intercept';
 import {
   Dialog,
   DialogContent,
@@ -92,24 +91,42 @@ export default async function ProposalPage({ params }: Props) {
           <Card>
             <CardHeader>
               <CardTitle>투표 현황</CardTitle>
-              <CardDescription>투표 개요</CardDescription>
+              <CardDescription>현재 진행 중인 안건에 대한 주요 정보를 수치화해서 보여드립니다.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <span style={{ fontWeight: 'bold' }}>투표자 리스트</span>
-              <Spacer v={1} />
-              {data.voteHistory.map((v, index) => {
-                return (
-                  <ul key={v.id}>
-                    <li>참여 순서: {index + 1}</li>
-                    <li>유저 아이디: {v.userId}</li>
-                    <li>개표: {v.voteCast}</li>
-                  </ul>
-                );
-              })}
+            <CardContent className="flex flex-col gap-4">
+              <div>
+                <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>투표자 리스트</div>
+                <ol className="border border-gray-300 p-2 rounded-sm">
+                  <li>총 개표 수: {data.voteHistory.length}</li>
+                  <li>
+                    {data.proposal.leftCharacterName}의 득표 수:{' '}
+                    {data.voteHistory.filter((v) => v.voteCast === data.proposal.leftCharacterName).length}
+                  </li>
+                  <li>
+                    {data.proposal.rightCharacterName}의 득표 수:{' '}
+                    {data.voteHistory.filter((v) => v.voteCast === data.proposal.rightCharacterName).length}
+                  </li>
+                </ol>
+              </div>
+              <div>
+                <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>투표자 리스트</div>
+                {/* <Spacer v={1} /> */}
+                {data.voteHistory.map((v, index) => {
+                  return (
+                    <ul key={v.id} className="border border-gray-300 p-2 rounded-sm">
+                      <li>참여 순서: {index + 1}</li>
+                      <li>유저 아이디: {v.userId}</li>
+                      <li>개표: {v.voteCast}</li>
+                    </ul>
+                  );
+                })}
+              </div>
             </CardContent>
             <CardFooter className="flex flex-col">
               <Dialog>
-                <DialogTrigger className="border border-gray-300 p-2 rounded-md">지갑으로 투표하기</DialogTrigger>
+                <DialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 p-2 rounded-md transition font-bold">
+                  지갑으로 투표하기
+                </DialogTrigger>
                 <DialogContent className="max-h-[80vh] overflow-y-auto overflow-x-hidden">
                   <DialogHeader>
                     <DialogTitle className="text-center">전자 서명 요청</DialogTitle>
@@ -117,7 +134,6 @@ export default async function ProposalPage({ params }: Props) {
                       교주님이 이 지갑을 소유하고 있음을 확인하기 위해 <br />
                       패스키를 사용하여 전자 서명을 생성합니다.
                     </DialogDescription>
-
                     <VoteCastForm castList={VOTE_CAST_LIST} />
                   </DialogHeader>
                 </DialogContent>
