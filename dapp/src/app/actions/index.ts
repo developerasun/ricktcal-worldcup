@@ -1,7 +1,7 @@
 'use server';
 import { AddressLike, Wallet, ZeroAddress } from 'ethers';
 import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS } from '@/constants/index';
-import { getConnection, proposals, users } from '@/server/database/schema';
+import { getConnection, proposals, users, votes } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -9,6 +9,7 @@ import { revalidatePath } from 'next/cache';
 import { AuthManager } from '@/server/hook';
 import { IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
+import { UnauthorizedException } from '@/server/error';
 
 export async function generateWallet(formData: any) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -126,10 +127,43 @@ export async function createNewVoteWithSignature(
     version: 1,
     chainId: 111555,
     nonce: nanoid(),
-    timestamp: new Date().toLocaleString(),
+
+    // @dev keep consistent tz, cf worker tz might be different
+    timestamp: new Date().toLocaleString('ko-KR', {
+      timeZone: 'Asia/Seoul',
+    }),
     voteCast,
   };
   const { signature } = await am._useDigitalSignature({ message: JSON.stringify(payload), mnemonic });
 
   return { payload, signature };
+}
+
+export async function createVotingTransaction(prevState: string | undefined, formData: FormData) {
+  const auth = (await cookies()).get(COOKIE_NAME.auth);
+
+  if (!auth) throw new UnauthorizedException();
+  const token = auth.value;
+  const am = new AuthManager();
+  const { payload } = await am._useTokenVerify({ token });
+
+  const voteCast = formData.get('vote-cast-hidden') as string;
+  const proposalId = formData.get('proposal-id-hidden') as string;
+  console.log({ voteCast, proposalId });
+
+  if (!payload) throw new UnauthorizedException();
+  const wallet = payload.wallet.toString();
+
+  const { connection } = await getConnection();
+  const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
+  if (!hasUser) throw new UnauthorizedException();
+
+  const { id: userId } = hasUser;
+  const hasVoted = await connection.select().from(votes).where(eq(votes.userId, userId)).get();
+
+  if (!hasVoted) await connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast });
+  console.log({ hasVoted });
+
+  // TODO add contract interaction
+  return 'ok';
 }
