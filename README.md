@@ -11,6 +11,12 @@
 
 - 당신의 최애 사도는 누구인가요? 릭트컬 거버넌스에 참여하여 최애 사도 월드컵을 만들고 친구들에게 공유해보세요!
 
+<div align="center" style="width: 1080px; height: 1920px;">
+    
+https://github.com/user-attachments/assets/8efe99cf-0f1b-46e8-99d1-e0796c9f6178
+
+</div>
+
 ## 접속 url
 
 - https://demo.developerasun.dpdns.org
@@ -50,13 +56,19 @@ _데이터베이스_
 - 거버넌스 포인트 클레임하기
 - 내 지갑 잔고 확인하기
 - 신규 거버넌스 안건 생성하기
+- 지갑으로 투표하기
 
-## TODO
+### TODO: web2
 
 - 거버넌스 안건 투표하기
 - 거버넌스 투표 현황 확인하기
 - 거버넌스 포인트<=>토큰 교환하기
 - 최애사도 8강 월드컵 생성하기
+
+### TODO: web3
+
+- 거버넌스 토큰 컨트랙트
+- 거버넌스 투표 컨트랙트
 
 ## 실행/테스트 환경
 
@@ -132,5 +144,6 @@ pnpm db:remote
 - [cloudflare docs: d1 getting started](https://developers.cloudflare.com/d1/get-started/)
 - [github: TypeORM with Next.JS example project](https://github.com/gladykov/typeorm-next.js)
 - [cloudflare docs: Hyperdrive](https://developers.cloudflare.com/hyperdrive/)
+- [github: sign in with ethereum](https://github.com/spruceid/siwe)
 - [root wallet tx history: ethereum sepolia](https://sepolia.etherscan.io/address/0xb052cabd197fd9ca9a0a1dc388b25e7326f28439)
 - [eth faucet for test](https://cloud.google.com/application/web3/faucet)
