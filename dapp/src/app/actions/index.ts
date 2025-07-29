@@ -1,12 +1,14 @@
 'use server';
-import { Wallet } from 'ethers';
-import { ADJECTIVES, COOKIE_NAME, HEROS } from '@/constants/index';
+import { AddressLike, Wallet, ZeroAddress } from 'ethers';
+import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS } from '@/constants/index';
 import { getConnection, proposals, users } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AuthManager } from '@/server/hook';
+import { IVoteSignPayload, VoteCastType } from '@/types/application';
+import { nanoid } from 'nanoid';
 
 export async function generateWallet(formData: any) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -71,7 +73,7 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
   }
 }
 
-export async function createNewProposal(prevState: string | undefined, formData: FormData) {
+export async function createNewProposal(prevState: void, formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const startAt = formData.get('startAt') as string;
@@ -97,4 +99,37 @@ export async function createNewProposal(prevState: string | undefined, formData:
     .get();
 
   redirect(`/proposal/${proposal.id}`);
+}
+
+export async function createNewVoteWithSignature(
+  prevState: { payload: IVoteSignPayload; signature: string } | undefined,
+  formData: FormData
+) {
+  const voteCast = formData.get('vote-cast') as VoteCastType;
+  const mnemonic = formData.get('mnemonic') as string;
+  let signer: AddressLike = ZeroAddress;
+
+  const auth = (await cookies()).get(COOKIE_NAME.auth);
+  const am = new AuthManager();
+
+  if (auth) {
+    const { payload } = await am._useTokenVerify({ token: auth.value });
+
+    if (payload) signer = payload.wallet;
+  }
+
+  const payload: IVoteSignPayload = {
+    issuer: BRAND_NAME.project,
+    signer,
+    url: 'https://demo.developerasun.dpdns.org',
+    network: 'ethereum-sepolia',
+    version: 1,
+    chainId: 111555,
+    nonce: nanoid(),
+    timestamp: new Date().toLocaleString(),
+    voteCast,
+  };
+  const { signature } = await am._useDigitalSignature({ message: JSON.stringify(payload), mnemonic });
+
+  return { payload, signature };
 }

@@ -6,9 +6,16 @@ import Image from 'next/image';
 import { IProposal, VoteListType } from '@/types/application';
 import { notFound } from 'next/navigation';
 import { Spacer } from '@/components/ui/spacer';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { LoginRequired } from '@/components/ui/intercept';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import VoteCastForm from './voteCast';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -26,6 +33,8 @@ export default async function ProposalPage({ params }: Props) {
   const data = await getProposalDetail({ id: +id });
 
   if (!data) return notFound();
+
+  const VOTE_CAST_LIST = [data.proposal.leftCharacterName, data.proposal.rightCharacterName];
 
   return (
     <>
@@ -83,7 +92,7 @@ export default async function ProposalPage({ params }: Props) {
           <Card>
             <CardHeader>
               <CardTitle>투표 현황</CardTitle>
-              <CardDescription>투표 개요: Lorem ipsum dolor sit amet.</CardDescription>
+              <CardDescription>투표 개요</CardDescription>
             </CardHeader>
             <CardContent>
               <span style={{ fontWeight: 'bold' }}>투표자 리스트</span>
@@ -99,9 +108,20 @@ export default async function ProposalPage({ params }: Props) {
               })}
             </CardContent>
             <CardFooter className="flex flex-col">
-              <LoginRequired message="로그인하고 투표하기">
-                <Button className="self-end">투표하기</Button>
-              </LoginRequired>
+              <Dialog>
+                <DialogTrigger className="border border-gray-300 p-2 rounded-md">지갑으로 투표하기</DialogTrigger>
+                <DialogContent className="max-h-[80vh] overflow-y-auto overflow-x-hidden">
+                  <DialogHeader>
+                    <DialogTitle className="text-center">전자 서명 요청</DialogTitle>
+                    <DialogDescription className="text-center">
+                      교주님이 이 지갑을 소유하고 있음을 확인하기 위해 <br />
+                      패스키를 사용하여 전자 서명을 생성합니다.
+                    </DialogDescription>
+
+                    <VoteCastForm castList={VOTE_CAST_LIST} />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         </div>
