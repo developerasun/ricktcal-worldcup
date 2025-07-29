@@ -55,13 +55,9 @@ export const proposals = sqliteTable(
   ]
 );
 
-export const votes = sqliteTable(
-  'votes',
-  {
-    id: integer().primaryKey({ autoIncrement: true }),
-    userId: integer('userId').references(() => users.id),
-    proposalId: integer('proposalId').references(() => proposals.id),
-    voteCast: text().notNull().default('left'),
-  },
-  (table) => [check('votecast_type', sql`${table.voteCast} IN ('left', 'right')`)]
-);
+export const votes = sqliteTable('votes', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId').references(() => users.id),
+  proposalId: integer('proposalId').references(() => proposals.id),
+  voteCast: text(),
+});
