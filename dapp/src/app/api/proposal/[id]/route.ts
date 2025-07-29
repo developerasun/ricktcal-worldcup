@@ -1,4 +1,4 @@
-import { getConnection, proposals, votes } from '@/server/database/schema';
+import { getConnection, proposals, users, votes } from '@/server/database/schema';
 import { eq } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
 
@@ -11,18 +11,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
 
   if (!proposal) throw new Error(`존재하지 않는 안건(${proposalId})입니다`);
 
-  let voteHistory = await connection.select().from(votes).where(eq(votes.proposalId, +proposalId));
-
-  if (voteHistory.length === 0) {
-    voteHistory = [
-      {
-        id: 1,
-        userId: 1,
-        proposalId: 1,
-        voteCast: 'left',
-      },
-    ];
-  }
+  const voteHistory = await connection.select().from(votes).where(eq(votes.proposalId, +proposalId));
 
   return NextResponse.json({ proposal, voteHistory });
 }

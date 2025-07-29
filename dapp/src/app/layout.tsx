@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/constants/index';
 import { AuthManager } from '@/server/hook';
 import { ILoginCookiePayload } from '@/types/application';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -46,6 +47,7 @@ export default async function RootLayout({
             <Navigation>
               <Spacer v={2} />
               {children}
+              <Toaster position="top-right" />
             </Navigation>
           </AuthContextProvider>
         </ThemeProvider>
