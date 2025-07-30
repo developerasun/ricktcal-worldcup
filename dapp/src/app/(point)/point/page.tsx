@@ -1,15 +1,22 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useActionState, useEffect, useRef, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import { PointClaimActionType } from '@/types/application';
 import Image from 'next/image';
-import { TypographyH1, TypographyP } from '@/components/ui/typography';
+import { TypographyH1, TypographyH2, TypographyP } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
 import { ArrowLeft, Move } from 'lucide-react';
 import { POINT_RATE } from '@/constants/index';
 import { useAuth } from '@/app/store';
 import { LoginRequired } from '@/components/ui/intercept';
+import { useMutator } from '@/lib/client';
+import { Input } from '@/components/ui/input';
+import Form from 'next/form';
+import { exchangePointToElif } from '@/app/actions';
+import { Button } from '@/components/ui/button';
+import { useFormStatus } from 'react-dom';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface Props {}
 
@@ -18,31 +25,27 @@ export default function PointPage({}: Props) {
   const [isCheekPullingDrag, setIsCheekPullingDrag] = useState(false);
   const [isHeadpatDrag, setIsHeadpatDrag] = useState(false);
 
+  const [state, formAction] = useActionState(exchangePointToElif, undefined);
+  const { pending } = useFormStatus();
+  const [elifAmount, setElifAmount] = useState(0);
+  const [pointToExchange, setPointToExchange] = useState(0);
+
   const requestPointForCheekPulling = async () => {
     alert('볼을 당기셨습니다');
-    await fetch('/api/point', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ action: 'cheekpulling' }),
-      credentials: 'include',
-    });
+    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: 'cheekpulling' }) });
     alert(`${POINT_RATE.cheekpulling} 포인트를 획득했습니다.`);
   };
 
   const requestPointForHeadpat = async () => {
     alert('머리를 쓰다듬으셨습니다');
-    await fetch('/api/point', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ action: 'headpat' }),
-      credentials: 'include',
-    });
+    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: 'headpat' }) });
     alert(`${POINT_RATE.headpat} 포인트를 획득했습니다.`);
   };
+
+  useEffect(() => {
+    if (state === 'ok') alert(`${pointToExchange}포인트를 ${elifAmount}엘리프로 교환하셨습니다.`);
+    console.log({ state });
+  }, [state]);
 
   return (
     <>
@@ -116,6 +119,67 @@ export default function PointPage({}: Props) {
             <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
           </div>
         </div>
+      )}
+
+      <Spacer v={1.5} />
+      <TypographyH2 text="재화 교환하기" />
+      <p className="my-6 text-center">
+        획득한 포인트를 엘리프 토큰으로 교환하세요. <br /> 엘리프는 월드컵 투표권으로 사용됩니다.
+      </p>
+      <p className="my-1 text-center">1 엘리프(Elif) = {POINT_RATE.elif} 포인트로 교환 가능합니다.</p>
+      <Spacer v={1.5} />
+      {auth ? (
+        <Form action={formAction}>
+          <Input
+            onChange={(v) => {
+              setPointToExchange(+v.currentTarget.value);
+              setElifAmount(+v.currentTarget.value / POINT_RATE.elif);
+            }}
+            className="w-full max-w-md m-auto"
+            name="point"
+            placeholder="포인트 수량을 입력하세요"
+            type="number"
+          />
+          <Input className="w-full max-w-md m-auto" name="elif" type="text" value={`${elifAmount} elif`} disabled />
+          {state && state !== 'ok' && (
+            <Alert variant="destructive">
+              <AlertTitle>포인트 교환에 실패하셨습니다.</AlertTitle>
+              <AlertDescription>{state}</AlertDescription>
+            </Alert>
+          )}
+          {state && state === 'ok' && (
+            <Alert variant="default">
+              <AlertTitle>포인트를 성공적으로 교환했습니다.</AlertTitle>
+              <AlertDescription>교환한 엘리프 수량: {elifAmount}</AlertDescription>
+            </Alert>
+          )}
+          <div className="flex justify-end">
+            <Button type="submit" className="m-auto" disabled={pending ? true : false}>
+              교환하기
+            </Button>
+          </div>
+        </Form>
+      ) : (
+        <LoginRequired message="로그인하고 교환하기">
+          <Form action={formAction}>
+            <Input
+              onChange={(v) => {
+                setPointToExchange(+v.currentTarget.value);
+                setElifAmount(+v.currentTarget.value / POINT_RATE.elif);
+              }}
+              className="w-full max-w-md m-auto"
+              name="point"
+              placeholder="포인트 수량을 입력하세요"
+              type="number"
+            />
+            <Input className="w-full max-w-md m-auto" name="elif" type="text" value={`${elifAmount} elif`} disabled />
+            <div className="flex justify-end">
+              <Button type="submit" className="m-auto" disabled={pending ? true : false}>
+                교환하기
+              </Button>
+            </div>
+          </Form>
+        </LoginRequired>
       )}
     </>
   );

@@ -1,15 +1,15 @@
 'use server';
 import { AddressLike, Wallet, ZeroAddress } from 'ethers';
-import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS } from '@/constants/index';
-import { getConnection, proposals, users, votes } from '@/server/database/schema';
-import { eq } from 'drizzle-orm';
+import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS, HttpStatus, POINT_RATE, ProposalStatus } from '@/constants/index';
+import { exchanges, getConnection, proposals, users, votes } from '@/server/database/schema';
+import { and, eq, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { AuthManager } from '@/server/hook';
+import { AuthManager, validateAndFindIdentity } from '@/server/hook';
 import { IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
-import { UnauthorizedException } from '@/server/error';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '@/server/error';
 
 export async function generateWallet(formData: any) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -82,6 +82,7 @@ export async function createNewProposal(prevState: void, formData: FormData) {
   const leftCharacterName = formData.get('left-character') as string;
   const rightCharacterName = formData.get('right-character') as string;
 
+  // TODO add deadline check
   console.log({ title, description, startAt, endAt, leftCharacterName, rightCharacterName });
 
   const { connection } = await getConnection();
@@ -90,7 +91,7 @@ export async function createNewProposal(prevState: void, formData: FormData) {
     .values({
       title,
       description,
-      status: 'pending',
+      status: ProposalStatus.PENDING,
       startAt,
       endAt,
       leftCharacterName,
@@ -166,4 +167,52 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   // TODO add contract interaction
   return 'ok';
+}
+
+export async function exchangePointToElif(prevState: string | undefined, formData: FormData) {
+  const $pointAmount = formData.get('point') as string;
+  const calculated = +$pointAmount / POINT_RATE.elif;
+
+  let message: string | null = 'ok';
+
+  if (calculated > Number.MAX_SAFE_INTEGER) {
+    const e = new BadRequestException('범위에서 벗어난 교환 비율입니다', { code: HttpStatus.BAD_REQUEST });
+    message = e.short().message;
+  }
+
+  const { userId } = await validateAndFindIdentity();
+
+  const elifAmount = calculated;
+  const pointAmount = +$pointAmount;
+  const { connection } = await getConnection();
+
+  const raw = await connection.select({ balance: users.point }).from(users).where(eq(users.id, userId)).get();
+
+  if (!raw) {
+    const e = new NotFoundException('존재하지 않는 유저입니다', { code: HttpStatus.NOT_FOUND });
+    message = e.short().message;
+  }
+
+  const hasEnoughBalance = raw!.balance >= pointAmount;
+  if (!hasEnoughBalance) {
+    const e = new BadRequestException('교환할 포인트 수량이 부족합니다', { code: HttpStatus.BAD_REQUEST });
+    message = e.short().message;
+  }
+
+  console.log({ hasEnoughBalance, raw, message });
+
+  if (message === 'ok' && hasEnoughBalance) {
+    await connection.batch([
+      connection.insert(exchanges).values({ userId, elifAmount, pointAmount }),
+      connection
+        .update(users)
+        .set({
+          point: sql`${users.point} - ${pointAmount}`,
+          elif: sql`${users.elif} + ${elifAmount}`,
+        })
+        .where(eq(users.id, userId)),
+    ]);
+  }
+
+  return message;
 }
