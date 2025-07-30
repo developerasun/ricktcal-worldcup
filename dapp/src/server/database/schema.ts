@@ -62,14 +62,9 @@ export const votes = sqliteTable('votes', {
   voteCast: text(),
 });
 
-export const exchanges = sqliteTable(
-  'exchanges',
-  {
-    id: integer().primaryKey({ autoIncrement: true }),
-    userId: integer('userId').references(() => users.id),
-    action: text().notNull(),
-    pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
-    elifAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
-  },
-  (table) => [check('action_type', sql`${table.action} IN ('cheekpulling', 'headpat')`)]
-);
+export const exchanges = sqliteTable('exchanges', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId').references(() => users.id),
+  pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
+  elifAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
+});
