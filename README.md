@@ -17,11 +17,21 @@ https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
 
 </div>
 
-## 접속 url
+## 데모
 
 - https://demo.developerasun.dpdns.org
 
 ## 아키텍처
+
+_엔지니어링 근거_
+
+1. 장기간 접속 가능해야 합니다. 대부분의 사이드 프로젝트, 또는 면접 과제들은 짧으면 3일, 길면 한 두달 이내 배포된 인스턴스를 삭제합니다. 결국 유지 보수되지 않고 프로젝트는 사라집니다.
+
+이를 방지하기 위해 처음부터 `지속 가능한` 형태로 프로젝트 구성요소 설계합니다.
+
+2. 적절한 보안 요소가 배치되어야 합니다. 배포하는 순간, 즉 인터넷에 노출되는 순간부터 봇들은 덤벼듭니다. 특히 요새는 ai 크롤링 때문에 더 많습니다.
+
+3. 간결해야 합니다. 웹3 프로젝트 특성 상, 서비스 ux는 이미 풍비박산 난 경우가 많습니다. 온체인 이벤트, 니모닉, 트랜잭션 실패, 가스비 ... 블록체인 프로젝트(dapp, hybrid)가 요구하는 기술적 특성과 한계에 관해서 유저는 사실 크게 관심 없는 경우가 많습니다. 블록체인 요소가 적용되어야 하지만, 동시에 이용에 불편함이 없어야 합니다.
 
 _클라이언트&서버_
 
@@ -60,8 +70,6 @@ _데이터베이스_
 
 ### TODO: web2
 
-- 거버넌스 안건 투표하기
-- 거버넌스 투표 현황 확인하기
 - 거버넌스 포인트<=>토큰 교환하기
 - 최애사도 8강 월드컵 생성하기
 
@@ -147,3 +155,4 @@ pnpm db:remote
 - [github: sign in with ethereum](https://github.com/spruceid/siwe)
 - [root wallet tx history: ethereum sepolia](https://sepolia.etherscan.io/address/0xb052cabd197fd9ca9a0a1dc388b25e7326f28439)
 - [eth faucet for test](https://cloud.google.com/application/web3/faucet)
+- [cloudflare d1 docs: Billing metrics](https://developers.cloudflare.com/d1/platform/pricing/#billing-metrics)
