@@ -1,7 +1,11 @@
-import { BRAND_NAME } from '@/constants';
+import { BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
+import { eq } from 'drizzle-orm';
 import { AddressLike, Signature, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
+import { cookies } from 'next/headers';
+import { getConnection, users } from './database/schema';
+import { UnauthorizedException } from './error';
 
 export class AuthManager {
   #issuer = BRAND_NAME.project;
@@ -68,4 +72,25 @@ export class AuthManager {
     const realSigner = verifyMessage(message, signature);
     return { realSigner };
   }
+}
+
+export async function validateAndFindIdentity() {
+  const auth = (await cookies()).get(COOKIE_NAME.auth);
+
+  if (!auth) throw new UnauthorizedException();
+  const token = auth.value;
+  const am = new AuthManager();
+  const { payload } = await am._useTokenVerify({ token });
+
+  if (!payload) throw new UnauthorizedException();
+  const wallet = payload.wallet.toString();
+
+  const { connection } = await getConnection();
+  const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
+
+  if (!hasUser) throw new UnauthorizedException();
+
+  const { id: userId } = hasUser;
+
+  return { userId, wallet };
 }
