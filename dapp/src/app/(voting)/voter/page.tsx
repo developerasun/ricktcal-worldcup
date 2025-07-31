@@ -62,7 +62,7 @@ export default async function VotersPage({}: Props) {
                     <CardDescription>{d.point}</CardDescription>
                   </div>
                   <div>
-                    <CardTitle>토큰 보유량</CardTitle>
+                    <CardTitle>엘리프(토큰) 보유량</CardTitle>
                     <CardDescription>{d.elif}</CardDescription>
                   </div>
                   <div>

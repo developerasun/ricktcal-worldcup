@@ -9,6 +9,7 @@ import Form from 'next/form';
 import React, { useActionState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TRICKCAL_CHARACTERS } from '@/constants/index';
+import { useFromUtc } from '@/lib/client';
 
 interface Props {}
 
@@ -16,15 +17,14 @@ export default function NewProposalPage({}: Props) {
   const [state, formAction] = useActionState(createNewProposal, undefined);
 
   const setStartDateLimit = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0]; // "YYYY-MM-DD"
+    const { short } = useFromUtc();
+    return short; // "YYYY-MM-DD"
   };
 
   const setEndDateLimit = () => {
-    const oneWeek = new Date();
-    oneWeek.setDate(oneWeek.getDate() + 7);
-    return oneWeek.toISOString().split('T')[0]; // "YYYY-MM-DD"
+    const { kstDate } = useFromUtc();
+    kstDate.setDate(kstDate.getDate() + 6);
+    return kstDate.toISOString().split('T')[0]; // "YYYY-MM-DD"
   };
 
   return (

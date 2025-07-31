@@ -73,9 +73,13 @@ export default async function ProposalPage({ params }: Props) {
             <CardHeader>
               <Badge
                 variant={data.proposal.status === 'rejected' ? 'destructive' : 'default'}
-                className={data.proposal.status === 'active' ? 'bg-green-500 dark:bg-green-600' : ''}
+                className={
+                  data.proposal.status === 'active'
+                    ? 'bg-green-500 dark:bg-green-600 text-white font-bold p-1.5 mb-1'
+                    : 'font-bold p-1.5 mb-1'
+                }
               >
-                {data.proposal.status}
+                {data.proposal.status.toUpperCase()}
               </Badge>
               <CardTitle>안건 제목: {data.proposal.title}</CardTitle>
               <CardDescription>안건 내용: {data.proposal.description}</CardDescription>
