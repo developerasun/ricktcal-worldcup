@@ -1,9 +1,63 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "95de59dc-0fc0-485d-8a49-a33f694fd58f",
+  "id": "36fd0cc9-bdac-4b37-a04a-3620d78ef831",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "exchanges": {
+      "name": "exchanges",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "pointAmount": {
+          "name": "pointAmount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "elifAmount": {
+          "name": "elifAmount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "exchanges_userId_users_id_fk": {
+          "name": "exchanges_userId_users_id_fk",
+          "tableFrom": "exchanges",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "points": {
       "name": "points",
       "columns": {
@@ -55,12 +109,7 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {
-        "action_type": {
-          "name": "action_type",
-          "value": "\"points\".\"action\" IN ('cheekpulling', 'headpat')"
-        }
-      }
+      "checkConstraints": {}
     },
     "proposals": {
       "name": "proposals",
@@ -76,16 +125,8 @@
           "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "isActive": {
-          "name": "isActive",
-          "type": "integer",
-          "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": 0
+          "autoincrement": false
         },
         "status": {
           "name": "status",
@@ -121,6 +162,22 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "leftCharacterName": {
+          "name": "leftCharacterName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'버터'"
+        },
+        "rightCharacterName": {
+          "name": "rightCharacterName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'코미'"
         }
       },
       "indexes": {
@@ -149,16 +206,7 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {
-        "status_type": {
-          "name": "status_type",
-          "value": "\"proposals\".\"status\" IN ('active', 'approved', 'rejected')"
-        },
-        "activeness_type": {
-          "name": "activeness_type",
-          "value": "\"proposals\".\"isActive\" IN (0, 1)"
-        }
-      }
+      "checkConstraints": {}
     },
     "users": {
       "name": "users",
@@ -212,6 +260,71 @@
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "votes": {
+      "name": "votes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "proposalId": {
+          "name": "proposalId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "voteCast": {
+          "name": "voteCast",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "votes_userId_users_id_fk": {
+          "name": "votes_userId_users_id_fk",
+          "tableFrom": "votes",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "votes_proposalId_proposals_id_fk": {
+          "name": "votes_proposalId_proposals_id_fk",
+          "tableFrom": "votes",
+          "tableTo": "proposals",
+          "columnsFrom": [
+            "proposalId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

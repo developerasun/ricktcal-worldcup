@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1753506247883,
-      "tag": "0000_heavy_magma",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1753528218305,
-      "tag": "0001_nasty_salo",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1753530618886,
-      "tag": "0002_tiny_impossible_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1753532974903,
-      "tag": "0003_wet_energizer",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1753611973678,
-      "tag": "0004_common_cerise",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1753800854514,
-      "tag": "0005_large_next_avengers",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1753866498334,
-      "tag": "0006_crazy_marvex",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "6",
-      "when": 1753883535433,
-      "tag": "0007_opposite_deathbird",
+      "when": 1753979296039,
+      "tag": "0000_bitter_loners",
       "breakpoints": true
     }
   ]
