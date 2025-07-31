@@ -773,8 +773,12 @@ const COOKIE_NAME = {
 export enum ProposalStatus {
   PENDING = 'pending',
   ACTIVE = 'active',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
+  FINISHED = 'finished',
+}
+
+export enum PointClaimAction {
+  CHEEKPULLING = 'cheekpulling',
+  HEADPAT = 'headpat',
 }
 
 export enum HttpStatus {

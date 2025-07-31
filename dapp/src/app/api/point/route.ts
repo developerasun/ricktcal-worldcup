@@ -1,4 +1,4 @@
-import { COOKIE_NAME, HttpStatus, POINT_RATE } from '@/constants/index';
+import { COOKIE_NAME, HttpStatus, POINT_RATE, PointClaimAction } from '@/constants/index';
 import { getConnection, points, users } from '@/server/database/schema';
 import { NotFoundException, UnauthorizedException } from '@/server/error';
 import { validateAndFindIdentity } from '@/server/hook';
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   const { action } = data as { action: PointClaimActionType };
   const { connection } = await getConnection();
 
-  const score = action === 'cheekpulling' ? POINT_RATE.cheekpulling : POINT_RATE.headpat;
+  const score = action === PointClaimAction.CHEEKPULLING ? POINT_RATE.cheekpulling : POINT_RATE.headpat;
 
   try {
     // @dev use javascript api instead of transaction in d1 environment

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { TypographyH1, TypographyH2, TypographyP } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
 import { ArrowLeft, Move } from 'lucide-react';
-import { POINT_RATE } from '@/constants/index';
+import { POINT_RATE, PointClaimAction } from '@/constants/index';
 import { useAuth } from '@/app/store';
 import { LoginRequired } from '@/components/ui/intercept';
 import { useMutator } from '@/lib/client';
@@ -32,13 +32,13 @@ export default function PointPage({}: Props) {
 
   const requestPointForCheekPulling = async () => {
     alert('볼을 당기셨습니다');
-    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: 'cheekpulling' }) });
+    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: PointClaimAction.CHEEKPULLING }) });
     alert(`${POINT_RATE.cheekpulling} 포인트를 획득했습니다.`);
   };
 
   const requestPointForHeadpat = async () => {
     alert('머리를 쓰다듬으셨습니다');
-    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: 'headpat' }) });
+    await useMutator({ endpoint: '/api/point', body: JSON.stringify({ action: PointClaimAction.HEADPAT }) });
     alert(`${POINT_RATE.headpat} 포인트를 획득했습니다.`);
   };
 
@@ -69,22 +69,22 @@ export default function PointPage({}: Props) {
             <div>
               <TypographyP text="버터의 볼을 당긴다" />
               <InteractWithCharacter
-                type="cheekpulling"
+                type={PointClaimAction.CHEEKPULLING}
                 isDragging={isCheekPullingDrag}
                 onDragStateChange={setIsCheekPullingDrag}
                 onFinish={requestPointForCheekPulling}
               />
-              <RenderReaction type="cheekpulling" isDragging={isCheekPullingDrag} />
+              <RenderReaction type={PointClaimAction.CHEEKPULLING} isDragging={isCheekPullingDrag} />
             </div>
             <div>
               <TypographyP text="버터의 머리를 쓰다듬는다" />
               <InteractWithCharacter
-                type="headpat"
+                type={PointClaimAction.HEADPAT}
                 isDragging={isHeadpatDrag}
                 onDragStateChange={setIsHeadpatDrag}
                 onFinish={requestPointForHeadpat}
               />
-              <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
+              <RenderReaction type={PointClaimAction.HEADPAT} isDragging={isHeadpatDrag} />
             </div>
           </div>
         </LoginRequired>
@@ -101,22 +101,22 @@ export default function PointPage({}: Props) {
           <div>
             <TypographyP text="버터의 볼을 당긴다" />
             <InteractWithCharacter
-              type="cheekpulling"
+              type={PointClaimAction.CHEEKPULLING}
               isDragging={isCheekPullingDrag}
               onDragStateChange={setIsCheekPullingDrag}
               onFinish={requestPointForCheekPulling}
             />
-            <RenderReaction type="cheekpulling" isDragging={isCheekPullingDrag} />
+            <RenderReaction type={PointClaimAction.CHEEKPULLING} isDragging={isCheekPullingDrag} />
           </div>
           <div>
             <TypographyP text="버터의 머리를 쓰다듬는다" />
             <InteractWithCharacter
-              type="headpat"
+              type={PointClaimAction.HEADPAT}
               isDragging={isHeadpatDrag}
               onDragStateChange={setIsHeadpatDrag}
               onFinish={requestPointForHeadpat}
             />
-            <RenderReaction type="headpat" isDragging={isHeadpatDrag} />
+            <RenderReaction type={PointClaimAction.HEADPAT} isDragging={isHeadpatDrag} />
           </div>
         </div>
       )}
@@ -264,8 +264,8 @@ function InteractWithCharacter({
           alignItems: 'center',
         }}
       >
-        {type === 'cheekpulling' && <ArrowLeft color="black" />}
-        {type === 'headpat' && <Move color="black" />}
+        {type === PointClaimAction.CHEEKPULLING && <ArrowLeft color="black" />}
+        {type === PointClaimAction.HEADPAT && <Move color="black" />}
       </animated.div>
     </>
   );

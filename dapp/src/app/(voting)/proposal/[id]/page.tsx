@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import VoteCastForm from './voteCast';
+import { ProposalStatus } from '@/constants';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -72,9 +73,9 @@ export default async function ProposalPage({ params }: Props) {
           <Card>
             <CardHeader>
               <Badge
-                variant={data.proposal.status === 'rejected' ? 'destructive' : 'default'}
+                variant={data.proposal.status === ProposalStatus.FINISHED ? 'destructive' : 'default'}
                 className={
-                  data.proposal.status === 'active'
+                  data.proposal.status === ProposalStatus.ACTIVE
                     ? 'bg-green-500 dark:bg-green-600 text-white font-bold p-1.5 mb-1'
                     : 'font-bold p-1.5 mb-1'
                 }
