@@ -82,15 +82,16 @@ export async function createNewProposal(prevState: void, formData: FormData) {
   const leftCharacterName = formData.get('left-character') as string;
   const rightCharacterName = formData.get('right-character') as string;
 
-  // TODO add deadline check
   console.log({ title, description, startAt, endAt, leftCharacterName, rightCharacterName });
 
+  const { userId } = await validateAndFindIdentity();
   const { connection } = await getConnection();
   const proposal = await connection
     .insert(proposals)
     .values({
       title,
       description,
+      userId,
       status: ProposalStatus.PENDING,
       startAt,
       endAt,
@@ -189,7 +190,8 @@ export async function createVotingTransaction(prevState: string | undefined, for
   const { id: userId } = hasUser!;
   const hasVoted = await connection.select().from(votes).where(eq(votes.userId, userId)).get();
 
-  if (!hasVoted) await connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast });
+  if (!hasVoted && message === 'ok')
+    await connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast });
   console.log({ hasVoted });
 
   // TODO add contract interaction
