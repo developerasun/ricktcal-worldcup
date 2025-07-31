@@ -104,3 +104,16 @@ export function getKoreanTimezone() {
     timeZone: 'Asia/Seoul',
   });
 }
+
+/**
+ * @dev UTC → KST 수동 변환
+ * @dev convert kst to utc in `full:yyyy-mm-dd hh:mm;ss` and `short:yyyy-mm-dd` format
+ */
+export function fromUTC() {
+  const date = new Date();
+  const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const full = kstDate.toISOString().replace('T', ' ').slice(0, 19);
+  const short = full.slice(0, 10);
+
+  return { full, short };
+}
