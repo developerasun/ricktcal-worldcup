@@ -1,13 +1,15 @@
-name: Hourly cron job
+name: Daily KST Midnight Job
+
 on:
   schedule:
-    - cron: '*/60 * * * *'
+    - cron: "0 15 * * *" # UTC 기준 오후 3시 = KST 자정
+
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
-      - name: Hourly cron job
+      - name: Run KST Midnight Job
         run: |
           curl --request POST \
-          --url 'GET https://demo.developerasun.dpdns.org/api/webhook' \
+          --url 'https://demo.developerasun.dpdns.org/api/webhook' \
           --header 'Authorization: Bearer ${{ secrets.BEARER_TOKEN }}'
