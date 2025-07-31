@@ -76,8 +76,12 @@ export default function Navigation({ children }: Props) {
               <DialogDescription>포인트를 엘리프 토큰으로 교환하고, 나만의 최애 사도에게 투표하세요!</DialogDescription>
             </DialogHeader>
             <Form action={formAction}>
-              {state && <p className="my-2">지갑 주소: {JSON.parse(state).address}</p>}
-              {state && <p className="my-2">지갑 패스키: {JSON.parse(state).mnemonic}</p>}
+              {state && (
+                <p className="my-2 break-all whitespace-normal w-full">지갑 주소: {JSON.parse(state).address}</p>
+              )}
+              {state && (
+                <p className="my-2 break-all whitespace-normal w-full">지갑 패스키: {JSON.parse(state).mnemonic}</p>
+              )}
               <Spacer v={1.5} />
               {state && (
                 <Alert variant="destructive">
