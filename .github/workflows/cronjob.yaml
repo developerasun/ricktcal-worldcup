@@ -2,13 +2,16 @@ name: Daily KST Midnight Job
 
 on:
   schedule:
-    - cron: "0 15 * * *" # UTC 기준 오후 3시 = KST 자정
+    - cron: "0 0 * * *" # UTC 00:00 → KST 오전 9시
+    - cron: "0 6 * * *" # UTC 06:00 → KST 오후 3시
+    - cron: "0 12 * * *" # UTC 12:00 → KST 오후 9시
+    - cron: "0 18 * * *" # UTC 18:00 → KST 새벽 3시 (다음 날)
 
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
-      - name: Run KST Midnight Job
+      - name: Run cronjob with webhook
         run: |
           curl --request POST \
           --url 'https://demo.developerasun.dpdns.org/api/webhook' \
