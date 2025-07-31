@@ -1,14 +1,13 @@
-import { TRICKCAL_CHARACTERS } from '@/constants';
+import { ProposalStatus, TRICKCAL_CHARACTERS } from '@/constants';
 import { AddressLike } from 'ethers';
 
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
-export type ProposalStatusType = 'pending' | 'active' | 'approved' | 'rejected';
+export type ProposalStatusType = 'pending' | 'active' | 'finished';
 
 export interface IProposal {
   id: number;
   userId: number | null;
-  isActive: number;
-  status: string;
+  status: ProposalStatus;
   title: string;
   description: string;
   startAt: string | null;
