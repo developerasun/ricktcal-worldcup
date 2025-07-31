@@ -15,6 +15,18 @@ interface Props {}
 export default function NewProposalPage({}: Props) {
   const [state, formAction] = useActionState(createNewProposal, undefined);
 
+  const setStartDateLimit = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  };
+
+  const setEndDateLimit = () => {
+    const oneWeek = new Date();
+    oneWeek.setDate(oneWeek.getDate() + 7);
+    return oneWeek.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  };
+
   return (
     <div>
       <TypographyH1 text={'신규 월드컵 만들기'} />
@@ -27,8 +39,22 @@ export default function NewProposalPage({}: Props) {
           placeholder="월드컵 내용을 입력하세요"
           type="text"
         />
-        <Input className="w-full max-w-md m-auto" name="startAt" placeholder="시작 날짜를 입력하세요" type="date" />
-        <Input className="w-full max-w-md m-auto" name="endAt" placeholder="종료 날짜를 입력하세요" type="date" />
+        <Input
+          className="w-full max-w-md m-auto"
+          name="startAt"
+          min={setStartDateLimit()}
+          max={setEndDateLimit()}
+          placeholder="시작 날짜를 입력하세요"
+          type="date"
+        />
+        <Input
+          className="w-full max-w-md m-auto"
+          name="endAt"
+          min={setStartDateLimit()}
+          max={setEndDateLimit()}
+          placeholder="종료 날짜를 입력하세요"
+          type="date"
+        />
 
         <div className="flex items-center justify-center">
           <Select name="left-character">
@@ -66,6 +92,9 @@ export default function NewProposalPage({}: Props) {
       </Form>
       <p style={{ opacity: 0.7, marginTop: '1rem', textAlign: 'center' }}>
         *2025년 7월 기준 3성 캐릭터만 선택 가능합니다.
+      </p>
+      <p style={{ opacity: 0.7, marginTop: '1rem', textAlign: 'center' }}>
+        *생성된 월드컵은 한국 시간(KST) 기준 시작일 자정에 자동으로 시작되고, <br /> 종료일 자정에 자동으로 마감됩니다.
       </p>
     </div>
   );

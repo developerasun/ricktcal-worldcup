@@ -94,3 +94,13 @@ export async function validateAndFindIdentity() {
 
   return { userId, wallet };
 }
+
+/**
+ *
+ * @returns keep consistent tz, cf worker tz might be different
+ */
+export function getKoreanTimezone() {
+  return new Date().toLocaleString('ko-KR', {
+    timeZone: 'Asia/Seoul',
+  });
+}
