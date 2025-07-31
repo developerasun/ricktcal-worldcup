@@ -32,7 +32,10 @@ export default function VoteCastModal({ castList }: Props) {
   const { id: proposalId } = useParams<{ id: string }>();
 
   useEffect(() => {
-    if (voteState) toast.success('성공적으로 거버넌스 안건에 참여하셨습니다.');
+    if (voteState) {
+      if (voteState === 'ok') toast.success('성공적으로 거버넌스 안건에 참여하셨습니다.');
+      else toast.error(voteState, { style: { color: 'red' } });
+    }
   }, [voteState]);
 
   return (

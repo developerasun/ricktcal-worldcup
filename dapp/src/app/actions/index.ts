@@ -2,11 +2,11 @@
 import { AddressLike, Wallet, ZeroAddress } from 'ethers';
 import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS, HttpStatus, POINT_RATE, ProposalStatus } from '@/constants/index';
 import { exchanges, getConnection, proposals, users, votes } from '@/server/database/schema';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { AuthManager, validateAndFindIdentity } from '@/server/hook';
+import { AuthManager, getKoreanTimezone, validateAndFindIdentity } from '@/server/hook';
 import { IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnauthorizedException } from '@/server/error';
@@ -130,9 +130,7 @@ export async function createNewVoteWithSignature(
     nonce: nanoid(),
 
     // @dev keep consistent tz, cf worker tz might be different
-    timestamp: new Date().toLocaleString('ko-KR', {
-      timeZone: 'Asia/Seoul',
-    }),
+    timestamp: getKoreanTimezone(),
     voteCast,
   };
   const { signature } = await am._useDigitalSignature({ message: JSON.stringify(payload), mnemonic });
@@ -152,21 +150,50 @@ export async function createVotingTransaction(prevState: string | undefined, for
   const proposalId = formData.get('proposal-id-hidden') as string;
   console.log({ voteCast, proposalId });
 
-  if (!payload) throw new UnauthorizedException();
-  const wallet = payload.wallet.toString();
+  let message: string | undefined = 'ok';
+
+  if (!payload) {
+    const e = new UnauthorizedException('유저 정보가 확인되지 않았습니다. 로그인이 필요합니다.', {
+      code: HttpStatus.UNAUTHORIZED,
+    });
+    message = e.short().message;
+  }
+  const wallet = payload!.wallet.toString();
 
   const { connection } = await getConnection();
-  const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
-  if (!hasUser) throw new UnauthorizedException();
+  const hasProposal = await connection
+    .select({ id: proposals.id, status: proposals.status })
+    .from(proposals)
+    .where(eq(proposals.id, +proposalId))
+    .get();
 
-  const { id: userId } = hasUser;
+  if (!hasProposal) {
+    const e = new NotFoundException('존재하지 않는 안건입니다.', { code: HttpStatus.NOT_FOUND });
+    message = e.short().message;
+  }
+
+  const isActiveProposal = hasProposal!.status === ProposalStatus.ACTIVE;
+  if (!isActiveProposal) {
+    const e = new BadRequestException('아직 투표 시작이 되지 않은 안건입니다.', { code: HttpStatus.BAD_REQUEST });
+    message = e.short().message;
+  }
+
+  const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
+  if (!hasUser) {
+    const e = new UnauthorizedException('유효하지 않은 유저 정보입니다. 유저 아이디를 확인해주세요.', {
+      code: HttpStatus.UNAUTHORIZED,
+    });
+    message = e.short().message;
+  }
+
+  const { id: userId } = hasUser!;
   const hasVoted = await connection.select().from(votes).where(eq(votes.userId, userId)).get();
 
   if (!hasVoted) await connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast });
   console.log({ hasVoted });
 
   // TODO add contract interaction
-  return 'ok';
+  return message;
 }
 
 export async function exchangePointToElif(prevState: string | undefined, formData: FormData) {
