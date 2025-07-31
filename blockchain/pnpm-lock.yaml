@@ -63,9 +63,18 @@ importers:
       hardhat-gas-reporter:
         specifier: ^2.3.0
         version: 2.3.0(hardhat@2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
+      nodemon:
+        specifier: ^3.1.10
+        version: 3.1.10
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      prettier-plugin-solidity:
+        specifier: ^2.1.0
+        version: 2.1.0(prettier@3.6.2)
       solidity-coverage:
         specifier: ^0.8.16
         version: 0.8.16(hardhat@2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3))
@@ -86,6 +95,9 @@ packages:
 
   '@adraffy/ens-normalize@1.11.0':
     resolution: {integrity: sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==}
+
+  '@bytecodealliance/preview2-shim@0.17.2':
+    resolution: {integrity: sha512-mNm/lblgES8UkVle8rGImXOz4TtL3eU3inHay/7TVchkKrb/lgcVvTK0+VAw8p5zQ0rgQsXm1j5dOlAAd+MeoA==}
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -349,6 +361,9 @@ packages:
 
   '@nomicfoundation/ignition-ui@0.15.12':
     resolution: {integrity: sha512-nQl8tusvmt1ANoyIj5RQl9tVSEmG0FnNbtwnWbTim+F8JLm4YLHWS0yEgYUZC+BEO3oS0D8r6V8a02JGZJgqiQ==}
+
+  '@nomicfoundation/slang@1.2.0':
+    resolution: {integrity: sha512-+04Z1RHbbz0ldDbHKQFOzveCdI9Rd3TZZu7fno5hHy3OsqTo9UK5Jgqo68wMvRovCO99POv6oCEyO7+urGeN8Q==}
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
@@ -1296,6 +1311,9 @@ packages:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
 
+  ignore-by-default@1.0.1:
+    resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1674,6 +1692,11 @@ packages:
     resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
     hasBin: true
 
+  nodemon@3.1.10:
+    resolution: {integrity: sha512-WDjw3pJ0/0jMFmyNDp3gvY2YizjLmmOUQo6DEBY+JgdvW/yQ9mEeSw6H5ythl5Ny2ytb7f9C2nIbjSxMNzbJXw==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   nofilter@3.1.0:
     resolution: {integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==}
     engines: {node: '>=12.19'}
@@ -1828,9 +1851,20 @@ packages:
     resolution: {integrity: sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==}
     engines: {node: '>= 0.8.0'}
 
+  prettier-plugin-solidity@2.1.0:
+    resolution: {integrity: sha512-O5HX4/PCE5aqiaEiNGbSRLbSBZQ6kLswAav5LBSewwzhT+sZlN6iAaLZlZcJzPEnIAxwLEHP03xKEg92fflT9Q==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      prettier: '>=3.0.0'
+
   prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
+
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
     hasBin: true
 
   prompts@2.4.2:
@@ -1839,6 +1873,9 @@ packages:
 
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+
+  pstree.remy@1.1.8:
+    resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -2042,6 +2079,10 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
+  simple-update-notifier@2.0.0:
+    resolution: {integrity: sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==}
+    engines: {node: '>=10'}
+
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
@@ -2206,6 +2247,10 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
 
+  touch@3.1.1:
+    resolution: {integrity: sha512-r0eojU4bI8MnHr8c5bNo7lJDdI2qXlWWJk6a9EAFG7vbhTjElYhBVS3/miuE0uOuoLdb8Mc/rVfsmm6eo5o9GA==}
+    hasBin: true
+
   ts-command-line-args@2.5.1:
     resolution: {integrity: sha512-H69ZwTw3rFHb5WYpQya40YAX2/w7Ut75uUECbgBIsLmM+BNuYnxsltfyyLMxy6sEeKxgijLTnQtLd0nKd6+IYw==}
     hasBin: true
@@ -2301,6 +2346,9 @@ packages:
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
+
+  undefsafe@2.0.5:
+    resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
 
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
@@ -2471,6 +2519,8 @@ snapshots:
   '@adraffy/ens-normalize@1.10.1': {}
 
   '@adraffy/ens-normalize@1.11.0': {}
+
+  '@bytecodealliance/preview2-shim@0.17.2': {}
 
   '@colors/colors@1.5.0':
     optional: true
@@ -2736,7 +2786,7 @@ snapshots:
 
   '@nomicfoundation/hardhat-ethers@3.1.0(ethers@6.15.0)(hardhat@2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3))':
     dependencies:
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       ethers: 6.15.0
       hardhat: 2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3)
       lodash.isequal: 4.5.0
@@ -2757,7 +2807,7 @@ snapshots:
       '@nomicfoundation/ignition-core': 0.15.13
       '@nomicfoundation/ignition-ui': 0.15.12
       chalk: 4.1.2
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       fs-extra: 10.1.0
       hardhat: 2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3)
       json5: 2.2.3
@@ -2798,7 +2848,7 @@ snapshots:
       '@ethersproject/abi': 5.8.0
       '@ethersproject/address': 5.8.0
       cbor: 8.1.0
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       hardhat: 2.26.0(ts-node@10.9.2(@types/node@24.0.15)(typescript@5.8.3))(typescript@5.8.3)
       lodash.clonedeep: 4.5.0
       picocolors: 1.1.1
@@ -2813,7 +2863,7 @@ snapshots:
       '@ethersproject/address': 5.6.1
       '@nomicfoundation/solidity-analyzer': 0.1.2
       cbor: 9.0.2
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       ethers: 6.15.0
       fs-extra: 10.1.0
       immer: 10.0.2
@@ -2825,6 +2875,10 @@ snapshots:
       - utf-8-validate
 
   '@nomicfoundation/ignition-ui@0.15.12': {}
+
+  '@nomicfoundation/slang@1.2.0':
+    dependencies:
+      '@bytecodealliance/preview2-shim': 0.17.2
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     optional: true
@@ -3031,7 +3085,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -3401,6 +3455,12 @@ snapshots:
 
   death@1.1.0: {}
 
+  debug@4.4.1(supports-color@5.5.0):
+    dependencies:
+      ms: 2.1.3
+    optionalDependencies:
+      supports-color: 5.5.0
+
   debug@4.4.1(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -3689,7 +3749,7 @@ snapshots:
 
   follow-redirects@1.15.9(debug@4.4.1):
     optionalDependencies:
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
 
   for-each@0.3.5:
     dependencies:
@@ -3910,7 +3970,7 @@ snapshots:
       boxen: 5.1.2
       chokidar: 4.0.3
       ci-info: 2.0.0
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       enquirer: 2.4.1
       env-paths: 2.2.1
       ethereum-cryptography: 1.2.0
@@ -4010,13 +4070,15 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
   iconv-lite@0.4.24:
     dependencies:
       safer-buffer: 2.1.2
+
+  ignore-by-default@1.0.1: {}
 
   ignore@5.3.2: {}
 
@@ -4386,6 +4448,19 @@ snapshots:
 
   node-gyp-build@4.8.4: {}
 
+  nodemon@3.1.10:
+    dependencies:
+      chokidar: 3.6.0
+      debug: 4.4.1(supports-color@5.5.0)
+      ignore-by-default: 1.0.1
+      minimatch: 3.1.2
+      pstree.remy: 1.1.8
+      semver: 7.7.2
+      simple-update-notifier: 2.0.0
+      supports-color: 5.5.0
+      touch: 3.1.1
+      undefsafe: 2.0.5
+
   nofilter@3.1.0: {}
 
   nopt@3.0.6:
@@ -4538,7 +4613,16 @@ snapshots:
 
   prelude-ls@1.1.2: {}
 
+  prettier-plugin-solidity@2.1.0(prettier@3.6.2):
+    dependencies:
+      '@nomicfoundation/slang': 1.2.0
+      '@solidity-parser/parser': 0.20.1
+      prettier: 3.6.2
+      semver: 7.7.2
+
   prettier@2.8.8: {}
+
+  prettier@3.6.2: {}
 
   prompts@2.4.2:
     dependencies:
@@ -4546,6 +4630,8 @@ snapshots:
       sisteransi: 1.0.5
 
   proxy-from-env@1.1.0: {}
+
+  pstree.remy@1.1.8: {}
 
   queue-microtask@1.2.3: {}
 
@@ -4791,6 +4877,10 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
+  simple-update-notifier@2.0.0:
+    dependencies:
+      semver: 7.7.2
+
   sisteransi@1.0.5: {}
 
   slash@3.0.0: {}
@@ -5001,6 +5091,8 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
+  touch@3.1.1: {}
+
   ts-command-line-args@2.5.1:
     dependencies:
       chalk: 4.1.2
@@ -5051,7 +5143,7 @@ snapshots:
   typechain@8.3.2(typescript@5.8.3):
     dependencies:
       '@types/prettier': 2.7.3
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.1(supports-color@5.5.0)
       fs-extra: 7.0.1
       glob: 7.1.7
       js-sha3: 0.8.0
@@ -5112,6 +5204,8 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
+
+  undefsafe@2.0.5: {}
 
   undici-types@6.19.8: {}
 
