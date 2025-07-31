@@ -1,7 +1,6 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { drizzle } from 'drizzle-orm/d1';
-import { sqliteTable, integer, text, check } from 'drizzle-orm/sqlite-core';
-import { sql } from 'drizzle-orm';
+import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 
 const HUMAN_BOOLEAN = {
   true: 1,
@@ -24,36 +23,26 @@ export const users = sqliteTable('users', {
   elif: integer().notNull().default(HUMAN_BOOLEAN.zero),
 });
 
-export const points = sqliteTable(
-  'points',
-  {
-    id: integer().primaryKey({ autoIncrement: true }),
-    userId: integer('userId').references(() => users.id),
-    score: integer().notNull().default(HUMAN_BOOLEAN.zero),
-    action: text().notNull(),
-  },
-  (table) => [check('action_type', sql`${table.action} IN ('cheekpulling', 'headpat')`)]
-);
+export const points = sqliteTable('points', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId').references(() => users.id),
+  score: integer().notNull().default(HUMAN_BOOLEAN.zero),
+  action: text().notNull(),
+});
 
-export const proposals = sqliteTable(
-  'proposals',
-  {
-    id: integer().primaryKey({ autoIncrement: true }),
-    userId: integer('userId').references(() => users.id),
-    isActive: integer().notNull().default(HUMAN_BOOLEAN.false),
-    status: text().notNull(),
-    title: text().notNull().unique(),
-    description: text().notNull(),
-    startAt: text(),
-    endAt: text(),
-    leftCharacterName: text().notNull().default('버터'),
-    rightCharacterName: text().notNull().default('코미'),
-  },
-  (table) => [
-    check('status_type', sql`${table.status} IN ('pending', 'active', 'approved', 'rejected')`),
-    check('activeness_type', sql`${table.isActive} IN (0, 1)`),
-  ]
-);
+export const proposals = sqliteTable('proposals', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId')
+    .references(() => users.id)
+    .notNull(),
+  status: text().notNull(), // @dev keep varchar instead of check for easier migration
+  title: text().notNull().unique(),
+  description: text().notNull(),
+  startAt: text(),
+  endAt: text(),
+  leftCharacterName: text().notNull().default('버터'),
+  rightCharacterName: text().notNull().default('코미'),
+});
 
 export const votes = sqliteTable('votes', {
   id: integer().primaryKey({ autoIncrement: true }),
