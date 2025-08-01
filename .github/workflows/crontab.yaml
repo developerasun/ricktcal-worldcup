@@ -20,7 +20,7 @@ jobs:
           node-version: "22"
 
       - name: Install deps
-        run: npm install node-fetch
+        run: npm install
 
       - name: Run webhook JS
         env:
