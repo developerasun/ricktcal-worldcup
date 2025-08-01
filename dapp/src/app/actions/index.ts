@@ -110,6 +110,7 @@ export async function createNewVoteWithSignature(
 ) {
   const voteCast = formData.get('vote-cast') as VoteCastType;
   const mnemonic = formData.get('mnemonic') as string;
+  const elifVotingPower = formData.get('elif-voting-power') as string;
   let signer: AddressLike = ZeroAddress;
 
   const auth = (await cookies()).get(COOKIE_NAME.auth);
@@ -133,6 +134,7 @@ export async function createNewVoteWithSignature(
     // @dev keep consistent tz, cf worker tz might be different
     timestamp: getKoreanTimezone(),
     voteCast,
+    votingPower: elifVotingPower,
   };
   const { signature } = await am._useDigitalSignature({ message: JSON.stringify(payload), mnemonic });
 
@@ -149,7 +151,8 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   const voteCast = formData.get('vote-cast-hidden') as string;
   const proposalId = formData.get('proposal-id-hidden') as string;
-  console.log({ voteCast, proposalId });
+  const elifVotingPower = formData.get('elif-voting-power') as string;
+  console.log({ voteCast, proposalId, elifVotingPower });
 
   let message: string | undefined = 'ok';
 
@@ -187,14 +190,44 @@ export async function createVotingTransaction(prevState: string | undefined, for
     message = e.short().message;
   }
 
-  const { id: userId } = hasUser!;
-  const hasVoted = await connection.select().from(votes).where(eq(votes.userId, userId)).get();
+  const { id: userId, elif } = hasUser!;
+  const hasEnoughElif = elif >= +elifVotingPower;
 
-  if (!hasVoted && message === 'ok')
-    await connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast });
+  if (!hasEnoughElif) {
+    const e = new BadRequestException(
+      `투표를 위한 엘리프 수량이 부족합니다(보유량: ${elif}, 투표량: ${elifVotingPower})`,
+      {
+        code: HttpStatus.BAD_REQUEST,
+      }
+    );
+    message = e.short().message;
+  }
+
+  const hasVoted = await connection
+    .select()
+    .from(votes)
+    .where(and(eq(votes.userId, userId), eq(votes.proposalId, +proposalId)))
+    .get();
+
+  if (hasVoted) {
+    const e = new BadRequestException('이미 투표하신 안건입니다.', {
+      code: HttpStatus.BAD_REQUEST,
+    });
+    message = e.short().message;
+  }
+
+  if (!hasVoted && hasEnoughElif && message === 'ok') {
+    await connection.batch([
+      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast }),
+      connection
+        .update(users)
+        .set({ elif: sql`${users.elif} - ${+elifVotingPower}` })
+        .where(eq(users.id, userId)),
+    ]);
+    // TODO add contract interaction
+  }
   console.log({ hasVoted });
 
-  // TODO add contract interaction
   return message;
 }
 

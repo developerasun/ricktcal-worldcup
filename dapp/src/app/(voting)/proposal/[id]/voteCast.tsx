@@ -15,7 +15,7 @@ import { DialogFooter } from '@/components/ui/dialog';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useAuth } from '@/app/store';
 import { LoginRequired } from '@/components/ui/intercept';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 interface Props {
@@ -28,13 +28,15 @@ export default function VoteCastModal({ castList }: Props) {
 
   const { pending } = useFormStatus();
   const { auth } = useAuth();
-
   const { id: proposalId } = useParams<{ id: string }>();
+  const router = useRouter();
 
   useEffect(() => {
     if (voteState) {
-      if (voteState === 'ok') toast.success('성공적으로 거버넌스 안건에 참여하셨습니다.');
-      else toast.error(voteState, { style: { color: 'red' } });
+      if (voteState === 'ok') {
+        toast.success('성공적으로 거버넌스 안건에 참여하셨습니다.');
+        router.refresh();
+      } else toast.error(voteState, { style: { color: 'red' } });
     }
   }, [voteState]);
 
@@ -56,6 +58,13 @@ export default function VoteCastModal({ castList }: Props) {
           className="w-full max-w-md m-auto"
           name="mnemonic"
           placeholder="지갑 패스키를 입력하세요"
+          type="text"
+          required
+        />
+        <Input
+          className="w-full max-w-md m-auto"
+          name="elif-voting-power"
+          placeholder="엘리프 투표권 수량을 입력하세요"
           type="text"
           required
         />
@@ -87,6 +96,7 @@ export default function VoteCastModal({ castList }: Props) {
               <li>논스: {signState.payload.nonce}</li>
               <li>서명 일자: {signState.payload.timestamp}</li>
               <li>투표 내용: {signState.payload.voteCast}</li>
+              <li>엘리프 투표권 수량: {signState.payload.votingPower}</li>
             </ol>
             <Spacer v={1.5} />
             <TypographyH3 text="전자 서명" />
@@ -101,10 +111,16 @@ export default function VoteCastModal({ castList }: Props) {
           <DialogFooter>
             <input type="hidden" name="vote-cast-hidden" value={signState.payload.voteCast} />
             <input type="hidden" name="proposal-id-hidden" value={proposalId} />
+            <input type="hidden" name="elif-voting-power" value={signState.payload.votingPower} />
             <DialogClose asChild>
               <Button variant="outline">취소하기</Button>
             </DialogClose>
-            <Button type="submit">투표하기</Button>
+            {voteState === 'ok' && (
+              <DialogClose asChild>
+                <Button variant="ghost">나가기</Button>
+              </DialogClose>
+            )}
+            {voteState !== 'ok' && <Button type="submit">투표하기</Button>}
           </DialogFooter>
         </Form>
       )}
