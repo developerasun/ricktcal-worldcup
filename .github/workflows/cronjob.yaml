@@ -16,4 +16,5 @@ jobs:
         run: |
           curl --request POST \
           --url 'https://demo.developerasun.dpdns.org/api/webhook' \
-          --header 'Authorization: Bearer ${{ secrets.BEARER_TOKEN }}'
+          --header 'Authorization: Bearer ${{ secrets.BEARER_TOKEN }}' \ 
+          --header "User-Agent: Mozilla/5.0 (GitHub Action)"
