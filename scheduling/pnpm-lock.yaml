@@ -1,0 +1,56 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      node:
+        specifier: ^22.17.1
+        version: 22.17.1
+    devDependencies:
+      '@types/node':
+        specifier: ^24.1.0
+        version: 24.1.0
+      dotenv:
+        specifier: ^17.2.1
+        version: 17.2.1
+
+packages:
+
+  '@types/node@24.1.0':
+    resolution: {integrity: sha512-ut5FthK5moxFKH2T1CUOC6ctR67rQRvvHdFLCD2Ql6KXmMuCrjsSsRI9UsLCm9M18BMwClv4pn327UvB7eeO1w==}
+
+  dotenv@17.2.1:
+    resolution: {integrity: sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==}
+    engines: {node: '>=12'}
+
+  node-bin-setup@1.1.4:
+    resolution: {integrity: sha512-vWNHOne0ZUavArqPP5LJta50+S8R261Fr5SvGul37HbEDcowvLjwdvd0ZeSr0r2lTSrPxl6okq9QUw8BFGiAxA==}
+
+  node@22.17.1:
+    resolution: {integrity: sha512-9IyNibEkFObLbs+skPHKKJzInPJawwsasLbtgQ2hNdNiVhfw6RqP3/gF8D6Ws9Sq8tZLxhDZ5usujJJcxeH6wg==}
+    engines: {npm: '>=5.0.0'}
+    hasBin: true
+
+  undici-types@7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+
+snapshots:
+
+  '@types/node@24.1.0':
+    dependencies:
+      undici-types: 7.8.0
+
+  dotenv@17.2.1: {}
+
+  node-bin-setup@1.1.4: {}
+
+  node@22.17.1:
+    dependencies:
+      node-bin-setup: 1.1.4
+
+  undici-types@7.8.0: {}

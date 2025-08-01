@@ -1,0 +1,20 @@
+{
+  "name": "scheduling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "action:dev": "node --experimental-strip-types ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "dotenv": "^17.2.1"
+  },
+  "dependencies": {
+    "node": "^22.17.1"
+  }
+}
