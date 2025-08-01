@@ -22,10 +22,10 @@ jobs:
       - name: Install deps
         run: |
           cd scheduling
-          ls package.json
+          cat package.json
           npm install
 
       - name: Run webhook JS
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-        run: node --experimental-strip-types scheduling/src/index.ts
+        run: cd scheduling && node --experimental-strip-types ./src/index.ts
