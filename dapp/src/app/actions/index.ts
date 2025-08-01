@@ -166,7 +166,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   const { connection } = await getConnection();
   const hasProposal = await connection
-    .select({ id: proposals.id, status: proposals.status })
+    .select({ id: proposals.id, status: proposals.status, leftCharacterName: proposals.leftCharacterName })
     .from(proposals)
     .where(eq(proposals.id, +proposalId))
     .get();
@@ -216,13 +216,18 @@ export async function createVotingTransaction(prevState: string | undefined, for
     message = e.short().message;
   }
 
+  const isLeftVote = hasProposal!.leftCharacterName === voteCast;
+  const increaseLeftVotingPower = { leftCharacterElif: sql`${proposals.leftCharacterElif} + ${+elifVotingPower}` };
+  const increaseRightVotingPower = { rightCharacterElif: sql`${proposals.rightCharacterElif} + ${+elifVotingPower}` };
+
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
-      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast }),
+      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast, elifAmount: +elifVotingPower }),
       connection
         .update(users)
         .set({ elif: sql`${users.elif} - ${+elifVotingPower}` })
         .where(eq(users.id, userId)),
+      connection.update(proposals).set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower),
     ]);
     // TODO add contract interaction
   }
