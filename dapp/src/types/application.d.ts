@@ -14,6 +14,8 @@ export interface IProposal {
   endAt: string | null;
   leftCharacterName: string;
   rightCharacterName: string;
+  leftCharacterElif: number;
+  rightCharacterElif: number;
 }
 
 export interface IVote {
@@ -21,6 +23,7 @@ export interface IVote {
   userId: number | null;
   proposalId: number | null;
   voteCast: string;
+  elifAmount: number;
 }
 
 export interface IVoter {
