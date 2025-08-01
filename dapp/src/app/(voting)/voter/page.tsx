@@ -33,7 +33,8 @@ export default async function VotersPage({}: Props) {
   return (
     <>
       <TypographyH1 text={`투표자`} />
-      <TypographyP text={'현재 릭트컬 거버넌스에 참여 중인 볼따구 교주님들입니다.'} />
+      <p className="text-center my-4 m-auto text-xl">현재 릭트컬 거버넌스에 참여 중인 볼따구 교주님들입니다.</p>
+      <p className="text-center my-2 m-auto text-sm">*포인트 보유량이 높은 교주님 순서대로 정렬됩니다.</p>
 
       {data.length === 0 && (
         <Alert variant="default">
@@ -43,39 +44,41 @@ export default async function VotersPage({}: Props) {
         </Alert>
       )}
 
-      {data.map((d) => {
-        return (
-          <Card key={d.id}>
-            <CardHeader>
-              <Link href={`voter/${d.id}`}>
-                <div className="flex flex-col gap-2">
-                  <Avatar>
-                    <AvatarImage src="/캐릭터/버터.webp" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <CardTitle>유저 네임</CardTitle>
-                    <CardDescription>{d.nickname}</CardDescription>
+      <div className="flex flex-col gap-4">
+        {data.map((d) => {
+          return (
+            <Card key={d.id}>
+              <CardHeader>
+                <Link href={`voter/${d.id}`}>
+                  <div className="flex flex-col gap-2">
+                    <Avatar>
+                      <AvatarImage src="/캐릭터/버터.webp" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <CardTitle>유저 네임</CardTitle>
+                      <CardDescription>{d.nickname}</CardDescription>
+                    </div>
+                    <div>
+                      <CardTitle>포인트 보유량</CardTitle>
+                      <CardDescription>{d.point}</CardDescription>
+                    </div>
+                    <div>
+                      <CardTitle>엘리프(토큰) 보유량</CardTitle>
+                      <CardDescription>{d.elif}</CardDescription>
+                    </div>
+                    <div>
+                      <CardTitle>지갑 주소</CardTitle>
+                      <CardDescription>{d.wallet.slice(0, 10) + '...' + d.wallet.slice(-5)}</CardDescription>
+                    </div>
                   </div>
-                  <div>
-                    <CardTitle>포인트 보유량</CardTitle>
-                    <CardDescription>{d.point}</CardDescription>
-                  </div>
-                  <div>
-                    <CardTitle>엘리프(토큰) 보유량</CardTitle>
-                    <CardDescription>{d.elif}</CardDescription>
-                  </div>
-                  <div>
-                    <CardTitle>지갑 주소</CardTitle>
-                    <CardDescription>{d.wallet.slice(0, 10) + '...' + d.wallet.slice(-5)}</CardDescription>
-                  </div>
-                </div>
-              </Link>
-              {/* <CardAction>temp</CardAction> */}
-            </CardHeader>
-          </Card>
-        );
-      })}
+                </Link>
+                {/* <CardAction>temp</CardAction> */}
+              </CardHeader>
+            </Card>
+          );
+        })}
+      </div>
     </>
   );
 }
