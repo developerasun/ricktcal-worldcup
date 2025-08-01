@@ -25,4 +25,4 @@ jobs:
       - name: Run webhook JS
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-        run: node scheduling/index.ts
+        run: node --experimental-strip-types scheduling/src/index.ts
