@@ -1,0 +1,28 @@
+name: ProposalAction
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # UTC 00:00 → KST 오전 9시
+    - cron: "0 6 * * *" # UTC 06:00 → KST 오후 3시
+    - cron: "0 12 * * *" # UTC 12:00 → KST 오후 9시
+    - cron: "0 18 * * *" # UTC 18:00 → KST 새벽 3시 (다음 날)
+
+jobs:
+  cronjob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install deps
+        run: npm install node-fetch
+
+      - name: Run webhook JS
+        env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+        run: node scheduling/index.ts
