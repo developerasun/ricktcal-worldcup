@@ -51,4 +51,5 @@ export interface IVoteSignPayload {
   nonce: string; // @dev prevent signature replay
   timestamp: string;
   voteCast: VoteCastType;
+  votingPower: string;
 }

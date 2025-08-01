@@ -1,4 +1,4 @@
-export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME, BRAND_NAME };
+export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME, BRAND_NAME, VOTE_POWER };
 
 const ADJECTIVES = [
   '존재하지 않는',
@@ -756,9 +756,17 @@ const TRICKCAL_CHARACTERS = [
 ] as const;
 
 const POINT_RATE = {
-  cheekpulling: 10,
-  headpat: 5,
+  cheekpulling: 20,
+  headpat: 15,
   elif: 50, // at least 50 points needed for 1 Elif token
+} as const;
+
+/**
+ * @dev amount of `elif` token required to vote
+ */
+const VOTE_POWER = {
+  minimum: 1,
+  maximum: 1_000_000,
 } as const;
 
 const BRAND_NAME = {
