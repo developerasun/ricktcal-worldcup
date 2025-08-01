@@ -37,6 +37,7 @@ _클라이언트&서버_
 
 - 풀스택: nextjs
 - ui: shadcn, tailwind
+- 배치(크론) 서버: github action
 
 _블록체인_
 
@@ -68,11 +69,13 @@ _데이터베이스_
 - 신규 거버넌스 안건 생성하기
 - 지갑으로 투표하기
 - 거버넌스 포인트<=>토큰 교환하기
-- 거버넌스 안건 자동 시작하기([크론 배치](https://github.com/developerasun/ricktcal-worldcup/blob/dev/.github/workflows/schedule.yaml))
+- 거버넌스 안건 자동 업데이트하기([크론 배치](https://github.com/developerasun/ricktcal-worldcup/tree/dev/.github/workflows))
 
 ### TODO: web2
 
 - 최애사도 8강 월드컵 생성하기
+- 투표 중 우세 사도 ui 추가하기
+- 투표영향력(voting power) 추가하기
 
 ### TODO: web3
 
