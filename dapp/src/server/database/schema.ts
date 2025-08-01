@@ -42,6 +42,8 @@ export const proposals = sqliteTable('proposals', {
   endAt: text(),
   leftCharacterName: text().notNull().default('버터'),
   rightCharacterName: text().notNull().default('코미'),
+  leftCharacterElif: real().notNull().default(HUMAN_BOOLEAN.zero),
+  rightCharacterElif: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
 
 export const votes = sqliteTable('votes', {
@@ -49,6 +51,7 @@ export const votes = sqliteTable('votes', {
   userId: integer('userId').references(() => users.id),
   proposalId: integer('proposalId').references(() => proposals.id),
   voteCast: text(),
+  elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
 
 export const exchanges = sqliteTable('exchanges', {
