@@ -35,6 +35,12 @@ export default async function ProposalPage({ params }: Props) {
   if (!data) return notFound();
 
   const VOTE_CAST_LIST = [data.proposal.leftCharacterName, data.proposal.rightCharacterName];
+  const isTied = data.proposal.leftCharacterElif === data.proposal.rightCharacterElif;
+  const leadingCharacter =
+    data.proposal.leftCharacterElif > data.proposal.rightCharacterElif
+      ? data.proposal.leftCharacterName
+      : data.proposal.rightCharacterName;
+  const votingPowerDifference = Math.abs(data.proposal.leftCharacterElif - data.proposal.rightCharacterElif);
 
   return (
     <>
@@ -89,33 +95,58 @@ export default async function ProposalPage({ params }: Props) {
               투표 기간: {data.proposal.startAt}~{data.proposal.endAt}
             </CardFooter>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>투표 현황</CardTitle>
+              <CardDescription>현재 월드컵에 대한 주요 정보를 수치화해서 보여드립니다.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div>
+                <div className="font-semibold pb-1">{data.proposal.leftCharacterName} 의 개표 현황</div>
+                <ol className="border border-gray-300 p-2 rounded-sm">
+                  <li>
+                    총 득표 수: {data.voteHistory.filter((v) => v.voteCast === data.proposal.leftCharacterName).length}
+                  </li>
+                  <li>엘리프 투표권 수: {data.proposal.leftCharacterElif} 엘리프</li>
+                </ol>
+              </div>
+
+              <div>
+                <div className="font-semibold pb-1">{data.proposal.rightCharacterName} 의 개표 현황</div>
+                <ol className="border border-gray-300 p-2 rounded-sm">
+                  <li>
+                    총 득표 수: {data.voteHistory.filter((v) => v.voteCast === data.proposal.rightCharacterName).length}
+                  </li>
+                  <li>엘리프 투표권 수: {data.proposal.rightCharacterElif} 엘리프</li>
+                </ol>
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col">
+              <div className="font-semibold text-lg">월드컵 결과</div>
+              <p>총 투표 수: {data.voteHistory.length}</p>
+              <p className="opacity-70">
+                {isTied && `현재 양쪽 사도 모두 동일한 득표를 기록 중입니다.`}
+                {data.proposal.status === ProposalStatus.ACTIVE &&
+                  !isTied &&
+                  `*[개표 중]: ${leadingCharacter}가 ${votingPowerDifference} 엘리프만큼 우세합니다.`}
+                {data.proposal.status === ProposalStatus.FINISHED &&
+                  !isTied &&
+                  `*[개표 완료]: ${leadingCharacter}가 ${votingPowerDifference} 엘리프 차이로 승리했습니다.`}
+              </p>
+            </CardFooter>
+          </Card>
         </div>
 
         {/* right */}
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>투표 현황</CardTitle>
-              <CardDescription>현재 진행 중인 안건에 대한 주요 정보를 수치화해서 보여드립니다.</CardDescription>
+              <CardTitle>투표자 리스트</CardTitle>
+              <CardDescription>현재 월드컵에 참여하신 교주님들에 대한 목록을 표시합니다.</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+            <CardContent className="flex flex-col gap-2">
               <div>
-                <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>투표자 리스트</div>
-                <ol className="border border-gray-300 p-2 rounded-sm">
-                  <li>총 개표 수: {data.voteHistory.length}</li>
-                  <li>
-                    {data.proposal.leftCharacterName}의 득표 수:{' '}
-                    {data.voteHistory.filter((v) => v.voteCast === data.proposal.leftCharacterName).length}
-                  </li>
-                  <li>
-                    {data.proposal.rightCharacterName}의 득표 수:{' '}
-                    {data.voteHistory.filter((v) => v.voteCast === data.proposal.rightCharacterName).length}
-                  </li>
-                </ol>
-              </div>
-              <div>
-                <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>투표자 리스트</div>
-                {/* <Spacer v={1} /> */}
                 {data.voteHistory.map((v, index) => {
                   return (
                     <ul key={v.id} className="border border-gray-300 p-2 rounded-sm">
