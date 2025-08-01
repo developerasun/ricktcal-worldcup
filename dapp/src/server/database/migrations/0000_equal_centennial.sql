@@ -2,7 +2,7 @@ CREATE TABLE `exchanges` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`userId` integer,
 	`pointAmount` integer DEFAULT 0 NOT NULL,
-	`elifAmount` integer DEFAULT 0 NOT NULL,
+	`elifAmount` real DEFAULT 0 NOT NULL,
 	FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -33,7 +33,7 @@ CREATE TABLE `users` (
 	`wallet` text(42) NOT NULL,
 	`nickname` text DEFAULT '게스트' NOT NULL,
 	`point` integer DEFAULT 0 NOT NULL,
-	`elif` integer DEFAULT 0 NOT NULL
+	`elif` real DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_nickname_unique` ON `users` (`nickname`);--> statement-breakpoint

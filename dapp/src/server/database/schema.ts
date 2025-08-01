@@ -1,6 +1,6 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { drizzle } from 'drizzle-orm/d1';
-import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core';
 
 const HUMAN_BOOLEAN = {
   true: 1,
@@ -20,7 +20,7 @@ export const users = sqliteTable('users', {
   wallet: text({ length: 42 }).notNull(),
   nickname: text().notNull().default('게스트').unique(),
   point: integer().notNull().default(HUMAN_BOOLEAN.zero),
-  elif: integer().notNull().default(HUMAN_BOOLEAN.zero),
+  elif: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
 
 export const points = sqliteTable('points', {
@@ -55,5 +55,5 @@ export const exchanges = sqliteTable('exchanges', {
   id: integer().primaryKey({ autoIncrement: true }),
   userId: integer('userId').references(() => users.id),
   pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
-  elifAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
+  elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
