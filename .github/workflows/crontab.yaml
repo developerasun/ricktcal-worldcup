@@ -28,4 +28,5 @@ jobs:
       - name: Run webhook JS
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          WEBHOOK_ENDPOINT: ${{ secrets.WEBHOOK_ENDPOINT }}
         run: cd scheduling && node --experimental-strip-types ./src/index.ts
