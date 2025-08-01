@@ -1,6 +1,7 @@
-name: Daily KST Midnight Job
+name: Sync proposal status
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *" # UTC 00:00 → KST 오전 9시
     - cron: "0 6 * * *" # UTC 06:00 → KST 오후 3시
