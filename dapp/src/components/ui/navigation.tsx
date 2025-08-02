@@ -70,8 +70,8 @@ export default function Navigation({ children }: Props) {
           <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
         </Button>
-        <Dialog open={isOpen}>
-          <DialogTrigger onClick={() => setIsOpen(true)} className="border border-gray-600 rounded-sm p-2">
+        <Dialog>
+          <DialogTrigger className="border border-gray-600 rounded-sm p-2">
             <Wallet className="h-[1rem] w-[1rem]" />
           </DialogTrigger>
           <DialogContent>
@@ -89,30 +89,30 @@ export default function Navigation({ children }: Props) {
                     <IconCopy
                       className="cursor-pointer"
                       onClick={async () => {
-                        await useCopyText({ text: JSON.parse(state).address });
+                        await useCopyText({ text: state.address.toString() });
                         alert('지갑 주소가 복사되었습니다.');
                       }}
                     />
                   </div>
-                  <p className="my-2 break-all whitespace-normal w-full">{JSON.parse(state).address}</p>
+                  <p className="my-2 break-all whitespace-normal w-full">{state.address.toString()}</p>
                 </div>
               )}
 
               <Spacer v={1} />
 
-              {state && (
+              {state && state.mnemonic && (
                 <div className="flex flex-col justify-center items-center">
                   <div className="flex gap-2">
                     <p>지갑 패스키</p>
                     <IconCopy
                       className="cursor-pointer"
                       onClick={async () => {
-                        await useCopyText({ text: JSON.parse(state).mnemonic });
+                        await useCopyText({ text: state.mnemonic! });
                         alert('패스키가 복사되었습니다.');
                       }}
                     />
                   </div>
-                  <p className="my-2 break-all whitespace-normal w-full">{JSON.parse(state).mnemonic}</p>
+                  <p className="my-2 break-all whitespace-normal w-full">{state.mnemonic}</p>
                 </div>
               )}
               <Spacer v={1.5} />
@@ -129,7 +129,7 @@ export default function Navigation({ children }: Props) {
               <Spacer v={1.5} />
               <div className="flex justify-end">
                 {state && (
-                  <DialogClose className="m-auto" onClick={() => setIsOpen(false)}>
+                  <DialogClose asChild className="m-auto">
                     <Link href={'/login'} className="p-3 m-auto border border-blue-300 rounded-md">
                       로그인하기
                     </Link>

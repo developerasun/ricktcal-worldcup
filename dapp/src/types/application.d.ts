@@ -56,3 +56,9 @@ export interface IVoteSignPayload {
   voteCast: VoteCastType;
   votingPower: string;
 }
+
+export interface IAccountCredentials {
+  address: AddressLike;
+  mnemonic: string | undefined;
+  nickname: string;
+}

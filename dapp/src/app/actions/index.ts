@@ -7,11 +7,11 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { AuthManager, getKoreanTimezone, validateAndFindIdentity } from '@/server/hook';
-import { IVoteSignPayload, VoteCastType } from '@/types/application';
+import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnauthorizedException } from '@/server/error';
 
-export async function generateWallet(formData: any) {
+export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
   let left = Math.floor(Math.random() * (ADJECTIVES.length - 1));
   let right = Math.floor(Math.random() * (HEROS.length - 1));
@@ -35,8 +35,14 @@ export async function generateWallet(formData: any) {
     throw new Error(error);
   }
 
+  const credentials: IAccountCredentials = {
+    address,
+    mnemonic: mnemonic?.phrase,
+    nickname,
+  };
+
   // @dev serialize and toss to client
-  return JSON.stringify({ address, mnemonic: mnemonic?.phrase });
+  return credentials;
 }
 
 export async function recoverAndSignIn(prevState: string | undefined, formData: FormData) {
