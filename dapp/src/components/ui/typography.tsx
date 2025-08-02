@@ -3,9 +3,7 @@ export function TypographyH1({ text }: { text: string }) {
 }
 
 export function TypographyH2({ text }: { text: string }) {
-  return (
-    <h2 className="scroll-m-20 text-center border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">{text}</h2>
-  );
+  return <h2 className="scroll-m-20 text-center pb-2 text-3xl font-semibold tracking-tight first:mt-0">{text}</h2>;
 }
 
 export function TypographyH3({ text }: { text: string }) {

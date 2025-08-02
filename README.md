@@ -68,13 +68,18 @@ _데이터베이스_
 - 내 지갑 잔고 확인하기
 - 신규 거버넌스 안건 생성하기
 - 지갑으로 투표하기
-- 거버넌스 포인트<=>토큰 교환하기
-- 거버넌스 안건 자동 업데이트하기([크론 배치](https://github.com/developerasun/ricktcal-worldcup/tree/dev/.github/workflows))
+- 월드컵 재화 포인트<=>토큰 교환하기
+- 월드컵 시작/종료 자동 업데이트하기([크론 배치](https://github.com/developerasun/ricktcal-worldcup/tree/dev/.github/workflows))
 - 엘리프 투표권 사용해서 투표하기
 - 현재 월드컵 진행 상황 확인하기
+- 개인 프로필 페이지 확인하기
 
 ### TODO: web2
 
+- 월드컵 대시보드 용 이미지 에셋 만들기
+- FAQ 페이지 추가하기
+- 투표자 리스트 스크롤 추가하기
+- 튜토리얼 가이드 모달 추가하기
 - 최애사도 8강 월드컵 생성하기
 
 ### TODO: web3

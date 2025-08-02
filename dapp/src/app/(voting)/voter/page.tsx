@@ -1,5 +1,5 @@
 import React from 'react';
-import { TypographyH1, TypographyP } from '@/components/ui/typography';
+import { TypographyH1 } from '@/components/ui/typography';
 import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
@@ -64,7 +64,7 @@ export default async function VotersPage({}: Props) {
                       <CardDescription>{d.point}</CardDescription>
                     </div>
                     <div>
-                      <CardTitle>엘리프(토큰) 보유량</CardTitle>
+                      <CardTitle>엘리프 투표권 보유량</CardTitle>
                       <CardDescription>{d.elif}</CardDescription>
                     </div>
                     <div>
