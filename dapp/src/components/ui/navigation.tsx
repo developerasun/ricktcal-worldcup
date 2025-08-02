@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { IconCopy, IconGithub } from './icon';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -21,6 +22,7 @@ import { generateWallet } from '@/app/actions/index';
 import { Alert, AlertTitle, AlertDescription } from './alert';
 import { Spacer } from './spacer';
 import { useCopyText } from '@/lib/client';
+import Link from 'next/link';
 
 interface Props {
   children: ReactNode;
@@ -30,6 +32,7 @@ export default function Navigation({ children }: Props) {
   const { setTheme } = useTheme();
   const [isDark, setIsDark] = useState(true);
   const [state, formAction] = useActionState(generateWallet, undefined);
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
   useEffect(() => {
@@ -67,8 +70,8 @@ export default function Navigation({ children }: Props) {
           <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
         </Button>
-        <Dialog>
-          <DialogTrigger className="border border-gray-600 rounded-sm p-2">
+        <Dialog open={isOpen}>
+          <DialogTrigger onClick={() => setIsOpen(true)} className="border border-gray-600 rounded-sm p-2">
             <Wallet className="h-[1rem] w-[1rem]" />
           </DialogTrigger>
           <DialogContent>
@@ -125,9 +128,18 @@ export default function Navigation({ children }: Props) {
               )}
               <Spacer v={1.5} />
               <div className="flex justify-end">
-                <Button type="submit" className="m-auto">
-                  패스키 생성하기
-                </Button>
+                {state && (
+                  <DialogClose className="m-auto" onClick={() => setIsOpen(false)}>
+                    <Link href={'/login'} className="p-3 m-auto border border-blue-300 rounded-md">
+                      로그인하기
+                    </Link>
+                  </DialogClose>
+                )}
+                {!state && (
+                  <Button type="submit" className="m-auto">
+                    패스키 생성하기
+                  </Button>
+                )}
               </div>
             </Form>
           </DialogContent>
