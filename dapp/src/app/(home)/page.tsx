@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import { Button } from '@/components/ui/button';
 import { COOKIE_NAME } from '@/constants/index';
 import { LoginRequired } from '@/components/ui/intercept';
+import Image from 'next/image';
 
 async function getProposalList() {
   const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal`, {
@@ -36,6 +37,13 @@ export default async function Home() {
   return (
     <main className="flex flex-col gap-[32px] row-start-2 items-center">
       <TypographyH1 text={'최애 사도 월드컵'} />
+      <Image
+        width={400}
+        height={400}
+        style={{ backgroundColor: 'transparent' }}
+        src={`/브랜드/대문.webp`}
+        alt="greeting-banner"
+      />
       <p className="my-3 text-center m-auto">
         귀염 뽀짝! 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
