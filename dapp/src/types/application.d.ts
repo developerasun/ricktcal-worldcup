@@ -39,6 +39,7 @@ export type VoterListType = IVoter[];
 export type VoteListType = IVote[];
 
 export type VoteCastType = (typeof TRICKCAL_CHARACTERS)[number];
+export type VoterProfileType = { user: IVoter; voteHistory: { votes: IVote; proposals: IProposal }[] };
 
 export interface ILoginCookiePayload {
   wallet: AddressLike;
