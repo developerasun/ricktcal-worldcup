@@ -2,12 +2,12 @@
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState, ReactNode, useEffect, useActionState } from 'react';
-import { Moon, Siren, Sun, Wallet } from 'lucide-react';
+import { Divide, Moon, Siren, Sun, Wallet } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { IconGithub } from './icon';
+import { IconCopy, IconGithub } from './icon';
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,7 @@ import Form from 'next/form';
 import { generateWallet } from '@/app/actions/index';
 import { Alert, AlertTitle, AlertDescription } from './alert';
 import { Spacer } from './spacer';
+import { useCopyText } from '@/lib/client';
 
 interface Props {
   children: ReactNode;
@@ -51,8 +52,8 @@ export default function Navigation({ children }: Props) {
             <TabsTrigger value="포인트" onClick={() => router.push('/point')}>
               포인트
             </TabsTrigger>
-            <TabsTrigger value="의제" onClick={() => router.push('/')}>
-              의제
+            <TabsTrigger value="월드컵" onClick={() => router.push('/')}>
+              월드컵
             </TabsTrigger>
             <TabsTrigger value="투표자" onClick={() => router.push('/voter')}>
               투표자
@@ -73,14 +74,43 @@ export default function Navigation({ children }: Props) {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>시작하기</DialogTitle>
-              <DialogDescription>포인트를 엘리프 토큰으로 교환하고, 나만의 최애 사도에게 투표하세요!</DialogDescription>
+              <DialogDescription>
+                포인트를 엘리프 토큰으로 교환하고, <br /> 나만의 최애 사도에게 투표하세요!
+              </DialogDescription>
             </DialogHeader>
             <Form action={formAction}>
               {state && (
-                <p className="my-2 break-all whitespace-normal w-full">지갑 주소: {JSON.parse(state).address}</p>
+                <div className="flex flex-col justify-center items-center">
+                  <div className="flex gap-2">
+                    <p>지갑 주소</p>
+                    <IconCopy
+                      className="cursor-pointer"
+                      onClick={async () => {
+                        await useCopyText({ text: JSON.parse(state).address });
+                        alert('지갑 주소가 복사되었습니다.');
+                      }}
+                    />
+                  </div>
+                  <p className="my-2 break-all whitespace-normal w-full">{JSON.parse(state).address}</p>
+                </div>
               )}
+
+              <Spacer v={1} />
+
               {state && (
-                <p className="my-2 break-all whitespace-normal w-full">지갑 패스키: {JSON.parse(state).mnemonic}</p>
+                <div className="flex flex-col justify-center items-center">
+                  <div className="flex gap-2">
+                    <p>지갑 패스키</p>
+                    <IconCopy
+                      className="cursor-pointer"
+                      onClick={async () => {
+                        await useCopyText({ text: JSON.parse(state).mnemonic });
+                        alert('패스키가 복사되었습니다.');
+                      }}
+                    />
+                  </div>
+                  <p className="my-2 break-all whitespace-normal w-full">{JSON.parse(state).mnemonic}</p>
+                </div>
               )}
               <Spacer v={1.5} />
               {state && (

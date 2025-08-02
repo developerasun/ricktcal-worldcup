@@ -22,3 +22,11 @@ export function useFromUtc() {
   const short = full.slice(0, 10);
   return { full, short, kstDate };
 }
+
+export async function useCopyText({ text }: { text: string }) {
+  await navigator.clipboard.writeText(text);
+}
+
+export function useScrollReset() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
