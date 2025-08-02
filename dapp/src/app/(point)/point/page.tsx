@@ -49,7 +49,7 @@ export default function PointPage({}: Props) {
 
   return (
     <>
-      <TypographyH1 text="거버넌스 재화 얻기" />
+      <TypographyH1 text="월드컵 재화 얻기" />
       <p className="my-6 text-center">캐릭터의 볼을 당기거나 머리를 쓰다듬고 포인트를 획득하세요.</p>
       <p className="my-1 text-center">볼 당기기: {POINT_RATE.cheekpulling} point</p>
       <p className="my-1 text-center">머리 쓰다듬기: {POINT_RATE.headpat} point</p>

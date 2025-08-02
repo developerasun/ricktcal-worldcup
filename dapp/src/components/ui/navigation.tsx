@@ -40,10 +40,10 @@ export default function Navigation({ children }: Props) {
   }, [isDark]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="top-0 w-full flex justify-center items-center p-4">
+    <nav className="min-h-screen flex flex-col">
+      <div className="top-0 left-0 z-50 w-full flex justify-center items-center p-2">
         <Image
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', overflow: 'hidden' }}
           onClick={() => router.push('/')}
           width={100}
           height={100}
@@ -160,6 +160,6 @@ export default function Navigation({ children }: Props) {
           <IconGithub />
         </a>
       </footer>
-    </div>
+    </nav>
   );
 }
