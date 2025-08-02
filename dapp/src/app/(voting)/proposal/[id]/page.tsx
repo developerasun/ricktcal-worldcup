@@ -125,15 +125,55 @@ export default async function ProposalPage({ params }: Props) {
             <CardFooter className="flex flex-col">
               <div className="font-semibold text-lg">월드컵 결과</div>
               <p>총 투표 수: {data.voteHistory.length}</p>
-              <p className="opacity-70">
+              <div>
                 {isTied && `현재 양쪽 사도 모두 동일한 득표를 기록 중입니다.`}
-                {data.proposal.status === ProposalStatus.ACTIVE &&
-                  !isTied &&
-                  `*[개표 중]: ${leadingCharacter}가 ${votingPowerDifference} 엘리프만큼 우세합니다.`}
-                {data.proposal.status === ProposalStatus.FINISHED &&
-                  !isTied &&
-                  `*[개표 완료]: ${leadingCharacter}가 ${votingPowerDifference} 엘리프 차이로 승리했습니다.`}
-              </p>
+                {data.proposal.status === ProposalStatus.ACTIVE && !isTied && (
+                  <div className="flex flex-col gap-2 justify-center items-center">
+                    <div style={{ transform: 'translate(0, -11%)' }}>
+                      <Image
+                        width={50}
+                        height={50}
+                        style={{ borderRadius: '50%', transform: 'translate(-15px, 40px)' }}
+                        src={`/브랜드/우세.webp`}
+                        alt="leading"
+                      />
+                      <Image
+                        width={100}
+                        height={100}
+                        style={{ borderRadius: '50%' }}
+                        src={`/캐릭터/${leadingCharacter}.webp`}
+                        alt="lead-character"
+                      />
+                    </div>
+                    <p className="opacity-70">
+                      *[개표 중]: {leadingCharacter}가 {votingPowerDifference} 엘리프만큼 우세합니다.
+                    </p>
+                  </div>
+                )}
+                {data.proposal.status === ProposalStatus.FINISHED && !isTied && (
+                  <div className="flex flex-col gap-2 justify-center items-center">
+                    <div style={{ transform: 'translate(0, -11%)' }}>
+                      <Image
+                        width={40}
+                        height={40}
+                        style={{ transform: 'translate(-8px, 35px)' }}
+                        src={`/브랜드/승리.webp`}
+                        alt="leading"
+                      />
+                      <Image
+                        width={100}
+                        height={100}
+                        style={{ borderRadius: '50%' }}
+                        src={`/캐릭터/${leadingCharacter}.webp`}
+                        alt="lead-character"
+                      />
+                    </div>
+                    <p className="opacity-70">
+                      *[개표 완료]: {leadingCharacter}가 {votingPowerDifference} 엘리프 차이로 승리했습니다.
+                    </p>
+                  </div>
+                )}
+              </div>
             </CardFooter>
           </Card>
         </div>
