@@ -1,6 +1,8 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { TableRow, TableCell } from '@/components/ui/table';
+import { ProposalStatus } from '@/constants';
 import { ProposalListType } from '@/types/application';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -16,7 +18,7 @@ export default function RowOverview({ data }: Props) {
       {data.length === 0 && (
         <TableRow style={{ cursor: 'pointer' }} onClick={() => router.push('/proposal/1')}>
           <TableCell colSpan={4} className="font-medium text-center">
-            현재 진행 중인 의제가 없습니다.
+            현재 진행 중인 월드컵이 없습니다.
           </TableCell>
         </TableRow>
       )}
@@ -28,8 +30,19 @@ export default function RowOverview({ data }: Props) {
             style={{ cursor: 'pointer' }}
             onClick={() => router.push(`proposal/${d.id}`)}
           >
+            <TableCell className="text-center">
+              <Badge
+                variant={d.status === ProposalStatus.FINISHED ? 'destructive' : 'default'}
+                className={
+                  d.status === ProposalStatus.ACTIVE
+                    ? 'bg-green-500 dark:bg-green-600 text-white font-bold p-1.5 mb-1'
+                    : 'font-bold p-1.5 mb-1'
+                }
+              >
+                {d.status.toUpperCase()}
+              </Badge>
+            </TableCell>
             <TableCell className="text-center">{d.title}</TableCell>
-            <TableCell className="text-center">{d.status}</TableCell>
             <TableCell className="text-center">{d.description}</TableCell>
             <TableCell className="text-center">
               {d.startAt}~{d.endAt}

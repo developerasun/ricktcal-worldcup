@@ -49,6 +49,8 @@ export default async function Home() {
         귀염 뽀짝! 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
       <div className="flex flex-col justify-center items-center gap-4">
+        <h2 className="text-center text-lg font-bold">제 0회 월드컵: 당신은 물에 빠졌습니다</h2>
+        <p className="text-center">저런, 안타깝네요. 누구에게 도움을 요청하시겠습니까?</p>
         <div className="flex justify-center flex-nowrap gap-4">
           <div className="flex flex-col items-center w-40">
             <div className="relative w-full aspect-[2/3]">
@@ -56,9 +58,7 @@ export default async function Home() {
             </div>
             <p className="text-center mt-2">껌딱지(영춘)을/를 믿는다</p>
           </div>
-
           <p className="font-bold self-center">VS</p>
-
           <div className="flex flex-col items-center w-40">
             <div className="relative w-full aspect-[2/3]">
               <Image src="/월드컵/크레페(우).gif" alt="월드컵" fill className="object-cover rounded" />
@@ -77,11 +77,11 @@ export default async function Home() {
       </div>
 
       <Table>
-        <TableCaption>클릭 시 의제 개요 페이지로 이동합니다.</TableCaption>
+        <TableCaption>클릭 시 월드컵 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader className="w-3/4 sm:w-auto">
           <TableRow>
-            <TableHead className="w-[100px] text-center">의제</TableHead>
-            <TableHead className="text-center">상태</TableHead>
+            <TableHead className="text-center">진행 상태</TableHead>
+            <TableHead className="w-[100px] text-center">월드컵</TableHead>
             <TableHead className="text-center">개요</TableHead>
             <TableHead className="text-center">기간</TableHead>
           </TableRow>
