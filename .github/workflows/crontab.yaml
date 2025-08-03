@@ -3,10 +3,14 @@ name: ProposalAction
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # UTC 00:00 → KST 오전 9시
-    - cron: "0 6 * * *" # UTC 06:00 → KST 오후 3시
-    - cron: "0 12 * * *" # UTC 12:00 → KST 오후 9시
-    - cron: "0 18 * * *" # UTC 18:00 → KST 새벽 3시 (다음 날)
+    - cron: "0 0 * * *" # 매일 09:00 KST
+    - cron: "0 3 * * *" # 매일 12:00 KST
+    - cron: "0 6 * * *" # 매일 15:00 KST
+    - cron: "0 9 * * *" # 매일 18:00 KST
+    - cron: "0 12 * * *" # 매일 21:00 KST
+    - cron: "0 15 * * *" # 매일 00:00 KST (다음 날)
+    - cron: "0 18 * * *" # 매일 03:00 KST (다음 날)
+    - cron: "0 21 * * *" # 매일 06:00 KST (다음 날)
 
 jobs:
   cronjob:
