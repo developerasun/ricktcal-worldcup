@@ -151,6 +151,7 @@ export default function Navigation({ children }: Props) {
       <div className="flex-1 w-3/4 sm:w-2/4 m-auto">{children}</div>
 
       <footer className="bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
+        <p>Copyright © {new Date().getFullYear()}, all rights reserved</p>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://github.com/developerasun/ricktcal-worldcup"
