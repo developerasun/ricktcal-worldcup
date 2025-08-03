@@ -34,7 +34,7 @@ export default async function VotersPage({}: Props) {
     <>
       <TypographyH1 text={`투표자`} />
       <p className="text-center my-4 m-auto text-xl">현재 릭트컬 거버넌스에 참여 중인 볼따구 교주님들입니다.</p>
-      <p className="text-center my-2 m-auto text-sm">*포인트 보유량이 높은 교주님 순서대로 정렬됩니다.</p>
+      <p className="text-center my-4 m-auto text-sm">*포인트 보유량이 높은 교주님 순서대로 정렬됩니다.</p>
 
       {data.length === 0 && (
         <Alert variant="default">
@@ -44,7 +44,7 @@ export default async function VotersPage({}: Props) {
         </Alert>
       )}
 
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {data.map((d) => {
           return (
             <Card key={d.id}>
