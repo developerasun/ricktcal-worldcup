@@ -80,6 +80,14 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
   }
 }
 
+export async function clearAndLogOut(prevState: void, formData: FormData) {
+  await validateAndFindIdentity();
+  (await cookies()).delete(COOKIE_NAME.auth);
+
+  revalidatePath('/');
+  redirect('/'); // @dev revalidate cookie on redirect. csr does not so invoke server side error logging
+}
+
 export async function createNewProposal(prevState: void, formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
