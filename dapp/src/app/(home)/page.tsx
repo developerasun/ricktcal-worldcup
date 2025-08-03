@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { COOKIE_NAME } from '@/constants/index';
 import { LoginRequired } from '@/components/ui/intercept';
 import Image from 'next/image';
+import FaqList from './faq';
 
 async function getProposalList() {
   const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal`, {
@@ -70,6 +71,7 @@ export default async function Home() {
           <RowOverview data={data} />
         </TableBody>
       </Table>
+      {/* <FaqList /> */}
     </main>
   );
 }

@@ -1,17 +1,7 @@
 'use client';
 
-import { ILoginCookiePayload } from '@/types/application';
-import { AddressLike } from 'ethers';
+import { IAuth, IAuthContext, ILoginCookiePayload } from '@/types/application';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-
-interface IAuth {
-  wallet: AddressLike;
-}
-
-interface IAuthContext {
-  auth: IAuth | undefined;
-  setAuth: React.Dispatch<React.SetStateAction<IAuth | undefined>>;
-}
 
 const AuthContext = createContext<IAuthContext>({
   auth: undefined,
