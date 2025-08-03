@@ -48,15 +48,34 @@ export default async function Home() {
       <p className="my-3 text-center m-auto">
         귀염 뽀짝! 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
+      <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex justify-center flex-nowrap gap-4">
+          <div className="flex flex-col items-center w-40">
+            <div className="relative w-full aspect-[2/3]">
+              <Image src="/월드컵/영춘(좌).gif" alt="월드컵" fill className="object-cover rounded" />
+            </div>
+            <p className="text-center mt-2">껌딱지(영춘)을/를 믿는다</p>
+          </div>
 
-      <div className="sm:self-end">
-        {isLogin && (
-          <Link href={'/proposal/new'}>
-            <Button>투표 만들기</Button>
+          <p className="font-bold self-center">VS</p>
+
+          <div className="flex flex-col items-center w-40">
+            <div className="relative w-full aspect-[2/3]">
+              <Image src="/월드컵/크레페(우).gif" alt="월드컵" fill className="object-cover rounded" />
+            </div>
+            <p className="text-center mt-2">메이드(크레페)를 믿는다</p>
+          </div>
+        </div>
+
+        {isLogin ? (
+          <Link href="/proposal/new">
+            <Button className="cursor-pointer">나도 월드컵 만들기</Button>
           </Link>
+        ) : (
+          <LoginRequired message="로그인하고 나도 월드컵 만들기" />
         )}
-        {!isLogin && <LoginRequired message="로그인하고 투표 만들기" />}
       </div>
+
       <Table>
         <TableCaption>클릭 시 의제 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader className="w-3/4 sm:w-auto">
