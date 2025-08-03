@@ -15,6 +15,13 @@
       "when": 1754062469844,
       "tag": "0001_mixed_bastion",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1754229132092,
+      "tag": "0002_mute_warstar",
+      "breakpoints": true
     }
   ]
 }

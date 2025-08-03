@@ -17,7 +17,7 @@ export async function getConnection() {
 
 export const users = sqliteTable('users', {
   id: integer().primaryKey({ autoIncrement: true }),
-  wallet: text({ length: 42 }).notNull(),
+  wallet: text({ length: 42 }).notNull().unique(),
   nickname: text().notNull().default('게스트').unique(),
   point: integer().notNull().default(HUMAN_BOOLEAN.zero),
   elif: real().notNull().default(HUMAN_BOOLEAN.zero),

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `users_wallet_unique` ON `users` (`wallet`);
