@@ -6,6 +6,7 @@ import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { getConnection, users } from './database/schema';
 import { UnauthorizedException } from './error';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export class AuthManager {
   #issuer = BRAND_NAME.project;
@@ -74,8 +75,11 @@ export class AuthManager {
   }
 }
 
-export async function validateAndFindIdentity() {
-  const auth = (await cookies()).get(COOKIE_NAME.auth);
+export async function validateAndFindIdentity(cookie?: RequestCookie) {
+  let auth = (await cookies()).get(COOKIE_NAME.auth);
+
+  // @dev rsc-compatible
+  if (cookie) auth = cookie;
 
   if (!auth) throw new UnauthorizedException();
   const token = auth.value;
@@ -90,9 +94,9 @@ export async function validateAndFindIdentity() {
 
   if (!hasUser) throw new UnauthorizedException();
 
-  const { id: userId } = hasUser;
+  const { id: userId, point, elif, nickname } = hasUser;
 
-  return { userId, wallet };
+  return { userId, wallet, point, elif, nickname };
 }
 
 /**
