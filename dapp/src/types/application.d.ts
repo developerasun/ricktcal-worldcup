@@ -1,5 +1,6 @@
 import { ProposalStatus, TRICKCAL_CHARACTERS } from '@/constants';
 import { AddressLike } from 'ethers';
+import React from 'react';
 
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
 export type ProposalStatusType = 'pending' | 'active' | 'finished';
@@ -62,4 +63,13 @@ export interface IAccountCredentials {
   address: AddressLike;
   mnemonic: string | undefined;
   nickname: string;
+}
+
+export interface IAuth {
+  wallet: AddressLike;
+}
+
+export interface IAuthContext {
+  auth: IAuth | undefined;
+  setAuth: React.Dispatch<React.SetStateAction<IAuth | undefined>>;
 }
