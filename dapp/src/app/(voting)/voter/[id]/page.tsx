@@ -1,10 +1,8 @@
 import React from 'react';
-import { AlertUnderConsturction } from '@/components/ui/alert';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
-import { Link } from 'lucide-react';
 import { notFound } from 'next/navigation';
-import { IProposal, IVote, IVoter, VoterProfileType } from '@/types/application';
+import { VoterProfileType } from '@/types/application';
 import { TypographyH1, TypographyH2 } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
 interface Props {
