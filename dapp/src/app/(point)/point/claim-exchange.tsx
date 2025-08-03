@@ -110,9 +110,11 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
       />
       <p className="mt-5 mb-1 text-center">1 엘리프(Elif) = {POINT_RATE.elif} 포인트로 교환 가능합니다.</p>
       {typeof balanceOrMessage !== 'string' && (
-        <p className="opacity-70 text-center">
-          *{balanceOrMessage.nickname} 님의 현재 교환 가능한 포인트 수량: {balanceOrMessage.point}
-        </p>
+        <>
+          <div className="opacity-70 text-center">*{balanceOrMessage.nickname} 님의</div>
+          <p className="opacity-70 text-center">현재 교환 가능한 포인트 수량: {balanceOrMessage.point}</p>
+          <p className="opacity-70 text-center">현재 보유 엘리프 수량: {balanceOrMessage.elif}</p>
+        </>
       )}
       <Spacer v={1.5} />
 
