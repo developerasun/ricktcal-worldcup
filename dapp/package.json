@@ -11,7 +11,7 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "gen:type": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "db:schema": "pnpm exec drizzle-kit generate",
-    "db:local": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/migrations/0001_mixed_bastion.sql",
+    "db:local": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/migrations/0002_mute_warstar.sql",
     "db:remote": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/migrations/0001_mixed_bastion.sql"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-radio-group": "^1.3.7",
     "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@react-spring/web": "^10.0.1",
