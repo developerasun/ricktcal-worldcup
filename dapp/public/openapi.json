@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "릭트컬 월드컵 API 문서",
+    "version": "0.2"
+  },
+  "paths": {
+    "/api/webhook": {
+      "post": {
+        "description": "trigger pending proposal to be active",
+        "responses": {
+          "200": {
+            "description": "return proposal id on success"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "description": "check if server is running",
+        "responses": {
+          "200": {
+            "description": "return a 'ok' string"
+          }
+        }
+      }
+    },
+    "/api/swagger/datetime": {
+      "get": {
+        "description": "mess around date utility with Date object",
+        "responses": {
+          "200": {
+            "description": "date in different formats"
+          }
+        }
+      }
+    },
+    "/api/swagger/jwt": {
+      "get": {
+        "description": "encrypt cookie payload and decrypt right away",
+        "responses": {
+          "200": {
+            "description": "jwt cycle was successful"
+          }
+        }
+      }
+    },
+    "/api/swagger/query": {
+      "get": {
+        "description": "check out orm query result",
+        "responses": {
+          "200": {
+            "description": "entities quried by drizzle"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

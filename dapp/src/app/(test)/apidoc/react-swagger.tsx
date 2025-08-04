@@ -7,10 +7,10 @@ import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 
 type Props = {
-  spec: Record<string, any>;
+  url: string;
 };
 
-function ReactSwagger({ spec }: Props) {
+function ReactSwagger({ url }: Props) {
   const { theme, setTheme } = useTheme();
   const originalTheme = useRef<string | undefined>(undefined);
   const pathname = usePathname();
@@ -32,7 +32,7 @@ function ReactSwagger({ spec }: Props) {
     };
   }, [pathname]);
 
-  return <SwaggerUI spec={spec} />;
+  return <SwaggerUI url={url} />;
 }
 
 export default ReactSwagger;

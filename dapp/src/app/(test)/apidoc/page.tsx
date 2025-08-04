@@ -1,12 +1,11 @@
-import { getApiDocs } from '@/lib/swagger';
+'use client';
+
 import ReactSwagger from './react-swagger';
 
-export default async function IndexPage() {
-  const apispec = await getApiDocs();
-
+export default function ApiDocPage() {
   return (
     <section className="container">
-      <ReactSwagger spec={apispec} />
+      <ReactSwagger url={'/openapi.json'} />
     </section>
   );
 }
