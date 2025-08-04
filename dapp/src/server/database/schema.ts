@@ -48,8 +48,12 @@ export const proposals = sqliteTable('proposals', {
 
 export const votes = sqliteTable('votes', {
   id: integer().primaryKey({ autoIncrement: true }),
-  userId: integer('userId').references(() => users.id),
-  proposalId: integer('proposalId').references(() => proposals.id),
+  userId: integer('userId')
+    .references(() => users.id)
+    .notNull(),
+  proposalId: integer('proposalId')
+    .references(() => proposals.id)
+    .notNull(),
   voteCast: text(),
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
