@@ -1,6 +1,6 @@
-import { ProposalStatus } from '@/constants';
+import { HttpStatus, ProposalStatus } from '@/constants';
 import { getConnection, proposals } from '@/server/database/schema';
-import { UnauthorizedException } from '@/server/error';
+import { ForbiddenException } from '@/server/error';
 import { fromUTC } from '@/server/hook';
 import { and, eq, inArray } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
@@ -23,7 +23,9 @@ export async function POST(request: NextRequest) {
     const isValid = BEARER_TOKEN === token;
 
     if (!token || !isValid) {
-      throw new UnauthorizedException();
+      const e = new ForbiddenException('유효하지 않은 api 키입니다.', { code: HttpStatus.FORBIDDEN });
+      const response = e.short();
+      return NextResponse.json(response);
     }
   }
 
@@ -39,6 +41,11 @@ export async function POST(request: NextRequest) {
     .select({ id: proposals.id, endAt: proposals.endAt })
     .from(proposals)
     .where(eq(proposals.endAt, today));
+
+  // @dev early return for less db ops
+  if (pendings.length === 0 && endings.length === 0) {
+    return NextResponse.json({ active: [], fisnihed: [] });
+  }
 
   console.log({ today, startAts: pendings.map((p) => p.startAt) });
 

@@ -6,10 +6,10 @@ import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { AuthManager, getKoreanTimezone, validateAndFindIdentity } from '@/server/hook';
+import { AuthManager, getKoreanTimezone, toDecimal, validateAndFindIdentity } from '@/server/hook';
 import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
-import { BadRequestException, NotFoundException, UnauthorizedException } from '@/server/error';
+import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -158,7 +158,7 @@ export async function createNewVoteWithSignature(
 export async function createVotingTransaction(prevState: string | undefined, formData: FormData) {
   const auth = (await cookies()).get(COOKIE_NAME.auth);
 
-  if (!auth) throw new UnauthorizedException();
+  if (!auth) throw new UnAuthorizedException();
   const token = auth.value;
   const am = new AuthManager();
   const { payload } = await am._useTokenVerify({ token });
@@ -171,7 +171,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
   let message: string | undefined = 'ok';
 
   if (!payload) {
-    const e = new UnauthorizedException('유저 정보가 확인되지 않았습니다. 로그인이 필요합니다.', {
+    const e = new UnAuthorizedException('유저 정보가 확인되지 않았습니다. 로그인이 필요합니다.', {
       code: HttpStatus.UNAUTHORIZED,
     });
     message = e.short().message;
@@ -198,22 +198,20 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
   if (!hasUser) {
-    const e = new UnauthorizedException('유효하지 않은 유저 정보입니다. 유저 아이디를 확인해주세요.', {
+    const e = new UnAuthorizedException('유효하지 않은 유저 정보입니다. 유저 아이디를 확인해주세요.', {
       code: HttpStatus.UNAUTHORIZED,
     });
     message = e.short().message;
   }
 
   const { id: userId, elif } = hasUser!;
-  const hasEnoughElif = elif >= +elifVotingPower;
+  const calculated = toDecimal(+elifVotingPower);
+  const hasEnoughElif = elif >= calculated;
 
   if (!hasEnoughElif) {
-    const e = new BadRequestException(
-      `투표를 위한 엘리프 수량이 부족합니다(보유량: ${elif}, 투표량: ${elifVotingPower})`,
-      {
-        code: HttpStatus.BAD_REQUEST,
-      }
-    );
+    const e = new BadRequestException(`투표를 위한 엘리프 수량이 부족합니다(보유량: ${elif}, 투표량: ${calculated})`, {
+      code: HttpStatus.BAD_REQUEST,
+    });
     message = e.short().message;
   }
 
@@ -231,15 +229,15 @@ export async function createVotingTransaction(prevState: string | undefined, for
   }
 
   const isLeftVote = hasProposal!.leftCharacterName === voteCast;
-  const increaseLeftVotingPower = { leftCharacterElif: sql`${proposals.leftCharacterElif} + ${+elifVotingPower}` };
-  const increaseRightVotingPower = { rightCharacterElif: sql`${proposals.rightCharacterElif} + ${+elifVotingPower}` };
+  const increaseLeftVotingPower = { leftCharacterElif: sql`${proposals.leftCharacterElif} + ${calculated}` };
+  const increaseRightVotingPower = { rightCharacterElif: sql`${proposals.rightCharacterElif} + ${calculated}` };
 
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
-      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast, elifAmount: +elifVotingPower }),
+      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast, elifAmount: calculated }),
       connection
         .update(users)
-        .set({ elif: sql`${users.elif} - ${+elifVotingPower}` })
+        .set({ elif: sql`${users.elif} - ${calculated}` })
         .where(eq(users.id, userId)),
       connection.update(proposals).set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower),
     ]);
@@ -263,7 +261,8 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
 
   const { userId } = await validateAndFindIdentity();
 
-  const elifAmount = calculated;
+  // @dev limit decimal points to 2
+  const elifAmount = toDecimal(calculated);
   const pointAmount = +$pointAmount;
   const { connection } = await getConnection();
 

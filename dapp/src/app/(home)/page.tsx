@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { TypographyH1 } from '@/components/ui/typography';
+import { TypographyH1, TypographyH2 } from '@/components/ui/typography';
 import RowOverview from './row-overview';
 import { ProposalListType } from '@/types/application';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -76,6 +76,7 @@ export default async function Home() {
         )}
       </div>
 
+      <TypographyH2 text={'월드컵 목록'} />
       <Table>
         <TableCaption>클릭 시 월드컵 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader className="w-3/4 sm:w-auto">

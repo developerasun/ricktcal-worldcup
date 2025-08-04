@@ -19,9 +19,10 @@ export interface IProposal {
   rightCharacterElif: number;
 }
 
+// @dev matched with /api/proposal/[id]
 export interface IVote {
   id: number;
-  userId: number | null;
+  userId: number;
   proposalId: number | null;
   voteCast: string;
   elifAmount: number;

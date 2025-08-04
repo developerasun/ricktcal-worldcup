@@ -1,11 +1,11 @@
 import { BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
 import { eq } from 'drizzle-orm';
-import { AddressLike, Signature, verifyMessage, Wallet } from 'ethers';
+import { AddressLike, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { getConnection, users } from './database/schema';
-import { UnauthorizedException } from './error';
+import { UnAuthorizedException } from './error';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 export class AuthManager {
@@ -81,18 +81,18 @@ export async function validateAndFindIdentity(cookie?: RequestCookie) {
   // @dev rsc-compatible
   if (cookie) auth = cookie;
 
-  if (!auth) throw new UnauthorizedException();
+  if (!auth) throw new UnAuthorizedException();
   const token = auth.value;
   const am = new AuthManager();
   const { payload } = await am._useTokenVerify({ token });
 
-  if (!payload) throw new UnauthorizedException();
+  if (!payload) throw new UnAuthorizedException();
   const wallet = payload.wallet.toString();
 
   const { connection } = await getConnection();
   const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
 
-  if (!hasUser) throw new UnauthorizedException();
+  if (!hasUser) throw new UnAuthorizedException();
 
   const { id: userId, point, elif, nickname } = hasUser;
 
@@ -120,4 +120,15 @@ export function fromUTC() {
   const short = full.slice(0, 10);
 
   return { full, short };
+}
+
+/**
+ *
+ * @param target number to display decimals points
+ * @param precision how many decimals, default is 2
+ * @returns e.g 3.14, number
+ */
+export function toDecimal(target: number, precision: number = 2) {
+  const points = 10 ** precision;
+  return Math.round(target * points) / points;
 }

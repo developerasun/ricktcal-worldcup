@@ -34,7 +34,7 @@ class HttpException extends Error {
   }
 }
 
-export class UnauthorizedException extends HttpException {
+export class UnAuthorizedException extends HttpException {
   constructor(message?: string, options?: IHttpExceptionOptions) {
     super(message, options);
   }
@@ -47,6 +47,12 @@ export class BadRequestException extends HttpException {
 }
 
 export class NotFoundException extends HttpException {
+  constructor(message?: string, options?: IHttpExceptionOptions) {
+    super(message, options);
+  }
+}
+
+export class ForbiddenException extends HttpException {
   constructor(message?: string, options?: IHttpExceptionOptions) {
     super(message, options);
   }

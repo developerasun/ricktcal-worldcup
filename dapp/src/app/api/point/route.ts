@@ -1,6 +1,6 @@
 import { COOKIE_NAME, POINT_RATE, PointClaimAction } from '@/constants/index';
 import { getConnection, points, users } from '@/server/database/schema';
-import { UnauthorizedException } from '@/server/error';
+import { UnAuthorizedException } from '@/server/error';
 import { AuthManager, validateAndFindIdentity } from '@/server/hook';
 import { PointClaimActionType } from '@/types/application';
 import { eq, sql } from 'drizzle-orm';
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   let data: any | null = null;
 
   if (!token || token === 'undefined') {
-    const e = new UnauthorizedException('잔고 확인을 위해 로그인이 필요합니다.');
+    const e = new UnAuthorizedException('잔고 확인을 위해 로그인이 필요합니다.');
     message = e.short().message;
   }
 
