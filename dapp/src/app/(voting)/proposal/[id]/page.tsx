@@ -203,12 +203,19 @@ export default async function ProposalPage({ params }: Props) {
                     <ul key={v.id} className="flex flex-col gap-1 border border-gray-300 p-4 rounded-sm">
                       <Link href={`/voter/${v.userId}`}>
                         <li>
-                          <u className="flex gap-2">
+                          <u className="flex justify-center items-center gap-2">
+                            <Image
+                              style={{ borderRadius: '50%' }}
+                              width={50}
+                              height={50}
+                              src="/캐릭터/버터.webp"
+                              alt="아바타"
+                            />
                             <span>{data.wallets.get(`${v.userId}`)?.nickname}</span> <IconExternalLink />
                           </u>
                         </li>
                       </Link>
-                      <li>개표: {v.voteCast}</li>
+                      <li className="mt-1">개표: {v.voteCast}</li>
                       <li>개표량: {v.elifAmount} 엘리프</li>
                     </ul>
                   );

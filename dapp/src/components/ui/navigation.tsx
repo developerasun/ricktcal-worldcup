@@ -170,7 +170,7 @@ export default function Navigation({ children }: Props) {
 
       {/* prettier-ignore */}
       {/* @dev flex-1 for claiming extra room for children */}
-      <div className="flex-1 w-3/4 sm:w-2/4 m-auto">{children}</div>
+      <div className="flex-1 w-3/4 md:4/5 m-auto">{children}</div>
 
       <footer className="bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
         <p>Copyright © {new Date().getFullYear()}, all rights reserved</p>
