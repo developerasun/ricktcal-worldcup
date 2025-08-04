@@ -10,6 +10,7 @@ import { AuthManager, getKoreanTimezone, toDecimal, validateAndFindIdentity } fr
 import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
+import { logger } from '@/server/logger';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -28,7 +29,7 @@ export async function generateWallet(prevState: IAccountCredentials | undefined,
   }
 
   const { error, results } = await connection.insert(users).values({ wallet: address, nickname });
-  console.log({ results });
+  logger.info({ results });
 
   if (error) {
     console.error(error);
@@ -96,7 +97,7 @@ export async function createNewProposal(prevState: void, formData: FormData) {
   const leftCharacterName = formData.get('left-character') as string;
   const rightCharacterName = formData.get('right-character') as string;
 
-  console.log({ title, description, startAt, endAt, leftCharacterName, rightCharacterName });
+  logger.info({ title, description, startAt, endAt, leftCharacterName, rightCharacterName });
 
   const { userId } = await validateAndFindIdentity();
   const { connection } = await getConnection();
@@ -166,7 +167,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
   const voteCast = formData.get('vote-cast-hidden') as string;
   const proposalId = formData.get('proposal-id-hidden') as string;
   const elifVotingPower = formData.get('elif-voting-power') as string;
-  console.log({ voteCast, proposalId, elifVotingPower });
+  logger.info({ voteCast, proposalId, elifVotingPower });
 
   let message: string | undefined = 'ok';
 
@@ -243,7 +244,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
     ]);
     // TODO add contract interaction
   }
-  console.log({ hasVoted });
+  logger.info({ hasVoted });
 
   return message;
 }
@@ -279,7 +280,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
     message = e.short().message;
   }
 
-  console.log({ hasEnoughBalance, raw, message });
+  logger.info({ hasEnoughBalance, raw, message });
 
   if (message === 'ok' && hasEnoughBalance) {
     await connection.batch([

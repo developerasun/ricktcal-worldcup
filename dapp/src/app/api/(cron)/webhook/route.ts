@@ -2,6 +2,7 @@ import { HttpStatus, ProposalStatus } from '@/constants';
 import { getConnection, proposals } from '@/server/database/schema';
 import { ForbiddenException } from '@/server/error';
 import { fromUTC } from '@/server/hook';
+import { logger } from '@/server/logger';
 import { and, eq, inArray } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
 
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ active: [], fisnihed: [] });
   }
 
-  console.log({ today, startAts: pendings.map((p) => p.startAt) });
+  logger.log({ today, startAts: pendings.map((p) => p.startAt) });
 
   const pendingIds = pendings.map((p) => p.id);
   const endingIds = endings.map((e) => e.id);

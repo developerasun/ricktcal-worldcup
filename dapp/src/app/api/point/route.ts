@@ -2,6 +2,7 @@ import { COOKIE_NAME, POINT_RATE, PointClaimAction } from '@/constants/index';
 import { getConnection, points, users } from '@/server/database/schema';
 import { UnAuthorizedException } from '@/server/error';
 import { AuthManager, validateAndFindIdentity } from '@/server/hook';
+import { logger } from '@/server/logger';
 import { PointClaimActionType } from '@/types/application';
 import { eq, sql } from 'drizzle-orm';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
@@ -45,9 +46,9 @@ export async function POST(request: NextRequest) {
         .set({ point: sql`${users.point} + ${score}` })
         .where(eq(users.id, userId)),
     ]);
-    console.log('successfully updated points and users table for point claim');
+    logger.info('successfully updated points and users table for point claim');
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     message = JSON.stringify(error);
   } finally {
     return NextResponse.json({ message });
