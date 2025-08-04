@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { IProposal, VoteListType } from '@/types/application';
+import { IProposal, IVoter, VoteListType } from '@/types/application';
 import { notFound } from 'next/navigation';
 import { Spacer } from '@/components/ui/spacer';
 import {
@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import VoteCastForm from './voteCast';
 import { ProposalStatus } from '@/constants';
+import Link from 'next/link';
+import { IconExternalLink } from '@/components/ui/icon';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -23,7 +25,16 @@ interface Props {
 
 async function getProposalDetail({ id }: { id: number }) {
   const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal/${id}`);
-  const data = (await response.json()) as { proposal: IProposal; voteHistory: VoteListType };
+  const _data = (await response.json()) as {
+    proposal: IProposal;
+    voteHistory: VoteListType;
+    wallets: Record<number, { nickname: string; wallet: string }>;
+  };
+
+  const data = {
+    ..._data,
+    wallets: new Map(Object.entries(_data.wallets)), // reserialize Map
+  };
 
   return data;
 }
@@ -186,13 +197,19 @@ export default async function ProposalPage({ params }: Props) {
               <CardDescription>현재 월드컵에 참여하신 교주님들에 대한 목록을 표시합니다.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
-              <div>
+              <div className="flex flex-col gap-4 max-h-[300px] overflow-y-scroll">
                 {data.voteHistory.map((v, index) => {
                   return (
-                    <ul key={v.id} className="border border-gray-300 p-2 rounded-sm">
-                      <li>참여 순서: {index + 1}</li>
-                      <li>유저 아이디: {v.userId}</li>
+                    <ul key={v.id} className="flex flex-col gap-1 border border-gray-300 p-4 rounded-sm">
+                      <Link href={`/voter/${v.userId}`}>
+                        <li>
+                          <u className="flex gap-2">
+                            <span>{data.wallets.get(`${v.userId}`)?.nickname}</span> <IconExternalLink />
+                          </u>
+                        </li>
+                      </Link>
                       <li>개표: {v.voteCast}</li>
+                      <li>개표량: {v.elifAmount} 엘리프</li>
                     </ul>
                   );
                 })}
@@ -201,7 +218,7 @@ export default async function ProposalPage({ params }: Props) {
             <CardFooter className="flex flex-col">
               <Dialog>
                 <DialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 p-2 rounded-md transition font-bold">
-                  지갑으로 투표하기
+                  나도 투표하기
                 </DialogTrigger>
                 <DialogContent className="max-h-[80vh] overflow-y-auto overflow-x-hidden">
                   <DialogHeader>
