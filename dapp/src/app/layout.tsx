@@ -4,7 +4,7 @@ import './globals.css';
 import Navigation from '@/components/ui/navigation';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { Spacer } from '@/components/ui/spacer';
-import { AuthContextProvider } from './store';
+import { AuthContextProvider, TourModalProvider } from './store';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/constants/index';
 import { AuthManager } from '@/server/hook';
@@ -44,11 +44,13 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthContextProvider isLogin={isLogin}>
-            <Navigation>
-              <Spacer v={2} />
-              {children}
-              <Toaster position="top-right" />
-            </Navigation>
+            <TourModalProvider>
+              <Navigation>
+                <Spacer v={2} />
+                {children}
+                <Toaster position="top-right" />
+              </Navigation>
+            </TourModalProvider>
           </AuthContextProvider>
         </ThemeProvider>
       </body>

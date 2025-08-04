@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { COOKIE_NAME } from '@/constants/index';
 import { LoginRequired } from '@/components/ui/intercept';
 import Image from 'next/image';
+import TourModalAction from './tour-modal';
 
 async function getProposalList() {
   const response = await fetch(`${process.env.BASE_ENDPOINT}/api/proposal`, {
@@ -47,36 +48,45 @@ export default async function Home() {
       <p className="my-3 text-center m-auto">
         귀염 뽀짝! 뽈따구 라이프! <br /> 릭트컬 거버넌스에 참여하고 트릭컬 최애 사도를 뽑아봐요!
       </p>
-      <div className="flex flex-col justify-center items-center gap-4">
-        <h2 className="text-center text-lg font-bold">제 0회 월드컵: 당신은 물에 빠졌습니다</h2>
+
+      <TourModalAction />
+
+      <fieldset className="flex flex-col justify-center items-center gap-4 step-1">
+        <legend className="text-center text-lg font-bold">제 0회 월드컵: 당신은 물에 빠졌습니다</legend>
         <p className="text-center">저런, 안타깝네요. 누구에게 도움을 요청하시겠습니까?</p>
         <div className="flex justify-center flex-nowrap gap-4">
           <div className="flex flex-col items-center w-40">
             <div className="relative w-full aspect-[2/3]">
               <Image src="/월드컵/영춘(좌).gif" alt="월드컵" fill className="object-cover rounded" />
             </div>
-            <p className="text-center mt-2">껌딱지(영춘)을/를 믿는다</p>
+            <label htmlFor="영춘" className="text-center mt-2">
+              껌딱지(영춘)을/를 믿는다
+            </label>
+            <input type="radio" name="메인-월드컵-후킹" id="영춘" value={'영춘'} />
           </div>
           <p className="font-bold self-center">VS</p>
           <div className="flex flex-col items-center w-40">
             <div className="relative w-full aspect-[2/3]">
               <Image src="/월드컵/크레페(우).gif" alt="월드컵" fill className="object-cover rounded" />
             </div>
-            <p className="text-center mt-2">메이드(크레페)를 믿는다</p>
+            <label htmlFor="크레페" className="text-center mt-2">
+              메이드(크레페)를 믿는다
+            </label>
+            <input type="radio" name="메인-월드컵-후킹" id="크레페" value={'크레페'} />
           </div>
         </div>
+      </fieldset>
 
-        {isLogin ? (
-          <Link href="/proposal/new">
-            <Button className="cursor-pointer">나도 월드컵 만들기</Button>
-          </Link>
-        ) : (
-          <LoginRequired message="로그인하고 나도 월드컵 만들기" />
-        )}
-      </div>
+      {isLogin ? (
+        <Link href="/proposal/new">
+          <Button className="cursor-pointer">나도 월드컵 만들기</Button>
+        </Link>
+      ) : (
+        <LoginRequired message="로그인하고 나도 월드컵 만들기" />
+      )}
 
       <TypographyH2 text={'월드컵 목록'} />
-      <Table>
+      <Table className="step-2">
         <TableCaption>클릭 시 월드컵 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader className="w-3/4 sm:w-auto">
           <TableRow>

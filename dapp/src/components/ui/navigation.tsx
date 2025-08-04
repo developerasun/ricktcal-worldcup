@@ -24,7 +24,6 @@ import { Spacer } from './spacer';
 import { useCopyText } from '@/lib/client';
 import Link from 'next/link';
 import { useAuth } from '@/app/store';
-import { Separator } from '@/components/ui/separator';
 
 interface Props {
   children: ReactNode;
@@ -59,7 +58,7 @@ export default function Navigation({ children }: Props) {
           alt="logo"
         />
         <Tabs defaultValue="account" className="w-[400px]">
-          <TabsList className="m-auto">
+          <TabsList className="m-auto step-4">
             <TabsTrigger value="포인트" onClick={() => router.push('/point')}>
               포인트
             </TabsTrigger>
@@ -80,7 +79,7 @@ export default function Navigation({ children }: Props) {
         </Button>
         {!auth && (
           <Dialog>
-            <DialogTrigger className="border border-gray-600 rounded-sm p-2">
+            <DialogTrigger className="border border-gray-600 rounded-sm p-2 step-3">
               <Wallet className="h-[1rem] w-[1rem]" />
             </DialogTrigger>
             <DialogContent>
@@ -175,7 +174,7 @@ export default function Navigation({ children }: Props) {
       <footer className="bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
         <p>Copyright © {new Date().getFullYear()}, all rights reserved</p>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4 step-5"
           href="https://github.com/developerasun/ricktcal-worldcup"
           target="_blank"
           rel="noopener noreferrer"
