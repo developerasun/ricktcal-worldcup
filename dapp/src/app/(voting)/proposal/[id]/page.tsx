@@ -15,9 +15,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import VoteCastForm from './voteCast';
-import { ProposalStatus } from '@/constants';
+import { POINT_RATE, ProposalStatus } from '@/constants';
 import Link from 'next/link';
-import { IconExternalLink } from '@/components/ui/icon';
+import { IconDown, IconExternalLink } from '@/components/ui/icon';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -87,7 +88,8 @@ export default async function ProposalPage({ params }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-4">
         {/* left */}
         <div>
-          <Card>
+          {/* voting overview */}
+          <Card className="mb-4">
             <CardHeader>
               <Badge
                 variant={data.proposal.status === ProposalStatus.FINISHED ? 'destructive' : 'default'}
@@ -107,13 +109,14 @@ export default async function ProposalPage({ params }: Props) {
             </CardFooter>
           </Card>
 
+          {/* voting status */}
           <Card>
             <CardHeader>
               <CardTitle>투표 현황</CardTitle>
               <CardDescription>현재 월드컵에 대한 주요 정보를 수치화해서 보여드립니다.</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div>
+            <CardContent className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
                 <div className="font-semibold pb-1">{data.proposal.leftCharacterName} 의 개표 현황</div>
                 <ol className="border border-gray-300 p-2 rounded-sm">
                   <li>
@@ -123,7 +126,7 @@ export default async function ProposalPage({ params }: Props) {
                 </ol>
               </div>
 
-              <div>
+              <div className="flex-1">
                 <div className="font-semibold pb-1">{data.proposal.rightCharacterName} 의 개표 현황</div>
                 <ol className="border border-gray-300 p-2 rounded-sm">
                   <li>
@@ -191,7 +194,7 @@ export default async function ProposalPage({ params }: Props) {
 
         {/* right */}
         <div>
-          <Card>
+          <Card className="mb-4">
             <CardHeader>
               <CardTitle>투표자 리스트</CardTitle>
               <CardDescription>현재 월드컵에 참여하신 교주님들에 대한 목록을 표시합니다.</CardDescription>
@@ -239,6 +242,75 @@ export default async function ProposalPage({ params }: Props) {
                 </DialogContent>
               </Dialog>
             </CardFooter>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>자주 묻는 질문</CardTitle>
+              <CardDescription>교주님들이 질문해주신 월드컵 관련 문의 목록을 표시합니다.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <Accordion type="single" collapsible className="flex flex-col gap-4">
+                <AccordionItem value="item-1" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>엘리프가 없어요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    엘리프는 포인트와 교환이 가능합니다. 교환 비율은 1 엘리프 : {POINT_RATE.elif} 포인트 비율로
+                    교환됩니다.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>포인트가 없어요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    포인트는 사도와의 상호 작용을 통하여 획득하실 수 있습니다. 사도의 볼을 잡아당기거나 머리를 쓰다듬고
+                    포인트를 획득하세요.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>전자 서명이 뭔가요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    교주님의 투표 선택에 대해 위/변조 방지를 위해 암호화처리 하는 과정입니다. 전자 서명이 성공적으로
+                    완료되면, 서명이 서버로 전송됩니다. <br /> 서명은 스마트 컨트랙트를 통해 블록체인에 저장되어
+                    공개적으로 열람이 가능해집니다.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-4" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>투표를 잘못했어요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    한번 참여한 월드컵에는 투표 이후 재투표가 불가능합니다.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-5" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>가스비는 누가 내나요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    서버에서 냅니다. 교주님들은 가스비를 신경쓰지 않으셔도 됩니다.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-6" className="p-2 border-y-1">
+                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                    <span>결과는 언제 나오나요</span>
+                    <IconDown className="w-5 h-5" />
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-3 opacity-70">
+                    월드컵 종료일 기준 서버에서 3시간 간격으로 종료 유무를 체크합니다. e.g 2025년 8월 5일 종료시 2025년
+                    8월 5일 자정부터 3시간 간격으로 월드컵이 종료됩니다.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
           </Card>
         </div>
       </div>
