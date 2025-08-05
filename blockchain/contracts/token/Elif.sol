@@ -4,33 +4,29 @@ pragma solidity ^0.8.0;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import {ERC20Votes} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
-import {Nonces} from "@openzeppelin/contracts/utils/Nonces.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-contract Elif is ERC20, ERC20Burnable, Ownable, ERC20Permit, ERC20Votes {
-    constructor(address initialOwner) ERC20("Elif", "MTK") Ownable(initialOwner) ERC20Permit("Elif") {}
+contract Elif is ERC20, ERC20Burnable, Ownable {
+    using ECDSA for bytes32;
+    using MessageHashUtils for bytes32;
+
+    mapping(uint256 => address) private _participants;
+
+    constructor() ERC20("Elif", "elif") Ownable(_msgSender()) {}
+
     function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
+        return super._mint(to, amount);
     }
 
-    function clock() public view override returns (uint48) {
-        return uint48(block.timestamp);
+    function burn(address account, uint256 amount) public onlyOwner {
+        return super._burn(account, amount);
     }
 
-    // solhint-disable-next-line func-name-mixedcase
-    function CLOCK_MODE() public pure override returns (string memory) {
-        return "mode=timestamp";
-    }
-
-    // The following functions are overrides required by Solidity.
-
-    function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Votes) {
-        super._update(from, to, value);
-    }
-
-    function nonces(address owner) public view override(ERC20Permit, Nonces) returns (uint256) {
-        return super.nonces(owner);
+    function verify(bytes32 digest, bytes memory signature) public pure returns (address) {
+        (address signer, , ) = ECDSA.tryRecover(digest, signature);
+        require(signer != address(0), "verify: invalid signature");
+        return signer;
     }
 }
