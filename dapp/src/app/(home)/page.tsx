@@ -86,7 +86,7 @@ export default async function Home() {
       )}
 
       <TypographyH2 text={'월드컵 목록'} />
-      <Table className="step-2">
+      <Table className="w-1/2 m-auto step-2">
         <TableCaption>클릭 시 월드컵 개요 페이지로 이동합니다.</TableCaption>
         <TableHeader className="w-3/4 sm:w-auto">
           <TableRow>
