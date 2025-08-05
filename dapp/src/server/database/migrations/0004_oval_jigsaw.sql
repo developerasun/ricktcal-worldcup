@@ -1,0 +1,1 @@
+ALTER TABLE `votes` ADD `signature` text NOT NULL;

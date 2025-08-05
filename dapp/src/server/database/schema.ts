@@ -56,6 +56,7 @@ export const votes = sqliteTable('votes', {
     .notNull(),
   voteCast: text(),
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
+  signature: text().notNull(),
 });
 
 export const exchanges = sqliteTable('exchanges', {

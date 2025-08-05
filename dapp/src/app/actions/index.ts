@@ -171,8 +171,9 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   const voteCast = formData.get('vote-cast-hidden') as string;
   const proposalId = formData.get('proposal-id-hidden') as string;
-  const elifVotingPower = formData.get('elif-voting-power') as string;
-  logger.info({ voteCast, proposalId, elifVotingPower });
+  const elifVotingPower = formData.get('elif-voting-power-hidden') as string;
+  const signature = formData.get('signature-hidden') as string;
+  logger.info({ voteCast, proposalId, elifVotingPower, signature });
 
   let message: string | undefined = 'ok';
 
@@ -240,7 +241,14 @@ export async function createVotingTransaction(prevState: string | undefined, for
 
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
-      connection.insert(votes).values({ userId, proposalId: +proposalId, voteCast, elifAmount: calculated }),
+      // prettier-ignore
+      connection.insert(votes).values({ 
+        userId, 
+        proposalId: +proposalId, 
+        voteCast, 
+        elifAmount: calculated,
+        signature
+      }),
       connection
         .update(users)
         .set({ elif: sql`${users.elif} - ${calculated}` })
