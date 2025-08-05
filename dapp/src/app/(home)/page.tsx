@@ -60,9 +60,9 @@ export default async function Home() {
               <Image src="/월드컵/영춘(좌).gif" alt="월드컵" fill className="object-cover rounded" />
             </div>
             <label htmlFor="영춘" className="text-center mt-2">
-              껌딱지(영춘)을/를 믿는다
+              껌딱지(영춘)을/를 <br /> 믿는다
             </label>
-            <input type="radio" name="메인-월드컵-후킹" id="영춘" value={'영춘'} />
+            <input className="mt-2" type="radio" name="메인-월드컵-후킹" id="영춘" value={'영춘'} />
           </div>
           <p className="font-bold self-center">VS</p>
           <div className="flex flex-col items-center w-40">
@@ -70,9 +70,9 @@ export default async function Home() {
               <Image src="/월드컵/크레페(우).gif" alt="월드컵" fill className="object-cover rounded" />
             </div>
             <label htmlFor="크레페" className="text-center mt-2">
-              메이드(크레페)를 믿는다
+              메이드(크레페)를 <br /> 믿는다
             </label>
-            <input type="radio" name="메인-월드컵-후킹" id="크레페" value={'크레페'} />
+            <input className="mt-2" type="radio" name="메인-월드컵-후킹" id="크레페" value={'크레페'} />
           </div>
         </div>
       </fieldset>
