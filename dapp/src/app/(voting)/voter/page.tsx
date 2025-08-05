@@ -3,7 +3,7 @@ import { TypographyH1 } from '@/components/ui/typography';
 import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertEmpty, AlertTitle } from '@/components/ui/alert';
 import { Siren } from 'lucide-react';
 import { VoterListType } from '@/types/application';
 
@@ -36,13 +36,7 @@ export default async function VotersPage({}: Props) {
       <p className="text-center my-4 m-auto text-xl">현재 릭트컬 거버넌스에 참여 중인 볼따구 교주님들입니다.</p>
       <p className="text-center my-4 m-auto text-sm">*포인트 보유량이 높은 교주님 순서대로 정렬됩니다.</p>
 
-      {data.length === 0 && (
-        <Alert variant="default">
-          <Siren />
-          <AlertTitle>데이터 없음</AlertTitle>
-          <AlertDescription>현재 등록되어 있는 투표자가 존재하지 않습니다.</AlertDescription>
-        </Alert>
-      )}
+      {data.length === 0 && <AlertEmpty message="현재 등록되어 있는 투표자가 존재하지 않습니다." />}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {data.map((d) => {

@@ -12,6 +12,7 @@ import { TRICKCAL_CHARACTERS } from '@/constants/index';
 import { useFromUtc } from '@/lib/client';
 import Image from 'next/image';
 import { VoteCastType } from '@/types/application';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Props {}
 
@@ -75,12 +76,10 @@ export default function NewProposalPage({}: Props) {
           type="text"
           required
         />
-        {/* TODO multiline */}
-        <Input
+        <Textarea
           className="w-full max-w-md m-auto"
           name="description"
           placeholder="월드컵 내용을 입력하세요"
-          type="text"
           required
         />
         <Input

@@ -5,8 +5,7 @@ import { notFound } from 'next/navigation';
 import { VoterProfileType } from '@/types/application';
 import { TypographyH1, TypographyH2 } from '@/components/ui/typography';
 import { Spacer } from '@/components/ui/spacer';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Siren } from 'lucide-react';
+import { AlertEmpty } from '@/components/ui/alert';
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -63,11 +62,7 @@ export default async function VoterDetail({ params }: Props) {
           <Spacer v={1.5} />
           {data.voteHistory.length === 0 && (
             <>
-              <Alert variant="default" className="w-full m-auto">
-                <Siren />
-                <AlertTitle>데이터 없음</AlertTitle>
-                <AlertDescription>현재 참여하고 있는 월드컵이 존재하지 않습니다.</AlertDescription>
-              </Alert>
+              <AlertEmpty message="현재 참여하고 있는 월드컵이 존재하지 않습니다." />
             </>
           )}
           {data.voteHistory.map((v) => {

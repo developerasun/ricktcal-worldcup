@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { IconConstruction } from './icon';
 import Link from 'next/link';
 import { Button } from './button';
+import { Siren } from 'lucide-react';
 
 const alertVariants = cva(
   'relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current',
@@ -71,4 +72,14 @@ function AlertUnderConsturction({ message }: { message?: string }) {
   );
 }
 
-export { Alert, AlertTitle, AlertDescription, AlertUnderConsturction };
+function AlertEmpty({ message, className }: { message?: string; className?: string }) {
+  return (
+    <Alert variant="default" className={className ? className : ''}>
+      <Siren />
+      <AlertTitle>데이터 없음</AlertTitle>
+      <AlertDescription>{message ? message : '표시할 데이터가 존재하지 않습니다.'}</AlertDescription>
+    </Alert>
+  );
+}
+
+export { Alert, AlertTitle, AlertDescription, AlertUnderConsturction, AlertEmpty };

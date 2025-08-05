@@ -19,6 +19,7 @@ import { POINT_RATE, ProposalStatus } from '@/constants';
 import Link from 'next/link';
 import { IconDown, IconExternalLink } from '@/components/ui/icon';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
+import { AlertEmpty } from '@/components/ui/alert';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -101,8 +102,8 @@ export default async function ProposalPage({ params }: Props) {
               >
                 {data.proposal.status.toUpperCase()}
               </Badge>
-              <CardTitle>안건 제목: {data.proposal.title}</CardTitle>
-              <CardDescription>안건 내용: {data.proposal.description}</CardDescription>
+              <CardTitle>월드컵 제목: {data.proposal.title}</CardTitle>
+              <CardDescription>월드컵 내용: {data.proposal.description}</CardDescription>
             </CardHeader>
             <CardFooter>
               투표 기간: {data.proposal.startAt}~{data.proposal.endAt}
@@ -201,6 +202,7 @@ export default async function ProposalPage({ params }: Props) {
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
               <div className="flex flex-col gap-4 max-h-[300px] overflow-y-scroll">
+                {data.voteHistory.length === 0 && <AlertEmpty message="현재 참여 중인 교주님이 없습니다." />}
                 {data.voteHistory.map((v, index) => {
                   return (
                     <ul key={v.id} className="flex flex-col gap-1 border border-gray-300 p-4 rounded-sm">
