@@ -87,6 +87,8 @@ export default async function VoterDetail({ params }: Props) {
                         <CardTitle>투표 내역</CardTitle>
                         <CardDescription>
                           {v.votes.voteCast}에게 {v.votes.elifAmount} 엘리프를 투표하셨습니다.
+                          <p className="my-2 break-all whitespace-normal w-full">데이터 해시값: {v.votes.digest}</p>
+                          <p className="my-2 break-all whitespace-normal w-full">전자서명: {v.votes.signature}</p>
                         </CardDescription>
                       </div>
                     </div>

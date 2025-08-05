@@ -26,6 +26,8 @@ export interface IVote {
   proposalId: number | null;
   voteCast: string;
   elifAmount: number;
+  digest: string;
+  signature: string;
 }
 
 export interface IVoter {
