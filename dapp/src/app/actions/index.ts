@@ -57,8 +57,13 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
     const { connection } = await getConnection();
     const result = await connection.select().from(users).where(eq(users.wallet, recovered.address)).get();
 
-    if (!result) throw new Error('recoverAndSignIn: invalid match for mnemonic and database');
-    const { wallet } = result;
+    if (!result) {
+      const e = new NotFoundException('데이터베이스에 존재하지 않는 지갑 정보입니다.', { code: HttpStatus.NOT_FOUND });
+      message = e.short().message;
+      return message;
+    }
+
+    const { wallet } = result!;
     const am = new AuthManager();
     const { token } = await am._useTokenEncryption({ wallet });
 
