@@ -43,7 +43,7 @@ export default function NewProposalPage({}: Props) {
       <Spacer v={1.5} />
       <Form action={formAction} className="flex flex-col gap-4">
         <div className="flex items-center justify-center">
-          <Select name="left-character" onValueChange={(v) => setLeftCharacter(v as VoteCastType)}>
+          <Select name="left-character" onValueChange={(v) => setLeftCharacter(v as VoteCastType)} required>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="left-character" />
             </SelectTrigger>
@@ -55,7 +55,7 @@ export default function NewProposalPage({}: Props) {
               ))}
             </SelectContent>
           </Select>
-          <Select name="right-character" onValueChange={(v) => setRightCharacter(v as VoteCastType)}>
+          <Select name="right-character" onValueChange={(v) => setRightCharacter(v as VoteCastType)} required>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="right-character" />
             </SelectTrigger>
@@ -68,12 +68,20 @@ export default function NewProposalPage({}: Props) {
             </SelectContent>
           </Select>
         </div>
-        <Input className="w-full max-w-md m-auto" name="title" placeholder="월드컵 제목을 입력하세요" type="text" />
+        <Input
+          className="w-full max-w-md m-auto"
+          name="title"
+          placeholder="월드컵 제목을 입력하세요"
+          type="text"
+          required
+        />
+        {/* TODO multiline */}
         <Input
           className="w-full max-w-md m-auto"
           name="description"
           placeholder="월드컵 내용을 입력하세요"
           type="text"
+          required
         />
         <Input
           className="w-full max-w-md m-auto"
@@ -82,6 +90,7 @@ export default function NewProposalPage({}: Props) {
           max={setEndDateLimit()}
           placeholder="시작 날짜를 입력하세요"
           type="date"
+          required
         />
         <Input
           className="w-full max-w-md m-auto"
@@ -90,6 +99,7 @@ export default function NewProposalPage({}: Props) {
           max={setEndDateLimit()}
           placeholder="종료 날짜를 입력하세요"
           type="date"
+          required
         />
 
         <div className="flex justify-end">
