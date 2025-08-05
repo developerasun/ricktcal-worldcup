@@ -54,7 +54,8 @@ export const votes = sqliteTable('votes', {
   proposalId: integer('proposalId')
     .references(() => proposals.id)
     .notNull(),
-  voteCast: text(),
+  voteCast: text().notNull(),
+  digest: text().notNull(), // original message to be hashed. before signed
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
   signature: text().notNull(),
 });

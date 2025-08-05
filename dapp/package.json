@@ -12,7 +12,7 @@
     "preview": "pnpm apidoc && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "gen:type": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "db:schema": "pnpm exec drizzle-kit generate",
-    "db:local": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/migrations/0003_mature_prowler.sql",
+    "db:local": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/migrations/0005_tricky_red_ghost.sql",
     "db:remote": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/migrations/0003_mature_prowler.sql"
   },
   "dependencies": {
