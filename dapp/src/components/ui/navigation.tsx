@@ -84,8 +84,8 @@ export default function Navigation({ children }: Props) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>시작하기</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="text-center">시작하기</DialogTitle>
+                <DialogDescription className="text-center">
                   포인트를 엘리프 토큰으로 교환하고, <br /> 나만의 최애 사도에게 투표하세요!
                 </DialogDescription>
               </DialogHeader>
@@ -152,7 +152,7 @@ export default function Navigation({ children }: Props) {
               </Form>
               {!isNewUser && (
                 <DialogClose asChild className="m-auto">
-                  <Link href={'/login'} className="p-3 m-auto border border-blue-300 rounded-md">
+                  <Link href={'/login'} className="p-2 m-auto border border-blue-300 rounded-md">
                     패스키가 이미 있어요
                   </Link>
                 </DialogClose>
@@ -169,7 +169,7 @@ export default function Navigation({ children }: Props) {
 
       {/* prettier-ignore */}
       {/* @dev flex-1 for claiming extra room for children */}
-      <div className="flex-1 w-3/4 md:4/5 m-auto">{children}</div>
+      <div className="flex-1 w-2/4 md:4/5 m-auto">{children}</div>
 
       <footer className="bottom-0 left-0 w-full flex gap-[24px] flex-wrap items-center justify-center p-4 border-t">
         <p>Copyright © {new Date().getFullYear()}, all rights reserved</p>

@@ -27,8 +27,8 @@ export default async function ProfilePage({ params }: Props) {
   const user = raw as IVoter;
 
   return (
-    <div>
-      <Card>
+    <div className="flex justify-center items-center w-full">
+      <Card className="w-1/2">
         <TypographyH1 text="프로필" />
         <CardHeader>
           <div className="flex flex-col gap-4">

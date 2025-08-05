@@ -43,7 +43,7 @@ export default function RowOverview({ data }: Props) {
               </Badge>
             </TableCell>
             <TableCell className="text-center">{d.title}</TableCell>
-            <TableCell className="text-center">{d.description}</TableCell>
+            <TableCell className="text-center">{d.description.slice(0, 20) + '...'}</TableCell>
             <TableCell className="text-center">
               {d.startAt}~{d.endAt}
             </TableCell>
