@@ -1,12 +1,13 @@
 import { BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
 import { eq } from 'drizzle-orm';
-import { AddressLike, verifyMessage, Wallet } from 'ethers';
+import { AddressLike, concat, keccak256, toUtf8Bytes, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { getConnection, users } from './database/schema';
 import { UnAuthorizedException } from './error';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { logger } from './logger';
 
 export class AuthManager {
   #issuer = BRAND_NAME.project;
@@ -131,4 +132,18 @@ export function fromUTC() {
 export function toDecimal(target: number, precision: number = 2) {
   const points = 10 ** precision;
   return Math.round(target * points) / points;
+}
+
+/**
+ *
+ * @dev convert original message to be a eip-191-compatible digest
+ * @returns
+ */
+export function toEthSignedMessageHash(message: string) {
+  const messageBytes = toUtf8Bytes(message);
+  const prefix = `\x19Ethereum Signed Message:\n${messageBytes.length}`;
+  const prefixBytes = toUtf8Bytes(prefix);
+  const digest = keccak256(concat([prefixBytes, messageBytes]));
+
+  return { digest };
 }

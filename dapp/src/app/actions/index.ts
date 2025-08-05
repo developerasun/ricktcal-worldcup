@@ -6,7 +6,13 @@ import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { AuthManager, getKoreanTimezone, toDecimal, validateAndFindIdentity } from '@/server/hook';
+import {
+  AuthManager,
+  getKoreanTimezone,
+  toDecimal,
+  toEthSignedMessageHash,
+  validateAndFindIdentity,
+} from '@/server/hook';
 import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/application';
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
@@ -125,7 +131,7 @@ export async function createNewProposal(prevState: void, formData: FormData) {
 }
 
 export async function createNewVoteWithSignature(
-  prevState: { payload: IVoteSignPayload; signature: string } | undefined,
+  prevState: { payload: IVoteSignPayload; signature: string; digest: string } | undefined,
   formData: FormData
 ) {
   const voteCast = formData.get('vote-cast') as VoteCastType;
@@ -156,9 +162,11 @@ export async function createNewVoteWithSignature(
     voteCast,
     votingPower: elifVotingPower,
   };
+  const { digest } = toEthSignedMessageHash(JSON.stringify(payload));
   const { signature } = await am._useDigitalSignature({ message: JSON.stringify(payload), mnemonic });
+  logger.info({ digest, signature });
 
-  return { payload, signature };
+  return { payload, signature, digest };
 }
 
 export async function createVotingTransaction(prevState: string | undefined, formData: FormData) {
@@ -173,6 +181,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
   const proposalId = formData.get('proposal-id-hidden') as string;
   const elifVotingPower = formData.get('elif-voting-power-hidden') as string;
   const signature = formData.get('signature-hidden') as string;
+  const digest = formData.get('digest-hidden') as string;
   logger.info({ voteCast, proposalId, elifVotingPower, signature });
 
   let message: string | undefined = 'ok';
@@ -247,7 +256,8 @@ export async function createVotingTransaction(prevState: string | undefined, for
         proposalId: +proposalId, 
         voteCast, 
         elifAmount: calculated,
-        signature
+        signature,
+        digest
       }),
       connection
         .update(users)

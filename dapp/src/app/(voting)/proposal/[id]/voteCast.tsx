@@ -113,6 +113,7 @@ export default function VoteCastModal({ castList }: Props) {
             <input type="hidden" name="proposal-id-hidden" value={proposalId} />
             <input type="hidden" name="elif-voting-power-hidden" value={signState.payload.votingPower} />
             <input type="hidden" name="signature-hidden" value={signState.signature} />
+            <input type="hidden" name="digest-hidden" value={signState.digest} />
             <DialogClose asChild>
               <Button variant="outline">취소하기</Button>
             </DialogClose>
