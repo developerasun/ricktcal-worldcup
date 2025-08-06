@@ -10,7 +10,9 @@ import { NextResponse, NextRequest } from 'next/server';
  * @swagger
  * /api/webhook:
  *   post:
- *     description: trigger pending proposal to be active
+ *     tags:
+ *       - ACTIONS
+ *     description: trigger pending proposal to be active, active one to be finished. coupled with github actions in production.
  *     responses:
  *       200:
  *         description: return proposal id on success

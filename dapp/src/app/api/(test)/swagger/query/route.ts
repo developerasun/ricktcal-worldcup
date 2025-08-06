@@ -7,6 +7,8 @@ import { NextResponse } from 'next/server';
  * @swagger
  * /api/swagger/query:
  *   get:
+ *     tags:
+ *       - APPLICATION
  *     description: check out orm query result
  *     responses:
  *       200:

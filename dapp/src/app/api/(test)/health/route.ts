@@ -2,6 +2,8 @@
  * @swagger
  * /api/health:
  *   get:
+ *     tags:
+ *       - APPLICATION
  *     description: check if server is running
  *     responses:
  *       200:

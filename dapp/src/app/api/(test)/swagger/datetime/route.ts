@@ -4,6 +4,8 @@ import { fromUTC } from '@/server/hook';
  * @swagger
  * /api/swagger/datetime:
  *   get:
+ *     tags:
+ *       - APPLICATION
  *     description: mess around date utility with Date object
  *     responses:
  *       200:

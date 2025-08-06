@@ -4,6 +4,8 @@ import { AuthManager } from '@/server/hook';
  * @swagger
  * /api/swagger/jwt:
  *   get:
+ *     tags:
+ *       - APPLICATION
  *     description: encrypt cookie payload and decrypt right away
  *     responses:
  *       200:
