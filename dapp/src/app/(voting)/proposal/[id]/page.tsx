@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { IconDown, IconExternalLink } from '@/components/ui/icon';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { AlertEmpty } from '@/components/ui/alert';
+import { josa } from 'es-hangul';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -161,7 +162,7 @@ export default async function ProposalPage({ params }: Props) {
                       />
                     </div>
                     <p className="opacity-70">
-                      *[개표 중]: {leadingCharacter}가 {votingPowerDifference} 엘리프만큼 우세합니다.
+                      *[개표 중]: {josa(leadingCharacter, '이/가')} {votingPowerDifference} 엘리프만큼 우세합니다.
                     </p>
                   </div>
                 )}
@@ -184,7 +185,8 @@ export default async function ProposalPage({ params }: Props) {
                       />
                     </div>
                     <p className="opacity-70">
-                      *[개표 완료]: {leadingCharacter}가 {votingPowerDifference} 엘리프 차이로 승리했습니다.
+                      *[개표 완료]: {josa(leadingCharacter, '이/가')} {votingPowerDifference} 엘리프 차이로
+                      승리했습니다.
                     </p>
                   </div>
                 )}
