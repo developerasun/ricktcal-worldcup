@@ -1,13 +1,12 @@
 import { ABI_HELPER, BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
 import { eq } from 'drizzle-orm';
-import { AddressLike, concat, Contract, JsonRpcProvider, keccak256, toUtf8Bytes, verifyMessage, Wallet } from 'ethers';
+import { AddressLike, concat, keccak256, toUtf8Bytes, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { getConnection, users } from './database/schema';
 import { UnAuthorizedException } from './error';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { IElif } from '@/types/contract';
 
 export class AuthManager {
   #issuer = BRAND_NAME.project;
@@ -146,25 +145,4 @@ export function toEthSignedMessageHash(message: string) {
   const digest = keccak256(concat([prefixBytes, messageBytes]));
 
   return { digest };
-}
-
-export class Elif {
-  constructor() {}
-
-  // @dev read-only
-  private init() {
-    const { ELIF_ADDRESS, ALCHEMY_API_ENDPOINT, CHAIN_NETWORK } = process.env;
-    const provider = new JsonRpcProvider(ALCHEMY_API_ENDPOINT, CHAIN_NETWORK);
-    const elif = new Contract(ELIF_ADDRESS, ABI_HELPER.elif, provider) as Contract & IElif;
-    return { elif };
-  }
-
-  async name(): Promise<string> {
-    const { elif } = this.init();
-    return await elif.name();
-  }
-
-  instance() {
-    return this.init();
-  }
 }
