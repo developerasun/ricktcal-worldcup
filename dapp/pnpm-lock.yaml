@@ -56,6 +56,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.3
         version: 0.44.3
+      es-hangul:
+        specifier: ^2.3.5
+        version: 2.3.5
       es-toolkit:
         specifier: ^1.39.8
         version: 1.39.8
@@ -2741,6 +2744,9 @@ packages:
   es-errors@1.3.0:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
+
+  es-hangul@2.3.5:
+    resolution: {integrity: sha512-1Fdd5jr48/6/BxU4ucMpByaI2dbFhonipsCgAHYi1UbAGNLT0ELwBj1cdepl9j9ERsDS9nf4Zy4tPSEccaOEOw==}
 
   es-object-atoms@1.1.1:
     resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
@@ -7495,6 +7501,8 @@ snapshots:
   es-define-property@1.0.1: {}
 
   es-errors@1.3.0: {}
+
+  es-hangul@2.3.5: {}
 
   es-object-atoms@1.1.1:
     dependencies:
