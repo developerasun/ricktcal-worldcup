@@ -78,7 +78,6 @@ export const onchains = sqliteTable('onchains', {
 
   // point exchange mint tx, might be null
   exchangeId: integer('exchangeId').references(() => exchanges.id),
-  action: text(),
 
   // amount to mint/burn for target
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),

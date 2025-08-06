@@ -1,0 +1,1 @@
+ALTER TABLE `onchains` DROP COLUMN `action`;
