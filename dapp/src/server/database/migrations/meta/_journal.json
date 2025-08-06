@@ -43,6 +43,13 @@
       "when": 1754385002585,
       "tag": "0005_tricky_red_ghost",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1754497384987,
+      "tag": "0006_fat_paibok",
+      "breakpoints": true
     }
   ]
 }

@@ -66,3 +66,20 @@ export const exchanges = sqliteTable('exchanges', {
   pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
+
+// @dev avoid naming duplicates from drizzle `transaction`
+export const onchains = sqliteTable('onchains', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  txHash: text().notNull().unique(),
+  nonce: integer().notNull(),
+
+  // vote burn tx, might be null
+  proposalId: integer('proposalId').references(() => proposals.id),
+
+  // point exchange mint tx, might be null
+  exchangeId: integer('exchangeId').references(() => exchanges.id),
+  action: text(),
+
+  // amount to mint/burn for target
+  elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
+});
