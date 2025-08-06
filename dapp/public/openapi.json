@@ -25,6 +25,16 @@
         }
       }
     },
+    "/api/swagger/contract": {
+      "get": {
+        "description": "call read request to alchemy node for `Elif` contract",
+        "responses": {
+          "200": {
+            "description": "return Elif's token name"
+          }
+        }
+      }
+    },
     "/api/swagger/datetime": {
       "get": {
         "description": "mess around date utility with Date object",
