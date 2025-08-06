@@ -1,7 +1,8 @@
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import { toUtf8Bytes, getBytes, parseEther } from "ethers";
+import { toUtf8Bytes, getBytes, parseEther, Interface } from "ethers";
 import hre from "hardhat";
+import fs from "fs/promises";
 
 describe("Elif", function () {
   async function useDeployer() {
@@ -49,6 +50,14 @@ describe("Elif", function () {
 
       expect(await elif.hasVoted(proposalId, voter.address)).to.be.true;
       console.log(await elif.getVoteCastByProposal(proposalId, voter.address));
+    });
+
+    it.only("Should export human-friendly abi", async function () {
+      const abi = (await hre.artifacts.readArtifact("Elif")).abi;
+      const iface = Interface.from(abi);
+      const v = await fs.writeFile(`${process.cwd()}/Elif.abi.txt`, JSON.stringify(iface.format(), null, 2));
+
+      expect(v).to.be.not.true;
     });
   });
 });

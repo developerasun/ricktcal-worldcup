@@ -14,4 +14,9 @@ node_modules
 /coverage.json
 
 # Hardhat Ignition default folder for deployments against a local node
-ignition/deployments/chain-31337
+ignition/deployments/**/**.json
+ignition/deployments/**/**.jsonl
+!ignition/deployments/chain-11155111/deployed_addresses.json
+
+# generated abi files
+Elif.abi.txt

@@ -10,7 +10,7 @@
     "log": "pnpm exec hardhat remove-logs",
     "_test": "nodemon -w test --exec hardhat test",
     "test": "run-s compile _test",
-    "deploy:sep": "pnpm exec hardhat ignition deploy ./ignition/modules/Lock.ts --network sepolia --verify"
+    "deploy:sep": "pnpm exec hardhat ignition deploy ./ignition/modules/Elif.ts --network sepolia --verify"
   },
   "keywords": [],
   "author": "",

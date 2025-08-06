@@ -1,4 +1,18 @@
-export { ADJECTIVES, ANIMALS, HEROS, MONSTERS, TRICKCAL_CHARACTERS, POINT_RATE, COOKIE_NAME, BRAND_NAME, VOTE_POWER };
+export {
+  ADJECTIVES,
+  ANIMALS,
+  HEROS,
+  MONSTERS,
+  TRICKCAL_CHARACTERS,
+  POINT_RATE,
+  COOKIE_NAME,
+  BRAND_NAME,
+  VOTE_POWER,
+  ProposalStatus,
+  PointClaimAction,
+  HttpStatus,
+  ABI_HELPER,
+};
 
 const ADJECTIVES = [
   '존재하지 않는',
@@ -778,18 +792,61 @@ const COOKIE_NAME = {
   auth: `${BRAND_NAME.project}.session`,
 } as const;
 
-export enum ProposalStatus {
+// ================================================================== //
+// ============================== web3 ============================== //
+// ================================================================== //
+const ABI_HELPER = {
+  elif: [
+    'constructor()',
+    'error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed)',
+    'error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed)',
+    'error ERC20InvalidApprover(address approver)',
+    'error ERC20InvalidReceiver(address receiver)',
+    'error ERC20InvalidSender(address sender)',
+    'error ERC20InvalidSpender(address spender)',
+    'error OwnableInvalidOwner(address owner)',
+    'error OwnableUnauthorizedAccount(address account)',
+    'event Approval(address indexed owner, address indexed spender, uint256 value)',
+    'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
+    'event Transfer(address indexed from, address indexed to, uint256 value)',
+    'function allowance(address owner, address spender) view returns (uint256)',
+    'function approve(address spender, uint256 value) returns (bool)',
+    'function balanceOf(address account) view returns (uint256)',
+    'function burn(uint256 value)',
+    'function burn(address account, uint256 amount)',
+    'function burnFrom(address account, uint256 value)',
+    'function castVote(uint256 p, address v, (bytes32 digest, bytes signature, bool hasVoted) vc, uint256 amount)',
+    'function decimals() view returns (uint8)',
+    'function getRecoveredSigner(bytes32 digest, bytes signature) pure returns (address)',
+    'function getVoteCastByProposal(uint256 p, address v) view returns ((bytes32 digest, bytes signature, bool hasVoted) vc)',
+    'function hasVoted(uint256 p, address v) view returns (bool)',
+    'function mint(address to, uint256 amount)',
+    'function name() view returns (string)',
+    'function owner() view returns (address)',
+    'function renounceOwnership()',
+    'function symbol() view returns (string)',
+    'function totalSupply() view returns (uint256)',
+    'function transfer(address to, uint256 value) returns (bool)',
+    'function transferFrom(address from, address to, uint256 value) returns (bool)',
+    'function transferOwnership(address newOwner)',
+  ],
+} as const;
+
+// ================================================================== //
+// ============================== enum ============================== //
+// ================================================================== //
+enum ProposalStatus {
   PENDING = 'pending',
   ACTIVE = 'active',
   FINISHED = 'finished',
 }
 
-export enum PointClaimAction {
+enum PointClaimAction {
   CHEEKPULLING = 'cheekpulling',
   HEADPAT = 'headpat',
 }
 
-export enum HttpStatus {
+enum HttpStatus {
   CONTINUE = 100,
   SWITCHING_PROTOCOLS = 101,
   PROCESSING = 102,
