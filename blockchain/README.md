@@ -1,13 +1,31 @@
-# Sample Hardhat Project
+# Table of contents
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+- [스마트-컨트랙트-개요](#스마트-컨트랙트-개요)
+- [피쳐](#피쳐)
+- [관리자-지갑-주소-리스트](#관리자-지갑-주소-리스트)
+- [컨트랙트-주소-리스트](#컨트랙트-주소-리스트)
 
-Try running some of the following tasks:
+## 스마트 컨트랙트 개요
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+- 릭트컬 월드컵 서버/데이터베이스에 저장된 투표 내역을 공개적으로 검증합니다.
+- 릭트컬 월드컵 재화로 사용되는 엘리프 토큰을 발급하고 소각합니다.
+- _프로덕션 가스비 회피를 위해 **테스트넷**만 활용합니다._
+
+## 피쳐
+
+- 엘리프 토큰 발급/소각/전송하기
+- 내 전자서명 검증하기
+- 내 투표 기록 블록체인에 남기기
+- 내 투표 기록 확인하기
+
+### TODO
+
+- ERC20 업그레이더블 패턴 도입하기
+
+## 관리자 지갑 주소 리스트
+
+- [0xB052caBD197Fd9CA9A0a1dc388b25e7326f28439](https://sepolia.etherscan.io/address/0xb052cabd197fd9ca9a0a1dc388b25e7326f28439)
+
+## 컨트랙트 주소 리스트
+
+- [0xa37214781E180E5ad4223Df36927D0867BdeDd85](https://sepolia.etherscan.io/address/0xa37214781E180E5ad4223Df36927D0867BdeDd85)
