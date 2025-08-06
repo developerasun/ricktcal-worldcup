@@ -245,8 +245,10 @@ export async function createVotingTransaction(prevState: string | undefined, for
   }
 
   const isLeftVote = hasProposal!.leftCharacterName === voteCast;
-  const increaseLeftVotingPower = { leftCharacterElif: sql`${proposals.leftCharacterElif} + ${calculated}` };
-  const increaseRightVotingPower = { rightCharacterElif: sql`${proposals.rightCharacterElif} + ${calculated}` };
+  const increaseLeftVotingPower = { leftCharacterElif: sql`ROUND(${proposals.leftCharacterElif} + ${calculated}, 2)` };
+  const increaseRightVotingPower = {
+    rightCharacterElif: sql`ROUND(${proposals.rightCharacterElif} + ${calculated}, 2)`,
+  };
 
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
@@ -261,7 +263,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
       }),
       connection
         .update(users)
-        .set({ elif: sql`${users.elif} - ${calculated}` })
+        .set({ elif: sql`ROUND(${users.elif} - ${calculated}, 2)` })
         .where(eq(users.id, userId)),
       connection.update(proposals).set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower),
     ]);
@@ -312,7 +314,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
         .update(users)
         .set({
           point: sql`${users.point} - ${pointAmount}`,
-          elif: sql`${users.elif} + ${elifAmount}`,
+          elif: sql`ROUND(${users.elif} + ${elifAmount}, 2)`,
         })
         .where(eq(users.id, userId)),
     ]);

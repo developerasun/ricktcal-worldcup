@@ -12,13 +12,7 @@ import { eq } from 'drizzle-orm';
  */
 export async function GET(request: Request, context: any) {
   const { connection } = await getConnection();
-  const data = await connection
-    .select({ proposal: proposals, voteHistory: { ...votes, wallet: users.wallet } })
-    .from(votes)
-    .innerJoin(proposals, eq(votes.proposalId, proposals.id))
-    .where(eq(votes.proposalId, 1))
-    .innerJoin(users, eq(votes.userId, users.id))
-    .get();
+  const forcedDecimals = await connection.run(`select ROUND(3.4141422 - 1.155, 2)`);
 
-  return Response.json(data);
+  return Response.json({ forcedDecimals });
 }
