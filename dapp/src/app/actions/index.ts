@@ -1,7 +1,7 @@
 'use server';
 import { AddressLike, Wallet, ZeroAddress } from 'ethers';
 import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS, HttpStatus, POINT_RATE, ProposalStatus } from '@/constants/index';
-import { exchanges, getConnection, proposals, users, votes } from '@/server/database/schema';
+import { exchanges, getConnection, onchains, proposals, users, votes } from '@/server/database/schema';
 import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -17,6 +17,7 @@ import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/app
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
 import { logger } from '@/server/logger';
+import { txCastVote, txMint } from '@/server/onchain';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -250,6 +251,19 @@ export async function createVotingTransaction(prevState: string | undefined, for
     rightCharacterElif: sql`ROUND(${proposals.rightCharacterElif} + ${calculated}, 2)`,
   };
 
+  // TODO add contract interaction in advance
+  // const { isSuccess, hash, nonce } = await txCastVote({
+  //   proposalId: +proposalId,
+  //   voter: wallet,
+  //   voteCast: {
+  //     digest,
+  //     signature,
+  //     hasVoted: false,
+  //   },
+  //   amount: calculated,
+  // });
+
+  // TODO add onchain tx status guard
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
       // prettier-ignore
@@ -261,13 +275,19 @@ export async function createVotingTransaction(prevState: string | undefined, for
         signature,
         digest
       }),
+      // TODO insert tx metadata
+      // connection.insert(onchains).values({
+      //   txHash: hash,
+      //   nonce,
+      //   proposalId: +proposalId,
+      //   elifAmount: calculated
+      // }),
       connection
         .update(users)
         .set({ elif: sql`ROUND(${users.elif} - ${calculated}, 2)` })
         .where(eq(users.id, userId)),
       connection.update(proposals).set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower),
     ]);
-    // TODO add contract interaction
   }
   logger.info({ hasVoted });
 
@@ -285,7 +305,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
     message = e.short().message;
   }
 
-  const { userId } = await validateAndFindIdentity();
+  const { userId, wallet } = await validateAndFindIdentity();
 
   // @dev limit decimal points to 2
   const elifAmount = toDecimal(calculated);
@@ -307,9 +327,20 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
 
   logger.info({ hasEnoughBalance, raw, message });
 
+  // TODO add contract interaction in advance
+  // const { isSuccess, hash, nonce } = await txMint({ to: wallet, amount: elifAmount });
+
+  // TODO add onchain tx status guard
   if (message === 'ok' && hasEnoughBalance) {
     await connection.batch([
       connection.insert(exchanges).values({ userId, elifAmount, pointAmount }),
+
+      // TODO insert tx metadata
+      // connection.insert(onchains).values({
+      //   txHash: hash,
+      //   nonce,
+      //   elifAmount: calculated
+      // }),
       connection
         .update(users)
         .set({
