@@ -6,13 +6,19 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+
+type Proposal is uint256;
+type Voter is address;
 
 contract Elif is ERC20, ERC20Burnable, Ownable {
     using ECDSA for bytes32;
-    using MessageHashUtils for bytes32;
+    mapping(Proposal => mapping(Voter => VoteCast)) private _participants;
 
-    mapping(uint256 => address) private _participants;
+    struct VoteCast {
+        bytes32 digest;
+        bytes signature;
+        bool hasVoted;
+    }
 
     constructor() ERC20("Elif", "elif") Ownable(_msgSender()) {}
 
@@ -24,9 +30,32 @@ contract Elif is ERC20, ERC20Burnable, Ownable {
         return super._burn(account, amount);
     }
 
-    function verify(bytes32 digest, bytes memory signature) public pure returns (address) {
+    function castVote(Proposal p, Voter v, VoteCast memory vc, uint256 amount) external onlyOwner {
+        address admin = owner();
+        address signer = getRecoveredSigner(vc.digest, vc.signature);
+
+        // @dev prevent signature manipulation by admin
+        require(admin != signer, "castVote: only non-admin can vote for proposal");
+        require(balanceOf(Voter.unwrap(v)) >= amount, "castVote: not enough elif for the voter");
+        require(hasVoted(p, v) == false, "castVote: already voted for this proposal");
+        burn(Voter.unwrap(v), amount);
+        _participants[p][v] = VoteCast({digest: vc.digest, signature: vc.signature, hasVoted: true});
+    }
+
+    // ================================================================== //
+    // ============================= getter ============================= //
+    // ================================================================== //
+    function getRecoveredSigner(bytes32 digest, bytes memory signature) public pure returns (address) {
         (address signer, , ) = ECDSA.tryRecover(digest, signature);
-        require(signer != address(0), "verify: invalid signature");
+        require(signer != address(0), "getRecoveredSigner: invalid signature");
         return signer;
+    }
+
+    function getVoteCastByProposal(Proposal p, Voter v) public view returns (VoteCast memory vc) {
+        return (_participants[p][v]);
+    }
+
+    function hasVoted(Proposal p, Voter v) public view returns (bool) {
+        return getVoteCastByProposal(p, v).hasVoted;
     }
 }
