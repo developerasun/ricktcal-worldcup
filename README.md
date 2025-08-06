@@ -90,6 +90,8 @@ _데이터베이스_
 
 ## 실행/테스트 환경
 
+### web2: application
+
 _dev_
 
 nextjs 로컬 https, 프로덕션 쿠키 옵션 모킹
@@ -105,7 +107,7 @@ pnpm dev
 [next-swagger-doc](https://github.com/jellydn/next-swagger-doc), 스웨거 api 테스트
 
 ```sh
-# move to /apidoc page, unavailable on production
+# move to /apidoc page, required api key on production
 ```
 
 _stage_
@@ -155,6 +157,10 @@ pnpm db:schema
 # run schema migration
 pnpm db:remote
 ```
+
+### web3: onchain
+
+- [별도 문서화](https://github.com/developerasun/ricktcal-worldcup/blob/dev/blockchain/README.md)
 
 ## 레퍼런스
 
