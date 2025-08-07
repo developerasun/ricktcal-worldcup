@@ -1,5 +1,5 @@
 import { ABI_HELPER, HttpStatus, TRANSACTION_STATUS } from '@/constants';
-import { IElif, TxRetryOptions } from '@/types/contract';
+import { HexType, IElif, TxRetryOptions } from '@/types/contract';
 import { retry } from 'es-toolkit';
 import { JsonRpcProvider, Contract, Wallet, BigNumberish, BytesLike, parseEther, AlchemyProvider } from 'ethers';
 import { logger } from '../logger';
@@ -21,7 +21,7 @@ export class Elif {
     logger.warn('network: ', CHAIN_NETWORK.slice(0, 4));
     logger.warn('api key: ', ALCHEMY_API_ENDPOINT.slice(0, 4));
 
-    const account = privateKeyToAccount(ROOT_WALLET_PRIVATE_KEY as `0x${string}`);
+    const account = privateKeyToAccount(ROOT_WALLET_PRIVATE_KEY as HexType);
 
     const walletClient = createWalletClient({
       account,
@@ -71,57 +71,66 @@ export async function tryWithBackOff(callback: () => Promise<void>, baseDelay = 
   }
 }
 
-// export async function txCastVote({
-//   proposalId,
-//   voter,
-//   voteCast,
-//   amount,
-// }: {
-//   proposalId: number;
-//   voter: string;
-//   voteCast: {
-//     digest: BytesLike;
-//     signature: BytesLike;
-//     hasVoted: boolean;
-//   };
-//   amount: BigNumberish;
-// }) {
-//   const { elif, client } = new Elif().getInstance();
-//   let hash: null | string = null;
-//   let nonce: null | number = null;
-//   let hasTracked = false;
-
-//   const target = async () => {
-//     const safeAmount = parseEther(amount.toString());
-//     const response = await elif.write.castVote([proposalId, voter, voteCast, safeAmount]);
-//     hash = response.hash;
-//     nonce = response.nonce;
-//   };
-
-//   const { isSuccess } = await tryWithBackOff(target);
-
-//   if (isSuccess) {
-//     const track = async () => {
-//       const hasReceipt = await provider.getTransactionReceipt(hash!);
-//       if (!hasReceipt) {
-//         logger.warn(`txCastVote:track: target hash not found, throwing and retrying ...`);
-//         throw new NotFoundException('존재하지 않거나 아직 블록에 포함되지 않은 트랜잭션 해시입니다.', {
-//           code: HttpStatus.NOT_FOUND,
-//         });
-//       }
-
-//       logger.info(`txCastVote:track: hash(${hasReceipt.hash}) found with nonce(${nonce})`);
-//     };
-//     const tracking = await tryWithBackOff(track);
-//     hasTracked = tracking.isSuccess;
-//   }
-
-//   return { isSuccess, hasTracked, hash, nonce };
-// }
-
-export async function txMint({ to, amount }: { to: `0x${string}`; amount: BigNumberish }) {
+/**
+ *
+ * @dev convert `amount` to ethers format and burn from `voter` as voting power
+ */
+export async function txCastVote({
+  proposalId,
+  voter,
+  voteCast,
+  amount,
+}: {
+  proposalId: number;
+  voter: HexType;
+  voteCast: {
+    digest: HexType;
+    signature: HexType;
+    hasVoted: boolean;
+  };
+  amount: BigNumberish;
+}) {
   const { elif, publicClient } = new Elif().getInstance();
-  let hash: `0x${string}` = '0x';
+  let hash: HexType = '0x';
+  let nonce: number = -1;
+  let hasTracked = false;
+
+  const target = async () => {
+    const safeAmount = parseEther(amount.toString());
+    const safeProposalId = BigInt(proposalId);
+
+    hash = await elif.write.castVote([safeProposalId, voter, voteCast, safeAmount]);
+  };
+
+  const { isSuccess } = await tryWithBackOff(target);
+
+  if (isSuccess && hash !== '0x') {
+    const track = async () => {
+      const hasReceipt = await publicClient.getTransactionReceipt({ hash });
+      if (!hasReceipt) {
+        logger.warn(`txCastVote:track: target hash not found, throwing and retrying ...`);
+        throw new NotFoundException('존재하지 않거나 아직 블록에 포함되지 않은 트랜잭션 해시입니다.', {
+          code: HttpStatus.NOT_FOUND,
+        });
+      }
+
+      nonce = (await publicClient.getTransaction({ hash })).nonce;
+      logger.info(`txCastVote:track: hash(${hasReceipt.transactionHash}) found with nonce(${nonce})`);
+    };
+    const tracking = await tryWithBackOff(track);
+    hasTracked = tracking.isSuccess;
+  }
+
+  return { isSuccess, hasTracked, hash, nonce };
+}
+
+/**
+ *
+ * @dev convert `amount` to ethers format and mint it `to`
+ */
+export async function txMint({ to, amount }: { to: HexType; amount: BigNumberish }) {
+  const { elif, publicClient } = new Elif().getInstance();
+  let hash: HexType = '0x';
   let nonce: number = -1;
   let hasTracked = false;
 

@@ -29,42 +29,41 @@ export default async function VoterDetail({ params }: Props) {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-[30%_70%] gap-8">
         {/* left */}
-        <Card>
+        <div className="flex flex-col max-h-max justify-between">
           <TypographyH1 text="프로필" />
-          <CardHeader>
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-center items-center gap-4 border-y-2 py-4">
-                <Avatar>
-                  <AvatarImage style={{ borderRadius: '50%' }} width={50} height={50} src="/캐릭터/버터.webp" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <span>{data.user.nickname}</span>
+          <Spacer v={0.9} />
+          <Card>
+            <CardHeader>
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-center items-center gap-4 border-y-2 py-4">
+                  <Avatar>
+                    <AvatarImage style={{ borderRadius: '50%' }} width={50} height={50} src="/캐릭터/버터.webp" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <span>{data.user.nickname}</span>
+                </div>
+                <div>
+                  <CardTitle>지갑 주소</CardTitle>
+                  <CardDescription className="break-all whitespace-normal w-full">{data.user.wallet}</CardDescription>
+                </div>
+                <div>
+                  <CardTitle>포인트 보유량</CardTitle>
+                  <CardDescription>{data.user.point}</CardDescription>
+                </div>
+                <div>
+                  <CardTitle>엘리프 투표권 보유량</CardTitle>
+                  <CardDescription>{data.user.elif}</CardDescription>
+                </div>
               </div>
-              <div>
-                <CardTitle>지갑 주소</CardTitle>
-                <CardDescription className="break-all whitespace-normal w-full">{data.user.wallet}</CardDescription>
-              </div>
-              <div>
-                <CardTitle>포인트 보유량</CardTitle>
-                <CardDescription>{data.user.point}</CardDescription>
-              </div>
-              <div>
-                <CardTitle>엘리프 투표권 보유량</CardTitle>
-                <CardDescription>{data.user.elif}</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
+            </CardHeader>
+          </Card>
+        </div>
 
         {/* right */}
         <div>
           <TypographyH2 text="참여 월드컵 내역" />
           <Spacer v={1.5} />
-          {data.voteHistory.length === 0 && (
-            <>
-              <AlertEmpty message="현재 참여하고 있는 월드컵이 존재하지 않습니다." />
-            </>
-          )}
+          {data.voteHistory.length === 0 && <AlertEmpty message="현재 참여하고 있는 월드컵이 존재하지 않습니다." />}
           {data.voteHistory.map((v) => {
             return (
               <Card key={v.proposals.id}>

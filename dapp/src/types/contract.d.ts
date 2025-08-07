@@ -65,3 +65,5 @@ export interface TxRetryOptions {
    */
   signal?: AbortSignal;
 }
+
+export type HexType = `0x${string}`;

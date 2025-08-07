@@ -28,7 +28,7 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <div className="flex justify-center items-center w-full">
-      <Card className="w-3/4 sm:w-1/2">
+      <Card className="w-full sm:w-3/4 lg:w-1/2">
         <TypographyH1 text="프로필" />
         <CardHeader>
           <div className="flex flex-col gap-4">

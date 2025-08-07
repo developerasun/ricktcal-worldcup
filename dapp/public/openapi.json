@@ -57,6 +57,19 @@
         }
       }
     },
+    "/api/swagger/contract/vote": {
+      "get": {
+        "tags": [
+          "ONCHAIN"
+        ],
+        "description": "try cast vote request to alchemy node with exponential backoff retries",
+        "responses": {
+          "200": {
+            "description": "return tx hash, nonce, and request result as boolean"
+          }
+        }
+      }
+    },
     "/api/swagger/datetime": {
       "get": {
         "tags": [
