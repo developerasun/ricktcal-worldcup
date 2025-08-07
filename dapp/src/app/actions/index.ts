@@ -17,8 +17,8 @@ import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/app
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
 import { logger } from '@/server/logger';
-import { txMint } from '@/server/onchain';
-// import { txCastVote, txMint } from '@/server/onchain';
+import { txCastVote, txMint } from '@/server/onchain';
+import { HexType } from '@/types/contract';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -193,6 +193,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
       code: HttpStatus.UNAUTHORIZED,
     });
     message = e.short().message;
+    return message;
   }
   const wallet = payload!.wallet.toString();
 
@@ -206,12 +207,14 @@ export async function createVotingTransaction(prevState: string | undefined, for
   if (!hasProposal) {
     const e = new NotFoundException('존재하지 않는 안건입니다.', { code: HttpStatus.NOT_FOUND });
     message = e.short().message;
+    return message;
   }
 
   const isActiveProposal = hasProposal!.status === ProposalStatus.ACTIVE;
   if (!isActiveProposal) {
     const e = new BadRequestException('아직 투표 시작이 되지 않은 안건입니다.', { code: HttpStatus.BAD_REQUEST });
     message = e.short().message;
+    return message;
   }
 
   const hasUser = await connection.select().from(users).where(eq(users.wallet, wallet)).get();
@@ -220,6 +223,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
       code: HttpStatus.UNAUTHORIZED,
     });
     message = e.short().message;
+    return message;
   }
 
   const { id: userId, elif } = hasUser!;
@@ -231,6 +235,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
       code: HttpStatus.BAD_REQUEST,
     });
     message = e.short().message;
+    return message;
   }
 
   const hasVoted = await connection
@@ -244,6 +249,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
       code: HttpStatus.BAD_REQUEST,
     });
     message = e.short().message;
+    return message;
   }
 
   const isLeftVote = hasProposal!.leftCharacterName === voteCast;
@@ -252,37 +258,49 @@ export async function createVotingTransaction(prevState: string | undefined, for
     rightCharacterElif: sql`ROUND(${proposals.rightCharacterElif} + ${calculated}, 2)`,
   };
 
-  // TODO add contract interaction in advance
-  // const { isSuccess, hash, nonce } = await txCastVote({
-  //   proposalId: +proposalId,
-  //   voter: wallet,
-  //   voteCast: {
-  //     digest,
-  //     signature,
-  //     hasVoted: false,
-  //   },
-  //   amount: calculated,
-  // });
+  const { isSuccess, hasTracked, hash, nonce } = await txCastVote({
+    proposalId: +proposalId,
+    voter: wallet as HexType,
+    voteCast: {
+      digest: digest as HexType,
+      signature: signature as HexType,
+      hasVoted: false,
+    },
+    amount: calculated,
+  });
 
-  // TODO add onchain tx status guard
+  if (!isSuccess) {
+    const e = new BadRequestException('온체인 투표가 실패했습니다. 잠시 후 다시 시도해주세요', {
+      code: HttpStatus.BAD_REQUEST,
+    });
+    message = e.short().message;
+  }
+  if (!hasTracked) {
+    const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
+      code: HttpStatus.NOT_FOUND,
+    });
+    message = e.short().message;
+  }
+
+  logger.info({ isSuccess, hasTracked, hash, nonce });
+
   if (!hasVoted && hasEnoughElif && message === 'ok') {
     await connection.batch([
       // prettier-ignore
-      connection.insert(votes).values({ 
-        userId, 
-        proposalId: +proposalId, 
-        voteCast, 
+      connection.insert(votes).values({
+        userId,
+        proposalId: +proposalId,
+        voteCast,
         elifAmount: calculated,
         signature,
         digest
       }),
-      // TODO insert tx metadata
-      // connection.insert(onchains).values({
-      //   txHash: hash,
-      //   nonce,
-      //   proposalId: +proposalId,
-      //   elifAmount: calculated
-      // }),
+      connection.insert(onchains).values({
+        txHash: hash,
+        nonce,
+        proposalId: +proposalId,
+        elifAmount: calculated,
+      }),
       connection
         .update(users)
         .set({ elif: sql`ROUND(${users.elif} - ${calculated}, 2)` })
@@ -328,7 +346,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
 
   logger.info({ hasEnoughBalance, raw, message });
 
-  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: wallet as `0x${string}`, amount: elifAmount });
+  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: wallet as HexType, amount: elifAmount });
   if (!isSuccess) {
     const e = new BadRequestException('엘리프 발급이 실패했습니다. 잠시 후 다시 시도해주세요', {
       code: HttpStatus.BAD_REQUEST,

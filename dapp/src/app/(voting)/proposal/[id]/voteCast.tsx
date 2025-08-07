@@ -17,6 +17,7 @@ import { useAuth } from '@/app/store';
 import { LoginRequired } from '@/components/ui/intercept';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { LoadingWrapper } from '@/components/ui/spinner';
 
 interface Props {
   castList: string[];
@@ -43,6 +44,7 @@ export default function VoteCastModal({ castList }: Props) {
   return (
     <>
       <Form action={signAction} className="flex flex-col">
+        {isSignPending && <LoadingWrapper message="전자 서명 중..." />}
         <RadioGroup name="vote-cast" defaultValue={castList[0]} required>
           {castList.map((c, index) => {
             return (
@@ -69,18 +71,11 @@ export default function VoteCastModal({ castList }: Props) {
           required
         />
         <Spacer v={0.5} />
-        {pending && <Loading />}
-        {auth ? (
-          <Button type="submit" className="self-end">
+        <LoginRequired auth={auth}>
+          <Button type="submit" className="self-center sm:self-end" disabled={pending ? true : false}>
             서명 생성하기
           </Button>
-        ) : (
-          <LoginRequired>
-            <Button type="submit" className="self-end">
-              서명 생성하기
-            </Button>
-          </LoginRequired>
-        )}
+        </LoginRequired>
 
         <Spacer v={1} />
         {signState && (
@@ -107,20 +102,28 @@ export default function VoteCastModal({ castList }: Props) {
 
       {signState && (
         <Form action={voteAction} className="flex flex-col">
-          <Spacer v={1} />
+          {isVotePending && <LoadingWrapper message="투표 중..." />}
+          <Spacer v={0.25} />
           <DialogFooter>
             <input type="hidden" name="vote-cast-hidden" value={signState.payload.voteCast} />
             <input type="hidden" name="proposal-id-hidden" value={proposalId} />
             <input type="hidden" name="elif-voting-power-hidden" value={signState.payload.votingPower} />
             <input type="hidden" name="signature-hidden" value={signState.signature} />
             <input type="hidden" name="digest-hidden" value={signState.digest} />
-            <DialogClose asChild>
-              <Button variant="outline">취소하기</Button>
-            </DialogClose>
-            {voteState === 'ok' && (
+            {voteState !== 'ok' && (
               <DialogClose asChild>
-                <Button variant="ghost">나가기</Button>
+                <Button variant="outline">취소하기</Button>
               </DialogClose>
+            )}
+            {voteState === 'ok' && (
+              <>
+                <p className="opacity-70">*투표가 완료되었습니다.</p>
+                <DialogClose asChild>
+                  <Button variant={'destructive'} className="cursor-pointer">
+                    투표 창 닫기
+                  </Button>
+                </DialogClose>
+              </>
             )}
             {voteState !== 'ok' && <Button type="submit">투표하기</Button>}
           </DialogFooter>
