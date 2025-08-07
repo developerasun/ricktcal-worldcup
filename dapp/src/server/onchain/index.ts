@@ -35,7 +35,7 @@ export class Elif {
     });
 
     const elif = getContract({
-      address: ELIF_ADDRESS as `0x${string}`,
+      address: ELIF_ADDRESS,
       abi: ABI_HELPER.elif,
       client: walletClient,
     });

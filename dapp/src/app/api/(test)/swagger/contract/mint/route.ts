@@ -33,7 +33,7 @@ export async function GET(request: Request, context: any) {
   }
 
   const mintArgs = {
-    to: ROOT_WALLET_ADDRESS as `0x${string}`,
+    to: ROOT_WALLET_ADDRESS,
     amount: parseEther('1'),
   };
   const { isSuccess, hasTracked, hash, nonce } = await txMint({ ...mintArgs });
