@@ -327,20 +327,34 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
 
   logger.info({ hasEnoughBalance, raw, message });
 
-  // TODO add contract interaction in advance
-  // const { isSuccess, hash, nonce } = await txMint({ to: wallet, amount: elifAmount });
+  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: wallet, amount: elifAmount });
+  if (!isSuccess) {
+    const e = new BadRequestException('엘리프 발급이 실패했습니다. 잠시 후 다시 시도해주세요', {
+      code: HttpStatus.BAD_REQUEST,
+    });
+    message = e.short().message;
+  }
+  if (!hasTracked) {
+    const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
+      code: HttpStatus.NOT_FOUND,
+    });
+    message = e.short().message;
+  }
 
-  // TODO add onchain tx status guard
-  if (message === 'ok' && hasEnoughBalance) {
+  logger.info({ isSuccess, hasTracked, hash, nonce });
+
+  if (message === 'ok' && hasEnoughBalance && isSuccess && hasTracked) {
+    // @dev get insert id first
+    const exchangeRow = await connection.insert(exchanges).values({ userId, elifAmount, pointAmount });
+
+    // @dev run rest atomically
     await connection.batch([
-      connection.insert(exchanges).values({ userId, elifAmount, pointAmount }),
-
-      // TODO insert tx metadata
-      // connection.insert(onchains).values({
-      //   txHash: hash,
-      //   nonce,
-      //   elifAmount: calculated
-      // }),
+      connection.insert(onchains).values({
+        txHash: hash,
+        nonce,
+        elifAmount: calculated,
+        exchangeId: exchangeRow.meta.last_row_id,
+      }),
       connection
         .update(users)
         .set({
