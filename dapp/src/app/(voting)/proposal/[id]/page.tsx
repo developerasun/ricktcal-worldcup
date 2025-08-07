@@ -255,7 +255,7 @@ export default async function ProposalPage({ params }: Props) {
             <CardContent className="flex flex-col gap-2">
               <Accordion type="single" collapsible className="flex flex-col gap-4">
                 <AccordionItem value="item-1" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>엘리프가 없어요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>
@@ -265,7 +265,7 @@ export default async function ProposalPage({ params }: Props) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>포인트가 없어요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>
@@ -275,7 +275,7 @@ export default async function ProposalPage({ params }: Props) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>전자 서명이 뭔가요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>
@@ -286,7 +286,7 @@ export default async function ProposalPage({ params }: Props) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>투표를 잘못했어요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>
@@ -295,16 +295,16 @@ export default async function ProposalPage({ params }: Props) {
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>가스비는 누가 내나요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>
                   <AccordionContent className="mt-3 opacity-70">
-                    서버에서 냅니다. 교주님들은 가스비를 신경쓰지 않으셔도 됩니다.
+                    서버에서 냅니다. 교주님들은 가스비를 따로 지불하지 않습니다.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-6" className="p-2 border-y-1">
-                  <AccordionTrigger className="w-full flex justify-between gap-2">
+                  <AccordionTrigger className="cursor-pointer w-full flex justify-between gap-2">
                     <span>결과는 언제 나오나요</span>
                     <IconDown className="w-5 h-5" />
                   </AccordionTrigger>

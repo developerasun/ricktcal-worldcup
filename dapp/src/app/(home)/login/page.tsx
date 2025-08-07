@@ -13,7 +13,18 @@ export default function SignIn({}: Props) {
   const [state, formAction, isPending] = useActionState(recoverAndSignIn, undefined);
 
   return (
-    <div>
+    <div
+      className="w-3/4 sm:w-auto"
+      style={{
+        border: '1px solid white',
+        borderRadius: '15px',
+        padding: '1.5rem',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
       <TypographyH1 text={'지갑으로 시작하기'} />
       <Spacer v={1.5} />
       <Form action={formAction}>
