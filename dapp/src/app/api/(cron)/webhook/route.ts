@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   const endings = await connection
     .select({ id: proposals.id, endAt: proposals.endAt })
     .from(proposals)
-    .where(eq(proposals.endAt, today));
+    .where(and(eq(proposals.endAt, today), eq(proposals.status, ProposalStatus.ACTIVE)));
 
   // @dev early return for less db ops
   if (pendings.length === 0 && endings.length === 0) {
