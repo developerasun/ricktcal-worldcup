@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { useFormStatus } from 'react-dom';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useRouter } from 'next/navigation';
+import { LoadingWrapper } from '@/components/ui/spinner';
 
 interface Props {
   balanceOrMessage: string | Omit<IVoter, 'id'>;
@@ -28,7 +29,7 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
   const [isCheekPullingDrag, setIsCheekPullingDrag] = useState(false);
   const [isHeadpatDrag, setIsHeadpatDrag] = useState(false);
 
-  const [state, formAction] = useActionState(exchangePointToElif, undefined);
+  const [state, formAction, isPending] = useActionState(exchangePointToElif, undefined);
   const { pending } = useFormStatus();
   const [elifAmount, setElifAmount] = useState(0);
   const [pointToExchange, setPointToExchange] = useState(0);
@@ -116,16 +117,18 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
           <p className="opacity-70 text-center">현재 보유 엘리프 수량: {balanceOrMessage.elif}</p>
         </>
       )}
-      <Spacer v={1.5} />
+      <Spacer v={1} />
 
       {/* point exchange */}
       <LoginRequired auth={auth} message="로그인하고 교환하기">
         <Form action={formAction}>
+          {isPending && <LoadingWrapper message="처리 중..." />}
           <Input
             onChange={(v) => {
               setPointToExchange(+v.currentTarget.value);
               setElifAmount(+v.currentTarget.value / POINT_RATE.elif);
             }}
+            required
             className="w-full max-w-md m-auto"
             name="point"
             placeholder="포인트 수량을 입력하세요"
