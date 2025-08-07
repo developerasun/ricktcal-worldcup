@@ -6,11 +6,11 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "ricktcal-worldcup",
 	"main": ".open-next/worker.js",
-	"compatibility_date": "2025-08-15",
+	"compatibility_date": "2025-03-01",
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public",
-		"enable_nodejs_http_modules"
+		// "enable_nodejs_http_modules"
 	],
 	"assets": {
 		"binding": "ASSETS",
