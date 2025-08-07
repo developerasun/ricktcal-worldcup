@@ -25,7 +25,7 @@
 
 <div align="center">
 
-<img src="./docs/3.png" width="49%" height="275"/>
+<img src="./docs/3.png" width="49%" height="600"/>
 <img src="./docs/4.png" width="49%" height="275"/>
 
 </div>
