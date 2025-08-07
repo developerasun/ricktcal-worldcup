@@ -1,7 +1,7 @@
 import { HttpStatus } from '@/constants';
-import { getConnection, users } from '@/server/database/schema';
+import { getConnection, onchains, proposals, users, votes } from '@/server/database/schema';
 import { NotFoundException } from '@/server/error';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest, context: { params: Promise<{ wallet: string }> }) {
@@ -16,5 +16,16 @@ export async function GET(request: NextRequest, context: { params: Promise<{ wal
     message = e.short().message;
   }
 
-  return NextResponse.json(message ? message : hasUser!);
+  const _propsoalIds = await connection
+    .select({ propsoalId: votes.proposalId })
+    .from(votes)
+    .where(eq(votes.userId, hasUser!.id));
+  const propsoalIds = _propsoalIds.map((p) => p.propsoalId);
+  const _hashes = await connection
+    .select({ hash: onchains.txHash })
+    .from(onchains)
+    .where(inArray(onchains.proposalId, propsoalIds));
+  const hashes = _hashes.map((h) => h.hash);
+
+  return NextResponse.json(message ? message : { user: hasUser!, hashes });
 }
