@@ -1,7 +1,7 @@
 import { ABI_HELPER, HttpStatus, TRANSACTION_STATUS } from '@/constants';
 import { IElif, TxRetryOptions } from '@/types/contract';
 import { retry } from 'es-toolkit';
-import { JsonRpcProvider, Contract, Wallet, BigNumberish, BytesLike, parseEther } from 'ethers';
+import { JsonRpcProvider, Contract, Wallet, BigNumberish, BytesLike, parseEther, AlchemyProvider } from 'ethers';
 import { logger } from '../logger';
 import { NotFoundException } from '../error';
 
@@ -10,7 +10,14 @@ export class Elif {
 
   private init() {
     const { ELIF_ADDRESS, ALCHEMY_API_ENDPOINT, CHAIN_NETWORK, ROOT_WALLET_PRIVATE_KEY } = process.env;
-    const provider = new JsonRpcProvider(ALCHEMY_API_ENDPOINT, CHAIN_NETWORK);
+
+    if (!ALCHEMY_API_ENDPOINT) {
+      logger.warn('key: ', ALCHEMY_API_ENDPOINT.slice(0, 4));
+      throw new NotFoundException('invalid alchemy api key');
+    }
+    logger.warn('network: ', CHAIN_NETWORK.slice(0, 4));
+
+    const provider = new AlchemyProvider(CHAIN_NETWORK, ALCHEMY_API_ENDPOINT);
     const wallet = new Wallet(ROOT_WALLET_PRIVATE_KEY, provider);
     const elif = new Contract(ELIF_ADDRESS, ABI_HELPER.elif, wallet) as Contract & IElif;
 
