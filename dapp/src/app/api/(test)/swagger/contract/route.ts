@@ -46,7 +46,7 @@ export async function GET(request: Request, context: any) {
     }
 
     // 성공 로직
-    tokenName = await elif.name();
+    tokenName = await elif.read.name();
     logger.info('done');
   };
 
