@@ -1,5 +1,6 @@
 import { HttpStatus } from '@/constants';
 import { ForbiddenException } from '@/server/error';
+import { logger } from '@/server/logger';
 import { txMint } from '@/server/onchain';
 import { parseEther } from 'ethers';
 import { NextResponse } from 'next/server';
@@ -30,6 +31,9 @@ export async function GET(request: Request, context: any) {
     }
   }
 
-  const { isSuccess, hash, nonce } = await txMint({ to: ROOT_WALLET_ADDRESS, amount: parseEther('1') });
-  return Response.json({ isSuccess, hash, nonce });
+  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: ROOT_WALLET_ADDRESS, amount: parseEther('1') });
+  if (hasTracked) {
+    logger.info(`tracking done, safe to store hash and nonce now`);
+  }
+  return Response.json({ isSuccess, hash, nonce, hasTracked });
 }
