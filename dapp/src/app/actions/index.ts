@@ -17,7 +17,7 @@ import { IAccountCredentials, IVoteSignPayload, VoteCastType } from '@/types/app
 import { nanoid } from 'nanoid';
 import { BadRequestException, NotFoundException, UnAuthorizedException } from '@/server/error';
 import { logger } from '@/server/logger';
-import { txCastVote, txMint } from '@/server/onchain';
+// import { txCastVote, txMint } from '@/server/onchain';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const { address, mnemonic } = Wallet.createRandom();
@@ -327,34 +327,34 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
 
   logger.info({ hasEnoughBalance, raw, message });
 
-  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: wallet, amount: elifAmount });
-  if (!isSuccess) {
-    const e = new BadRequestException('엘리프 발급이 실패했습니다. 잠시 후 다시 시도해주세요', {
-      code: HttpStatus.BAD_REQUEST,
-    });
-    message = e.short().message;
-  }
-  if (!hasTracked) {
-    const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
-      code: HttpStatus.NOT_FOUND,
-    });
-    message = e.short().message;
-  }
+  // const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: wallet, amount: elifAmount });
+  // if (!isSuccess) {
+  //   const e = new BadRequestException('엘리프 발급이 실패했습니다. 잠시 후 다시 시도해주세요', {
+  //     code: HttpStatus.BAD_REQUEST,
+  //   });
+  //   message = e.short().message;
+  // }
+  // if (!hasTracked) {
+  //   const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
+  //     code: HttpStatus.NOT_FOUND,
+  //   });
+  //   message = e.short().message;
+  // }
 
-  logger.info({ isSuccess, hasTracked, hash, nonce });
+  // logger.info({ isSuccess, hasTracked, hash, nonce });
 
-  if (message === 'ok' && hasEnoughBalance && isSuccess && hasTracked) {
+  if (message === 'ok' && hasEnoughBalance) {
     // @dev get insert id first
     const exchangeRow = await connection.insert(exchanges).values({ userId, elifAmount, pointAmount });
 
     // @dev run rest atomically
     await connection.batch([
-      connection.insert(onchains).values({
-        txHash: hash,
-        nonce,
-        elifAmount: calculated,
-        exchangeId: exchangeRow.meta.last_row_id,
-      }),
+      // connection.insert(onchains).values({
+      //   txHash: hash,
+      //   nonce,
+      //   elifAmount: calculated,
+      //   exchangeId: exchangeRow.meta.last_row_id,
+      // }),
       connection
         .update(users)
         .set({

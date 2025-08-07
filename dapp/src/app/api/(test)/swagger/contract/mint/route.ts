@@ -1,7 +1,8 @@
 import { HttpStatus } from '@/constants';
 import { ForbiddenException } from '@/server/error';
 import { logger } from '@/server/logger';
-import { txMint } from '@/server/onchain';
+import { Elif } from '@/server/onchain';
+// import { txMint } from '@/server/onchain';
 import { parseEther } from 'ethers';
 import { NextResponse } from 'next/server';
 
@@ -19,21 +20,20 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request, context: any) {
   const { NODE_ENV, ROOT_WALLET_ADDRESS } = process.env;
 
-  if (NODE_ENV === 'production') {
-    const { BEARER_TOKEN } = process.env;
-    const token = request.headers.get('authorization')?.split(' ').pop();
-    const isValid = BEARER_TOKEN === token;
+  // if (NODE_ENV === 'production') {
+  //   const { BEARER_TOKEN } = process.env;
+  //   const token = request.headers.get('authorization')?.split(' ').pop();
+  //   const isValid = BEARER_TOKEN === token;
 
-    if (!token || !isValid) {
-      const e = new ForbiddenException('유효하지 않은 api 키입니다.', { code: HttpStatus.FORBIDDEN });
-      const response = e.short();
-      return NextResponse.json(response);
-    }
-  }
+  //   if (!token || !isValid) {
+  //     const e = new ForbiddenException('유효하지 않은 api 키입니다.', { code: HttpStatus.FORBIDDEN });
+  //     const response = e.short();
+  //     return NextResponse.json(response);
+  //   }
+  // }
 
-  const { isSuccess, hasTracked, hash, nonce } = await txMint({ to: ROOT_WALLET_ADDRESS, amount: parseEther('1') });
-  if (hasTracked) {
-    logger.info(`tracking done, safe to store hash and nonce now`);
-  }
-  return Response.json({ isSuccess, hash, nonce, hasTracked });
+  const { elif } = new Elif().getInstance();
+  const symbol = await elif.read.symbol();
+
+  return Response.json({ message: 'ok', symbol });
 }
