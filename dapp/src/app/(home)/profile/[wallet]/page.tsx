@@ -135,7 +135,7 @@ export default async function ProfilePage({ params }: Props) {
             </AccordionItem>
           </Accordion>
           <Spacer v={1.5} />
-          {hashes.length === 0 && <AlertEmpty message="현재 참여하고 있는 월드컵이 존재하지 않습니다." />}
+          {hashes.length === 0 && <AlertEmpty message="현재 제출하신 월드컵 투표가 존재하지 않습니다." />}
           {hashes.map((h, index) => {
             return (
               <Card key={index}>
