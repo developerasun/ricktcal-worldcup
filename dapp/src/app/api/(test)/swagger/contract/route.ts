@@ -37,7 +37,7 @@ export async function GET(request: Request, context: any) {
 
   // @dev should not use try-catch inside callback since retry detects throw for retry
   const callback = async () => {
-    const target = 5;
+    const target = 3;
     attempt += 1;
 
     if (attempt !== target) {
