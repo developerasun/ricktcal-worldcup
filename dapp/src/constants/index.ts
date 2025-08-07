@@ -12,6 +12,7 @@ export {
   PointClaimAction,
   HttpStatus,
   ABI_HELPER,
+  TRANSACTION_STATUS,
 };
 
 const ADJECTIVES = [
@@ -830,6 +831,11 @@ const ABI_HELPER = {
     'function transferFrom(address from, address to, uint256 value) returns (bool)',
     'function transferOwnership(address newOwner)',
   ],
+} as const;
+
+const TRANSACTION_STATUS = {
+  success: 1,
+  failure: 0,
 } as const;
 
 // ================================================================== //

@@ -128,7 +128,7 @@ export function fromUTC() {
  * @param precision how many decimals, default is 2
  * @returns e.g 3.14, number
  */
-export function toDecimal(target: number, precision: number = 2) {
+export function toDecimal(target: number, precision: number = 2): number {
   const points = 10 ** precision;
   return Math.round(target * points) / points;
 }

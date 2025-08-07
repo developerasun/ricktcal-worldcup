@@ -24,14 +24,14 @@ class HttpException extends Error {
     };
   };
 
-  full() {
+  full = () => {
     const _ = this.short();
     return {
       ..._,
       stack: this.stack,
       cause: this.cause,
     };
-  }
+  };
 }
 
 export class UnAuthorizedException extends HttpException {
@@ -53,6 +53,12 @@ export class NotFoundException extends HttpException {
 }
 
 export class ForbiddenException extends HttpException {
+  constructor(message?: string, options?: IHttpExceptionOptions) {
+    super(message, options);
+  }
+}
+
+export class PartialException extends HttpException {
   constructor(message?: string, options?: IHttpExceptionOptions) {
     super(message, options);
   }
