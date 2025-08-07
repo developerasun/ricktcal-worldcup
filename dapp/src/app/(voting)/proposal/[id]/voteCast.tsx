@@ -23,8 +23,8 @@ interface Props {
 }
 
 export default function VoteCastModal({ castList }: Props) {
-  const [signState, signAction] = useActionState(createNewVoteWithSignature, undefined);
-  const [voteState, voteAction] = useActionState(createVotingTransaction, undefined);
+  const [signState, signAction, isSignPending] = useActionState(createNewVoteWithSignature, undefined);
+  const [voteState, voteAction, isVotePending] = useActionState(createVotingTransaction, undefined);
 
   const { pending } = useFormStatus();
   const { auth } = useAuth();

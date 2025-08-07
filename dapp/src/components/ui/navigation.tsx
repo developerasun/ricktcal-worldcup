@@ -32,7 +32,7 @@ interface Props {
 export default function Navigation({ children }: Props) {
   const { setTheme } = useTheme();
   const [isDark, setIsDark] = useState(true);
-  const [state, formAction] = useActionState(generateWallet, undefined);
+  const [state, formAction, isPending] = useActionState(generateWallet, undefined);
   const [isNewUser, setIsNewUser] = useState(false);
 
   const { auth } = useAuth();

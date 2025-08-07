@@ -10,7 +10,7 @@ import { TypographyH1 } from '@/components/ui/typography';
 interface Props {}
 
 export default function SignIn({}: Props) {
-  const [state, formAction] = useActionState(recoverAndSignIn, undefined);
+  const [state, formAction, isPending] = useActionState(recoverAndSignIn, undefined);
 
   return (
     <div>

@@ -8,7 +8,7 @@ import React, { useActionState, useEffect } from 'react';
 interface Props {}
 
 export default function LogOutComponent({}: Props) {
-  const [state, formAction] = useActionState(clearAndLogOut, undefined);
+  const [state, formAction, isPending] = useActionState(clearAndLogOut, undefined);
 
   return (
     <Form action={formAction}>

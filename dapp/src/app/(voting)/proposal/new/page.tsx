@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 interface Props {}
 
 export default function NewProposalPage({}: Props) {
-  const [state, formAction] = useActionState(createNewProposal, undefined);
+  const [state, formAction, isPending] = useActionState(createNewProposal, undefined);
   const [leftCharacter, setLeftCharacter] = useState<VoteCastType>('버터');
   const [rightCharacter, setRightCharacter] = useState<VoteCastType>('코미');
 

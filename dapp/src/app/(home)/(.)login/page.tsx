@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 interface Props {}
 
 export default function SignIn({}: Props) {
-  const [state, formAction] = useActionState(recoverAndSignIn, undefined);
+  const [state, formAction, isPending] = useActionState(recoverAndSignIn, undefined);
   const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
