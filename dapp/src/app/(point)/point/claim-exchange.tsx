@@ -137,7 +137,7 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
           />
           <Input className="w-full max-w-md m-auto" name="elif" type="text" value={`${elifAmount} elif`} disabled />
           {state && state !== 'ok' && (
-            <Alert variant="destructive">
+            <Alert className="w-full max-w-md m-auto" variant="destructive">
               <AlertTitle>포인트 교환에 실패하셨습니다.</AlertTitle>
               <AlertDescription>{state}</AlertDescription>
             </Alert>

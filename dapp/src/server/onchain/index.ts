@@ -16,8 +16,9 @@ export class Elif {
       throw new NotFoundException('invalid alchemy api key');
     }
     logger.warn('network: ', CHAIN_NETWORK.slice(0, 4));
+    logger.warn('api key: ', ALCHEMY_API_ENDPOINT.slice(0, 4));
 
-    const provider = new AlchemyProvider(CHAIN_NETWORK, ALCHEMY_API_ENDPOINT);
+    const provider = new JsonRpcProvider(ALCHEMY_API_ENDPOINT);
     const wallet = new Wallet(ROOT_WALLET_PRIVATE_KEY, provider);
     const elif = new Contract(ELIF_ADDRESS, ABI_HELPER.elif, wallet) as Contract & IElif;
 
