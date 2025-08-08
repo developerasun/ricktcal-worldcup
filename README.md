@@ -137,6 +137,12 @@ pnpm dev
 # move to /apidoc page, required api key on production
 ```
 
+<div align="center">
+
+<img src="./blockchain//docs/5.png" width="90%" height="600"/>
+
+</div>
+
 데이터베이스 마이그레이션(로컬 sqlite3 파일 생성 및 싱크)
 
 ```sh
