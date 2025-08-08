@@ -234,8 +234,8 @@ export default async function ProposalPage({ params }: Props) {
                 <DialogTrigger className="bg-primary text-primary-foreground hover:bg-primary/90 p-2 rounded-md transition font-bold">
                   나도 투표하기
                 </DialogTrigger>
-                <DialogContent className="max-h-[80vh] overflow-y-auto overflow-x-hidden">
-                  <DialogHeader>
+                <DialogContent className="w-full max-h-[80vh] overflow-y-auto overflow-x-auto sm:overflow-x-hidden">
+                  <DialogHeader className="max-w-[75vw]">
                     <DialogTitle className="text-center">전자 서명 요청</DialogTitle>
                     <DialogDescription className="text-center">
                       교주님이 이 지갑을 소유하고 있음을 확인하기 위해 <br />

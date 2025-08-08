@@ -79,9 +79,9 @@ export default function VoteCastModal({ castList }: Props) {
 
         <Spacer v={1} />
         {signState && (
-          <div className="p-6 border border-gray-300 rounded-md">
+          <div className="w-full p-6 border border-gray-300 rounded-md">
             <TypographyH2 text="전자 영수증" />
-            <ol className="flex flex-col gap-1 text-left">
+            <ol className="flex flex-col gap-1 text-left break-all md:break-normal">
               <li>요청자: {signState.payload.issuer}</li>
               <li>서명자: {signState.payload.signer?.toString()}</li>
               <li>URL: {signState.payload.url}</li>
@@ -117,12 +117,14 @@ export default function VoteCastModal({ castList }: Props) {
             )}
             {voteState === 'ok' && (
               <>
-                <p className="opacity-70">*투표가 완료되었습니다.</p>
-                <DialogClose asChild>
-                  <Button variant={'destructive'} className="cursor-pointer">
-                    투표 창 닫기
-                  </Button>
-                </DialogClose>
+                <div className="flex justify-center items-center gap-2">
+                  <p className="opacity-70">*투표가 완료되었습니다.</p>
+                  <DialogClose asChild>
+                    <Button variant={'destructive'} className="cursor-pointer">
+                      투표 창 닫기
+                    </Button>
+                  </DialogClose>
+                </div>
               </>
             )}
             {voteState !== 'ok' && <Button type="submit">투표하기</Button>}
