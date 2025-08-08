@@ -43,3 +43,5 @@ next-env.d.ts
 .dev.vars*
 
 certificates
+
+src/server/database/backup/**/*.sql

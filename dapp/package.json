@@ -13,7 +13,19 @@
     "gen:type": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "db:schema": "pnpm exec drizzle-kit generate",
     "db:local": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/migrations/0007_melodic_matthew_murdock.sql",
-    "db:remote": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/migrations/0007_melodic_matthew_murdock.sql"
+    "db:local:backup:schema": "wrangler d1 export ricktcal-db --local --output=./src/server/database/backup/local/schema.sql --no-data",
+    "db:local:backup:data": "wrangler d1 export ricktcal-db --local --output=./src/server/database/backup/local/data.sql --no-schema",
+    "db:local:backup": "pnpm db:local:backup:schema && pnpm db:local:backup:data",
+    "db:local:restore:schema": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/backup/local/schema.sql",
+    "db:local:restore:data": "wrangler d1 execute ricktcal-db --local --file=./src/server/database/backup/local/data.sql",
+    "db:local:restore": "pnpm db:local:restore:schema && pnpm db:local:restore:data",
+    "db:remote": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/migrations/0007_melodic_matthew_murdock.sql",
+    "db:remote:backup:schema": "wrangler d1 export ricktcal-db --remote --output=./src/server/database/backup/remote/schema.sql --no-data",
+    "db:remote:backup:data": "wrangler d1 export ricktcal-db --remote --output=./src/server/database/backup/remote/data.sql --no-schema",
+    "db:remote:backup": "pnpm db:remote:backup:schema && pnpm db:remote:backup:data",
+    "db:remote:restore:schema": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/backup/remote/schema.sql",
+    "db:remote:restore:data": "wrangler d1 execute ricktcal-db --remote --file=./src/server/database/backup/remote/data.sql",
+    "db:remote:restore": "pnpm db:remote:restore:schema && pnpm db:remote:restore:data"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.5.3",
