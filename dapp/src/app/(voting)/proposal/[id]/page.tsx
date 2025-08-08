@@ -54,7 +54,7 @@ export default async function ProposalPage({ params }: Props) {
     data.proposal.leftCharacterElif > data.proposal.rightCharacterElif
       ? data.proposal.leftCharacterName
       : data.proposal.rightCharacterName;
-  const votingPowerDifference = Math.abs(data.proposal.leftCharacterElif - data.proposal.rightCharacterElif);
+  const votingPowerDifference = Math.abs(data.proposal.leftCharacterElif - data.proposal.rightCharacterElif).toFixed(2);
 
   return (
     <>
