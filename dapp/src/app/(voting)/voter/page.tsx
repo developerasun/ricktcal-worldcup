@@ -45,14 +45,18 @@ export default async function VotersPage({}: Props) {
               <CardHeader>
                 <Link href={`voter/${d.id}`}>
                   <div className="flex flex-col gap-2">
-                    <Avatar>
-                      <AvatarImage src="/캐릭터/버터.webp" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <CardTitle>유저 네임</CardTitle>
-                      <CardDescription>{d.nickname}</CardDescription>
-                    </div>
+                    <ul className="flex flex-col items-center gap-2">
+                      <li>
+                        <Avatar className="w-16 h-16 m-auto">
+                          <AvatarImage
+                            className="border-3 border-orange-200 bg-white rounded-full"
+                            src="/브랜드/교주.webp"
+                          />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </li>
+                      <li>{d.nickname}</li>
+                    </ul>
                     <div>
                       <CardTitle>포인트 보유량</CardTitle>
                       <CardDescription>{d.point}</CardDescription>
@@ -67,7 +71,6 @@ export default async function VotersPage({}: Props) {
                     </div>
                   </div>
                 </Link>
-                {/* <CardAction>temp</CardAction> */}
               </CardHeader>
             </Card>
           );

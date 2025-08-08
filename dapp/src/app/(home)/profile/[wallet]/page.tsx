@@ -53,8 +53,8 @@ export default async function ProfilePage({ params }: Props) {
             <CardHeader>
               <div className="flex flex-col gap-4">
                 <div className="flex justify-center items-center gap-4 border-y-2 py-4">
-                  <Avatar>
-                    <AvatarImage style={{ borderRadius: '50%' }} width={50} height={50} src="/캐릭터/버터.webp" />
+                  <Avatar className="w-16 h-16 border-3 border-orange-200 bg-white rounded-full">
+                    <AvatarImage src="/브랜드/교주.webp" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <span>{user.nickname}</span>
