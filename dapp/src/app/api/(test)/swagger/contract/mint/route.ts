@@ -34,7 +34,7 @@ export async function GET(request: Request, context: any) {
   const signer = '0x709974eD57E06F78B081D7ccbB47ed598C051356' as HexType;
   const mintArgs = {
     to: signer,
-    amount: parseEther('50'),
+    amount: 1.44,
   };
   const { isSuccess, hasTracked, hash, nonce } = await txMint({ ...mintArgs });
 
