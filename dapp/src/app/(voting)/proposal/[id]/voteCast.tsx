@@ -118,7 +118,7 @@ export default function VoteCastModal({ castList }: Props) {
             {voteState === 'ok' && (
               <>
                 <div className="flex justify-center items-center gap-2">
-                  <p className="opacity-70">*투표가 완료되었습니다.</p>
+                  <p className="opacity-70 text-sm">*투표가 완료되었습니다.</p>
                   <DialogClose asChild>
                     <Button variant={'destructive'} className="cursor-pointer">
                       투표 창 닫기
