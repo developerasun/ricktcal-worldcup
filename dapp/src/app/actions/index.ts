@@ -1,7 +1,16 @@
 'use server';
 import { AddressLike, Wallet, ZeroAddress } from 'ethers';
-import { ADJECTIVES, BRAND_NAME, COOKIE_NAME, HEROS, HttpStatus, POINT_RATE, ProposalStatus } from '@/constants/index';
-import { exchanges, getConnection, onchains, proposals, users, votes } from '@/server/database/schema';
+import {
+  ADJECTIVES,
+  BRAND_NAME,
+  COOKIE_NAME,
+  HEROS,
+  HttpStatus,
+  PendingOnchainAction,
+  POINT_RATE,
+  ProposalStatus,
+} from '@/constants/index';
+import { exchanges, getConnection, onchains, pendings, proposals, users, votes } from '@/server/database/schema';
 import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -276,12 +285,32 @@ export async function createVotingTransaction(prevState: string | undefined, for
       code: HttpStatus.BAD_REQUEST,
     });
     message = e.short().message;
+    return message;
   }
+
+  // @dev if not able to sync tx within retries, toss it to batch cron
   if (!hasTracked) {
-    const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
-      code: HttpStatus.NOT_FOUND,
+    await connection.insert(pendings).values({
+      txHash: hash,
+      nonce,
+      userId,
+      proposalId: +proposalId,
+      elifAmount: calculated,
+      action: PendingOnchainAction.VOTE,
+      voteCast,
+      digest,
+      signature,
+      isLeftVote: isLeftVote ? 'true' : 'false',
     });
+
+    const e = new NotFoundException(
+      '네트워크에서 트랜잭션 해시를 찾을 수 없습니다. 서버에서 일정 간격으로 추적한 후 자동으로 잔고가 업데이트 됩니다.',
+      {
+        code: HttpStatus.NOT_FOUND,
+      }
+    );
     message = e.short().message;
+    return message;
   }
 
   logger.info({ isSuccess, hasTracked, hash, nonce });
@@ -307,7 +336,10 @@ export async function createVotingTransaction(prevState: string | undefined, for
         .update(users)
         .set({ elif: sql`ROUND(${users.elif} - ${calculated}, 2)` })
         .where(eq(users.id, userId)),
-      connection.update(proposals).set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower),
+      connection
+        .update(proposals)
+        .set(isLeftVote ? increaseLeftVotingPower : increaseRightVotingPower)
+        .where(eq(proposals.id, +proposalId)),
     ]);
   }
   logger.info({ hasVoted });
@@ -324,6 +356,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
   if (calculated > Number.MAX_SAFE_INTEGER) {
     const e = new BadRequestException('범위에서 벗어난 교환 비율입니다', { code: HttpStatus.BAD_REQUEST });
     message = e.short().message;
+    return message;
   }
 
   const { userId, wallet } = await validateAndFindIdentity();
@@ -338,12 +371,14 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
   if (!raw) {
     const e = new NotFoundException('존재하지 않는 유저입니다', { code: HttpStatus.NOT_FOUND });
     message = e.short().message;
+    return message;
   }
 
   const hasEnoughBalance = raw!.balance >= pointAmount;
   if (!hasEnoughBalance) {
     const e = new BadRequestException('교환할 포인트 수량이 부족합니다', { code: HttpStatus.BAD_REQUEST });
     message = e.short().message;
+    return message;
   }
 
   logger.info({ hasEnoughBalance, raw, message });
@@ -354,12 +389,30 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
       code: HttpStatus.BAD_REQUEST,
     });
     message = e.short().message;
+    return message;
   }
+
+  // @dev if not able to sync tx within retries, toss it to batch cron
   if (!hasTracked) {
-    const e = new NotFoundException('온체인 트랜잭션 해시를 찾을 수 없습니다. 잠시 후 다시 시도해주세요', {
-      code: HttpStatus.NOT_FOUND,
+    const exchangeRow = await connection.insert(exchanges).values({ userId, elifAmount, pointAmount });
+    await connection.insert(pendings).values({
+      txHash: hash,
+      nonce,
+      userId,
+      exchangeId: exchangeRow.meta.last_row_id,
+      elifAmount: calculated,
+      pointAmount,
+      action: PendingOnchainAction.EXCHANGE,
     });
+
+    const e = new NotFoundException(
+      '네트워크에서 트랜잭션 해시를 찾을 수 없습니다. 서버에서 일정 간격으로 추적한 후 자동으로 잔고가 업데이트 됩니다.',
+      {
+        code: HttpStatus.NOT_FOUND,
+      }
+    );
     message = e.short().message;
+    return message;
   }
 
   logger.info({ isSuccess, hasTracked, hash, nonce });
@@ -373,7 +426,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
       connection.insert(onchains).values({
         txHash: hash,
         nonce,
-        elifAmount: calculated,
+        elifAmount,
         exchangeId: exchangeRow.meta.last_row_id,
       }),
       connection
