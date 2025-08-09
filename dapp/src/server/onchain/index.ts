@@ -1,11 +1,11 @@
 import { ABI_HELPER, HttpStatus, TRANSACTION_STATUS } from '@/constants';
-import { HexType, IElif, TxRetryOptions } from '@/types/contract';
+import { HexType, TxRetryOptions } from '@/types/contract';
 import { retry } from 'es-toolkit';
-import { JsonRpcProvider, Contract, Wallet, BigNumberish, BytesLike, parseEther, AlchemyProvider } from 'ethers';
+import { BigNumberish, parseEther } from 'ethers';
 import { logger } from '../logger';
 import { NotFoundException } from '../error';
 import { privateKeyToAccount } from 'viem/accounts';
-import { http, createWalletClient, createPublicClient, getContract, Abi } from 'viem';
+import { http, createWalletClient, publicActions, getContract, defineChain, FeeValuesEIP1559, parseUnits } from 'viem';
 import { sepolia } from 'viem/chains';
 
 export class Elif {
@@ -22,25 +22,36 @@ export class Elif {
     logger.warn('api key: ', ALCHEMY_API_ENDPOINT.slice(0, 4));
 
     const account = privateKeyToAccount(ROOT_WALLET_PRIVATE_KEY as HexType);
-
-    const walletClient = createWalletClient({
+    const client = createWalletClient({
       account,
-      chain: sepolia,
-      transport: http(ALCHEMY_API_ENDPOINT),
-    });
+      chain: defineChain({
+        ...sepolia,
+        // @dev contorl gas options for eip-1559 compatible chain
+        fees: {
+          baseFeeMultiplier: 2, // @dev set 100% premium for faster execution
+          estimateFeesPerGas: async ({ block, multiply }) => {
+            const baseFee = block.baseFeePerGas ?? 0n;
+            const gweiDecimals = 9;
+            const maxPriorityFeePerGas = parseUnits('2', gweiDecimals); // block producer tip, typically 1~3 gwei
 
-    const publicClient = createPublicClient({
-      chain: sepolia,
+            return {
+              // @dev maxFeePerGas must be greater or equal to maxPriorityFeePerGas
+              maxFeePerGas: multiply(baseFee) + maxPriorityFeePerGas,
+              maxPriorityFeePerGas,
+            };
+          },
+        },
+      }),
       transport: http(ALCHEMY_API_ENDPOINT),
-    });
+    }).extend(publicActions);
 
     const elif = getContract({
       address: ELIF_ADDRESS,
       abi: ABI_HELPER.elif,
-      client: walletClient,
+      client,
     });
 
-    return { elif, walletClient, publicClient };
+    return { elif, client };
   }
 
   getInstance() {
@@ -90,7 +101,7 @@ export async function txCastVote({
   };
   amount: BigNumberish;
 }) {
-  const { elif, publicClient } = new Elif().getInstance();
+  const { elif, client } = new Elif().getInstance();
   let hash: HexType = '0x';
   let nonce: number = -1;
   let hasTracked = false;
@@ -106,7 +117,7 @@ export async function txCastVote({
 
   if (isSuccess && hash !== '0x') {
     const track = async () => {
-      const hasReceipt = await publicClient.getTransactionReceipt({ hash });
+      const hasReceipt = await client.getTransactionReceipt({ hash });
       if (!hasReceipt) {
         logger.warn(`txCastVote:track: target hash not found, throwing and retrying ...`);
         throw new NotFoundException('존재하지 않거나 아직 블록에 포함되지 않은 트랜잭션 해시입니다.', {
@@ -114,7 +125,7 @@ export async function txCastVote({
         });
       }
 
-      nonce = (await publicClient.getTransaction({ hash })).nonce;
+      nonce = (await client.getTransaction({ hash })).nonce;
       logger.info(`txCastVote:track: hash(${hasReceipt.transactionHash}) found with nonce(${nonce})`);
     };
     const tracking = await tryWithBackOff(track);
@@ -129,7 +140,7 @@ export async function txCastVote({
  * @dev convert `amount` to ethers format and mint it `to`
  */
 export async function txMint({ to, amount }: { to: HexType; amount: BigNumberish }) {
-  const { elif, publicClient } = new Elif().getInstance();
+  const { elif, client } = new Elif().getInstance();
   let hash: HexType = '0x';
   let nonce: number = -1;
   let hasTracked = false;
@@ -143,7 +154,7 @@ export async function txMint({ to, amount }: { to: HexType; amount: BigNumberish
 
   if (isSuccess && hash !== '0x') {
     const track = async () => {
-      const hasReceipt = await publicClient.getTransactionReceipt({ hash });
+      const hasReceipt = await client.getTransactionReceipt({ hash });
       if (!hasReceipt) {
         logger.warn(`txMint:track: target hash not found, throwing and retrying ...`);
         throw new NotFoundException('존재하지 않거나 아직 블록에 포함되지 않은 트랜잭션 해시입니다.', {
@@ -151,7 +162,7 @@ export async function txMint({ to, amount }: { to: HexType; amount: BigNumberish
         });
       }
 
-      nonce = (await publicClient.getTransaction({ hash })).nonce;
+      nonce = (await client.getTransaction({ hash })).nonce;
       logger.info(`txMint:track: hash(${hasReceipt.transactionHash}) found with nonce(${nonce})`);
     };
     const tracking = await tryWithBackOff(track);
