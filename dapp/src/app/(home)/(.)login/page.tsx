@@ -24,7 +24,7 @@ export default function SignIn({}: Props) {
 
   useEffect(() => {
     if (state) toast.error(state, { style: { color: 'red' } });
-  }, [isSubmit]);
+  }, [state, isSubmit]);
 
   return (
     <div
