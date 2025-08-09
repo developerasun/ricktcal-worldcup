@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   const { connection } = await getConnection();
   const { short: today } = fromUTC();
 
-  const pendings = await connection
+  const waitings = await connection
     .select({ id: proposals.id, startAt: proposals.startAt })
     .from(proposals)
     .where(and(eq(proposals.status, ProposalStatus.PENDING), eq(proposals.startAt, today)));
@@ -46,19 +46,19 @@ export async function POST(request: NextRequest) {
     .where(and(eq(proposals.endAt, today), eq(proposals.status, ProposalStatus.ACTIVE)));
 
   // @dev early return for less db ops
-  if (pendings.length === 0 && endings.length === 0) {
+  if (waitings.length === 0 && endings.length === 0) {
     return NextResponse.json({ active: [], fisnihed: [] });
   }
 
-  logger.log({ today, startAts: pendings.map((p) => p.startAt) });
+  logger.log({ today, startAts: waitings.map((p) => p.startAt) });
 
-  const pendingIds = pendings.map((p) => p.id);
+  const waitingIds = waitings.map((p) => p.id);
   const endingIds = endings.map((e) => e.id);
 
   await connection.batch([
-    connection.update(proposals).set({ status: ProposalStatus.ACTIVE }).where(inArray(proposals.id, pendingIds)),
+    connection.update(proposals).set({ status: ProposalStatus.ACTIVE }).where(inArray(proposals.id, waitingIds)),
     connection.update(proposals).set({ status: ProposalStatus.FINISHED }).where(inArray(proposals.id, endingIds)),
   ]);
 
-  return NextResponse.json({ active: pendingIds, fisnihed: endingIds });
+  return NextResponse.json({ active: waitingIds, fisnihed: endingIds });
 }

@@ -13,6 +13,7 @@ export {
   HttpStatus,
   ABI_HELPER,
   TRANSACTION_STATUS,
+  PendingOnchainAction,
 };
 
 const ADJECTIVES = [
@@ -1406,6 +1407,11 @@ enum ProposalStatus {
 enum PointClaimAction {
   CHEEKPULLING = 'cheekpulling',
   HEADPAT = 'headpat',
+}
+
+enum PendingOnchainAction {
+  VOTE = 'vote:burn',
+  EXCHANGE = 'exchange:mint',
 }
 
 enum HttpStatus {
