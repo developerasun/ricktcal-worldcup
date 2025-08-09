@@ -1,4 +1,4 @@
-import { ABI_HELPER, BRAND_NAME, COOKIE_NAME } from '@/constants';
+import { BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
 import { eq } from 'drizzle-orm';
 import { AddressLike, concat, keccak256, toUtf8Bytes, verifyMessage, Wallet } from 'ethers';
@@ -145,4 +145,9 @@ export function toEthSignedMessageHash(message: string) {
   const digest = keccak256(concat([prefixBytes, messageBytes]));
 
   return { digest };
+}
+
+export function getExponentialBackOff({ baseDelay, attempt }: { baseDelay: number; attempt: number }) {
+  const timegap = baseDelay + baseDelay * Math.pow(2, attempt);
+  return { timegap };
 }
