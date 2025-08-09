@@ -84,9 +84,11 @@ export default function Navigation({ children }: Props) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle className="text-center">시작하기</DialogTitle>
+                <DialogTitle className="m-auto">
+                  <Image src="/브랜드/로고.webp" width={100} height={100} alt="로고" className="rounded-full" />
+                </DialogTitle>
                 <DialogDescription className="text-center">
-                  포인트를 엘리프 토큰으로 교환하고, <br /> 나만의 최애 사도에게 투표하세요!
+                  월드컵 포인트를 엘리프 토큰으로 교환하고, <br /> 나만의 최애 사도에게 투표하세요!
                 </DialogDescription>
               </DialogHeader>
               <Form action={formAction}>
@@ -102,7 +104,7 @@ export default function Navigation({ children }: Props) {
                         }}
                       />
                     </div>
-                    <p className="my-2 break-all whitespace-normal w-full">{state.address.toString()}</p>
+                    <p className="text-center my-2 break-all whitespace-normal w-full">{state.address.toString()}</p>
                   </div>
                 )}
 
@@ -120,10 +122,12 @@ export default function Navigation({ children }: Props) {
                         }}
                       />
                     </div>
-                    <p className="my-2 break-all whitespace-normal w-full">{state.mnemonic}</p>
+                    <p className="text-center my-2 break-all whitespace-normal w-full">{state.mnemonic}</p>
                   </div>
                 )}
-                <Spacer v={1.5} />
+
+                <Spacer v={1} />
+
                 {state && (
                   <Alert variant="destructive">
                     <Siren />
@@ -134,8 +138,10 @@ export default function Navigation({ children }: Props) {
                     </AlertDescription>
                   </Alert>
                 )}
+
                 <Spacer v={1.5} />
-                <div className="flex justify-end">
+
+                <div className="flex flex-col gap-2 justify-center items-center">
                   {state && (
                     <DialogClose asChild className="m-auto">
                       <Link href={'/login'} className="p-3 m-auto border border-blue-300 rounded-md">
@@ -144,19 +150,22 @@ export default function Navigation({ children }: Props) {
                     </DialogClose>
                   )}
                   {!state && (
-                    <Button type="submit" className="m-auto">
-                      패스키 생성하기
+                    <Button type="submit" className="m-auto w-3/4 cursor-pointer">
+                      패스키 생성하고 시작하기
                     </Button>
+                  )}
+                  {!isNewUser && (
+                    <DialogClose asChild className="m-auto w-3/4 cursor-pointer">
+                      <Link
+                        href={'/login'}
+                        className="text-sm text-center p-2 m-auto border border-blue-300 rounded-md"
+                      >
+                        패스키가 이미 있어요
+                      </Link>
+                    </DialogClose>
                   )}
                 </div>
               </Form>
-              {!isNewUser && (
-                <DialogClose asChild className="m-auto">
-                  <Link href={'/login'} className="p-2 m-auto border border-blue-300 rounded-md">
-                    패스키가 이미 있어요
-                  </Link>
-                </DialogClose>
-              )}
             </DialogContent>
           </Dialog>
         )}

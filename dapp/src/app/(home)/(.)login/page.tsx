@@ -16,7 +16,6 @@ interface Props {}
 export default function SignIn({}: Props) {
   const [state, formAction, isPending] = useActionState(recoverAndSignIn, undefined);
   const { pending } = useFormStatus();
-  const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
     useScrollReset();
@@ -51,12 +50,7 @@ export default function SignIn({}: Props) {
         />
         <Spacer v={1.5} />
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            className="m-auto"
-            // onClick={() => setIsSubmit(!isSubmit)}
-            disabled={pending ? true : false}
-          >
+          <Button type="submit" className="m-auto" disabled={pending ? true : false}>
             로그인
           </Button>
         </div>
