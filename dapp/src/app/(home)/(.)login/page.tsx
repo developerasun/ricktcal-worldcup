@@ -8,15 +8,18 @@ import { Input } from '@/components/ui/input';
 import { TypographyH1 } from '@/components/ui/typography';
 import { recoverAndSignIn } from '@/app/actions';
 import { toast } from 'sonner';
+import { useFormStatus } from 'react-dom';
+import { useScrollReset } from '@/lib/client';
 
 interface Props {}
 
 export default function SignIn({}: Props) {
   const [state, formAction, isPending] = useActionState(recoverAndSignIn, undefined);
+  const { pending } = useFormStatus();
   const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    useScrollReset();
   }, []);
 
   useEffect(() => {
@@ -48,7 +51,12 @@ export default function SignIn({}: Props) {
         />
         <Spacer v={1.5} />
         <div className="flex justify-end">
-          <Button type="submit" className="m-auto" onClick={() => setIsSubmit(!isSubmit)}>
+          <Button
+            type="submit"
+            className="m-auto"
+            onClick={() => setIsSubmit(!isSubmit)}
+            disabled={pending ? true : false}
+          >
             로그인
           </Button>
         </div>
