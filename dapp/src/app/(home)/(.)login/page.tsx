@@ -24,7 +24,7 @@ export default function SignIn({}: Props) {
 
   useEffect(() => {
     if (state) toast.error(state, { style: { color: 'red' } });
-  }, [state, isSubmit]);
+  }, [state]);
 
   return (
     <div
@@ -54,7 +54,7 @@ export default function SignIn({}: Props) {
           <Button
             type="submit"
             className="m-auto"
-            onClick={() => setIsSubmit(!isSubmit)}
+            // onClick={() => setIsSubmit(!isSubmit)}
             disabled={pending ? true : false}
           >
             로그인

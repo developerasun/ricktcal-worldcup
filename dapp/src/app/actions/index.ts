@@ -56,7 +56,9 @@ export async function generateWallet(prevState: IAccountCredentials | undefined,
 
 export async function recoverAndSignIn(prevState: string | undefined, formData: FormData) {
   const data = formData.get('mnemonic') as string | undefined;
-  let message: undefined | string = undefined;
+
+  // @dev force to return a new ref for react to run useEffect
+  let message = `${getKoreanTimezone()}: `;
   let isSuccess = false;
   const phrase = data ?? '';
 
@@ -67,7 +69,7 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
 
     if (!result) {
       const e = new NotFoundException('데이터베이스에 존재하지 않는 지갑 정보입니다.', { code: HttpStatus.NOT_FOUND });
-      message = e.short().message;
+      message += e.short().message;
       return message;
     }
 
@@ -84,7 +86,7 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
     isSuccess = true;
   } catch (error) {
     console.error(error);
-    message = JSON.stringify(error);
+    message += JSON.stringify(error);
   } finally {
     if (!isSuccess) return message;
 
