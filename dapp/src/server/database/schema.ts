@@ -82,3 +82,28 @@ export const onchains = sqliteTable('onchains', {
   // amount to mint/burn for target
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
 });
+
+export const pendings = sqliteTable('pendings', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  txHash: text().notNull().unique(),
+  nonce: integer().notNull(),
+  userId: integer('userId')
+    .references(() => users.id)
+    .notNull(),
+  isConfirmed: integer().notNull().default(HUMAN_BOOLEAN.false),
+  action: text().notNull(),
+
+  // vote burn tx, might be null
+  proposalId: integer('proposalId').references(() => proposals.id),
+  voteCast: text(),
+  digest: text(),
+  signature: text(),
+  isLeftVote: text(),
+
+  // point exchange mint tx, might be null
+  exchangeId: integer('exchangeId').references(() => exchanges.id),
+
+  // amount to mint/burn for target
+  elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
+  pointAmount: integer().default(HUMAN_BOOLEAN.zero),
+});
