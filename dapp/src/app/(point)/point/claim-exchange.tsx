@@ -56,7 +56,18 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
   return (
     <>
       <TypographyH1 text="월드컵 재화 얻기" />
-      <p className="my-6 text-center">캐릭터의 볼을 당기거나 머리를 쓰다듬고 포인트를 획득하세요.</p>
+      <p className="my-6 text-center">
+        캐릭터의 볼을 당기거나 머리를 쓰다듬고 <br /> 포인트를 획득하세요.
+      </p>
+      <div className="my-5 m-auto w-[75px] h-[75px] border-4 border-yellow-200 rounded-full">
+        <Image
+          className="m-auto my-2 translate-x-0.5 -translate-y-1 p-2 "
+          src={'/포인트/포인트.webp'}
+          width={75}
+          height={75}
+          alt="엘리프"
+        />
+      </div>
       <p className="my-1 text-center">볼 당기기: {POINT_RATE.cheekpulling} point</p>
       <p className="my-1 text-center">머리 쓰다듬기: {POINT_RATE.headpat} point</p>
 
@@ -148,7 +159,8 @@ export default function ClaimAndExchange({ balanceOrMessage }: Props) {
               <AlertDescription>교환한 엘리프 수량: {elifAmount}</AlertDescription>
             </Alert>
           )}
-          <div className="flex justify-end">
+          {/* <Spacer v={1} /> */}
+          <div className="my-5 flex justify-end">
             <Button type="submit" className="m-auto" disabled={pending ? true : false}>
               교환하기
             </Button>
