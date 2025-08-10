@@ -3,12 +3,12 @@ dotenv.config();
 
 (async () => {
   const token = process.env.BEARER_TOKEN;
-  const endpoint = process.env.WEBHOOK_ENDPOINT;
+  const endpoint = `${process.env.WEBHOOK_ENDPOINT}/pending`;
 
-  if (!token) throw new Error("scheudling/src/index.ts: invalid api key");
+  if (!token) throw new Error("scheduling/src/pending.ts: invalid api key");
 
   if (!endpoint)
-    throw new Error("scheudling/src/index.ts: invalid webhook endpoint");
+    throw new Error("scheduling/src/pending.ts: invalid webhook endpoint");
 
   try {
     const response = await fetch(endpoint, {
