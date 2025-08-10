@@ -1,21 +1,19 @@
-import { BigNumberish, BytesLike, TransactionResponse } from 'ethers';
-
 export interface IElif {
   // ERC20
-  allowance(owner: string, spender: string): Promise<BigNumberish>;
-  approve(spender: string, value: BigNumberish): Promise<boolean>;
-  balanceOf(account: string): Promise<BigNumberish>;
-  totalSupply(): Promise<BigNumberish>;
-  transfer(to: string, value: BigNumberish): Promise<boolean>;
-  transferFrom(from: string, to: string, value: BigNumberish): Promise<boolean>;
+  allowance(owner: string, spender: string): Promise<bigint>;
+  approve(spender: string, value: bigint): Promise<boolean>;
+  balanceOf(account: string): Promise<bigint>;
+  totalSupply(): Promise<bigint>;
+  transfer(to: string, value: bigint): Promise<boolean>;
+  transferFrom(from: string, to: string, value: bigint): Promise<boolean>;
 
   // Mintable
-  mint(to: string, amount: BigNumberish): Promise<TransactionResponse>;
+  mint(to: string, amount: bigint): Promise<HexType>;
 
   // Burnable
-  burn(value: BigNumberish): Promise<TransactionResponse>;
-  burn(account: string, amount: BigNumberish): Promise<TransactionResponse>;
-  burnFrom(account: string, value: BigNumberish): Promise<TransactionResponse>;
+  burn(value: bigint): Promise<HexType>;
+  burn(account: string, amount: bigint): Promise<HexType>;
+  burnFrom(account: string, value: bigint): Promise<HexType>;
 
   // Metadata
   name(): Promise<string>;
@@ -24,22 +22,22 @@ export interface IElif {
 
   // Vote-related
   castVote(
-    p: BigNumberish,
+    p: bigint,
     v: string,
-    vc: { digest: BytesLike; signature: BytesLike; hasVoted: boolean },
-    amount: BigNumberish
-  ): Promise<TransactionResponse>;
+    vc: { digest: HexType; signature: HexType; hasVoted: boolean },
+    amount: bigint
+  ): Promise<HexType>;
 
-  getVoteCastByProposal(p: BigNumberish, v: string): Promise<{ digest: string; signature: string; hasVoted: boolean }>;
+  getVoteCastByProposal(p: bigint, v: string): Promise<{ digest: string; signature: string; hasVoted: boolean }>;
 
-  hasVoted(p: BigNumberish, v: string): Promise<boolean>;
+  hasVoted(p: bigint, v: string): Promise<boolean>;
 
-  getRecoveredSigner(digest: BytesLike, signature: BytesLike): Promise<string>;
+  getRecoveredSigner(digest: HexType, signature: HexType): Promise<string>;
 
   // Ownable
   owner(): Promise<string>;
-  renounceOwnership(): Promise<TransactionResponse>;
-  transferOwnership(newOwner: string): Promise<TransactionResponse>;
+  renounceOwnership(): Promise<HexType>;
+  transferOwnership(newOwner: string): Promise<HexType>;
 
   // Events (if you're indexing or listening via `contract.on`)
   // Not included in method interface, but you could type them separately if needed

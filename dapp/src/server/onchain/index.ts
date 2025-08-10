@@ -1,11 +1,10 @@
 import { ABI_HELPER, HttpStatus, TRANSACTION_STATUS } from '@/constants';
 import { HexType, TxRetryOptions } from '@/types/contract';
 import { retry } from 'es-toolkit';
-import { BigNumberish, parseEther } from 'ethers';
 import { logger } from '../logger';
 import { NotFoundException } from '../error';
 import { privateKeyToAccount } from 'viem/accounts';
-import { http, createWalletClient, publicActions, getContract, defineChain, FeeValuesEIP1559, parseUnits } from 'viem';
+import { http, createWalletClient, publicActions, getContract, defineChain, parseUnits, parseEther } from 'viem';
 import { sepolia } from 'viem/chains';
 
 export class Elif {
@@ -99,7 +98,7 @@ export async function txCastVote({
     signature: HexType;
     hasVoted: boolean;
   };
-  amount: BigNumberish;
+  amount: number;
 }) {
   const { elif, client } = new Elif().getInstance();
   let hash: HexType = '0x';
@@ -139,7 +138,7 @@ export async function txCastVote({
  *
  * @dev convert `amount` to ethers format and mint it `to`
  */
-export async function txMint({ to, amount }: { to: HexType; amount: BigNumberish }) {
+export async function txMint({ to, amount }: { to: HexType; amount: number }) {
   const { elif, client } = new Elif().getInstance();
   let hash: HexType = '0x';
   let nonce: number = -1;

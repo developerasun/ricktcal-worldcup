@@ -2,7 +2,6 @@ import { HttpStatus } from '@/constants';
 import { ForbiddenException } from '@/server/error';
 import { txMint } from '@/server/onchain';
 import { HexType } from '@/types/contract';
-import { parseEther } from 'ethers';
 import { NextResponse } from 'next/server';
 
 /**

@@ -1,5 +1,4 @@
 import { ProposalStatus, TRICKCAL_CHARACTERS } from '@/constants';
-import { AddressLike } from 'ethers';
 import React from 'react';
 
 export type PointClaimActionType = 'cheekpulling' | 'headpat';
@@ -46,12 +45,12 @@ export type VoteCastType = (typeof TRICKCAL_CHARACTERS)[number];
 export type VoterProfileType = { user: IVoter; voteHistory: { votes: IVote; proposals: IProposal }[] };
 
 export interface ILoginCookiePayload {
-  wallet: AddressLike;
+  wallet: string;
 }
 
 export interface IVoteSignPayload {
   issuer: string;
-  signer: AddressLike | null;
+  signer: string | null;
   url: string;
   network: string;
   version: number;
@@ -63,13 +62,13 @@ export interface IVoteSignPayload {
 }
 
 export interface IAccountCredentials {
-  address: AddressLike;
+  address: string;
   mnemonic: string | undefined;
   nickname: string;
 }
 
 export interface IAuth {
-  wallet: AddressLike;
+  wallet: string;
 }
 
 export interface IAuthContext {

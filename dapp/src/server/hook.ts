@@ -1,19 +1,20 @@
 import { BRAND_NAME, COOKIE_NAME } from '@/constants';
 import { ILoginCookiePayload } from '@/types/application';
 import { eq } from 'drizzle-orm';
-import { AddressLike, concat, keccak256, toUtf8Bytes, verifyMessage, Wallet } from 'ethers';
 import * as jose from 'jose';
 import { cookies } from 'next/headers';
 import { getConnection, users } from './database/schema';
 import { UnAuthorizedException } from './error';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { mnemonicToAccount } from 'viem/accounts';
+import { concat, keccak256, stringToBytes } from 'viem';
 
 export class AuthManager {
   #issuer = BRAND_NAME.project;
   #audience = BRAND_NAME.audience;
   #deadline = '2h';
 
-  async _useTokenEncryption({ wallet }: { wallet: AddressLike }) {
+  async _useTokenEncryption({ wallet }: { wallet: string }) {
     const { COOKIE_SECRET } = process.env;
     if (!COOKIE_SECRET) throw new Error(`_useEncryption: invalid dotenv value for COOKIE_SECRET`);
 
@@ -63,15 +64,10 @@ export class AuthManager {
   }
 
   async _useDigitalSignature({ mnemonic, message }: { mnemonic: string; message: string }) {
-    const recovered = Wallet.fromPhrase(mnemonic);
-    const signature = await recovered.signMessage(message);
+    const recovered = mnemonicToAccount(mnemonic);
+    const signature = await recovered.signMessage({ message });
 
     return { signature };
-  }
-
-  async _useVerification({ message, signature }: { message: string; signature: string }) {
-    const realSigner = verifyMessage(message, signature);
-    return { realSigner };
   }
 }
 
@@ -139,9 +135,10 @@ export function toDecimal(target: number, precision: number = 2): number {
  * @returns
  */
 export function toEthSignedMessageHash(message: string) {
-  const messageBytes = toUtf8Bytes(message);
+  const messageBytes = stringToBytes(message);
   const prefix = `\x19Ethereum Signed Message:\n${messageBytes.length}`;
-  const prefixBytes = toUtf8Bytes(prefix);
+  const prefixBytes = stringToBytes(prefix);
+
   const digest = keccak256(concat([prefixBytes, messageBytes]));
 
   return { digest };

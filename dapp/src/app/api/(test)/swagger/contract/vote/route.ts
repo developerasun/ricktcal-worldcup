@@ -1,10 +1,7 @@
 import { HttpStatus } from '@/constants';
 import { ForbiddenException } from '@/server/error';
-import { logger } from '@/server/logger';
-import { Elif, txCastVote, txMint } from '@/server/onchain';
+import { txCastVote } from '@/server/onchain';
 import { HexType } from '@/types/contract';
-// import { txMint } from '@/server/onchain';
-import { parseEther } from 'ethers';
 import { NextResponse } from 'next/server';
 
 /**
@@ -47,7 +44,7 @@ export async function GET(request: Request, context: any) {
       signature: signature as HexType,
       hasVoted: false,
     },
-    amount: parseEther('1'),
+    amount: 1,
   };
 
   const { isSuccess, hasTracked, hash, nonce } = await txCastVote({ ...voteArgs });

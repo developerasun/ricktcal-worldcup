@@ -1,5 +1,4 @@
 'use server';
-import { AddressLike, Wallet, ZeroAddress } from 'ethers';
 import {
   ADJECTIVES,
   BRAND_NAME,
@@ -11,7 +10,7 @@ import {
   ProposalStatus,
 } from '@/constants/index';
 import { exchanges, getConnection, onchains, pendings, proposals, users, votes } from '@/server/database/schema';
-import { and, eq, inArray, not, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -29,6 +28,7 @@ import { logger } from '@/server/logger';
 import { txCastVote, txMint } from '@/server/onchain';
 import { HexType } from '@/types/contract';
 import { english, generateMnemonic, mnemonicToAccount } from 'viem/accounts';
+import { isAddress, zeroAddress } from 'viem';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
   const mnemonic = generateMnemonic(english);
@@ -153,8 +153,7 @@ export async function createNewVoteWithSignature(
   const voteCast = formData.get('vote-cast') as VoteCastType;
   const mnemonic = formData.get('mnemonic') as string;
   const elifVotingPower = formData.get('elif-voting-power') as string;
-  let signer: AddressLike = ZeroAddress;
-
+  let signer: string = zeroAddress;
   const auth = (await cookies()).get(COOKIE_NAME.auth);
   const am = new AuthManager();
 
@@ -163,6 +162,8 @@ export async function createNewVoteWithSignature(
 
     if (payload) signer = payload.wallet;
   }
+  const isAddr = isAddress(signer);
+  if (!isAddr) throw new BadRequestException('유효하지 않은 지갑 주소입니다.', { code: HttpStatus.BAD_REQUEST });
 
   const payload: IVoteSignPayload = {
     issuer: BRAND_NAME.project,
