@@ -289,6 +289,7 @@ export async function createVotingTransaction(prevState: string | undefined, for
   }
 
   // @dev if not able to sync tx within retries, toss it to batch cron
+  // TODO disable vote action when pending tx exists
   if (!hasTracked) {
     await connection.insert(pendings).values({
       txHash: hash,
@@ -393,6 +394,7 @@ export async function exchangePointToElif(prevState: string | undefined, formDat
   }
 
   // @dev if not able to sync tx within retries, toss it to batch cron
+  // TODO disable exchange action when pending tx exists
   if (!hasTracked) {
     const exchangeRow = await connection.insert(exchanges).values({ userId, elifAmount, pointAmount });
     await connection.insert(pendings).values({
