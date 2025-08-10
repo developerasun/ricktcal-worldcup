@@ -46,7 +46,6 @@
     "drizzle-orm": "^0.44.3",
     "es-hangul": "^2.3.5",
     "es-toolkit": "^1.39.8",
-    "ethers": "^6.15.0",
     "jose": "^6.0.12",
     "lucide-react": "^0.525.0",
     "nanoid": "^5.1.5",
