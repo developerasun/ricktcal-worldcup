@@ -1,0 +1,28 @@
+name: PendingAction
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "8 * * * *" # 매시 08분 UTC → KST에서도 매시 08분
+
+jobs:
+  cronjob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install deps
+        run: |
+          cd scheduling
+          npm install
+
+      - name: Sync pending transactions
+        env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          WEBHOOK_ENDPOINT: ${{ secrets.WEBHOOK_ENDPOINT }}
+        run: cd scheduling && node --experimental-strip-types ./src/pending.ts

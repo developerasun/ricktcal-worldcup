@@ -26,11 +26,10 @@ jobs:
       - name: Install deps
         run: |
           cd scheduling
-          cat package.json
           npm install
 
-      - name: Run webhook JS
+      - name: Update proposal status
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
           WEBHOOK_ENDPOINT: ${{ secrets.WEBHOOK_ENDPOINT }}
-        run: cd scheduling && node --experimental-strip-types ./src/index.ts
+        run: cd scheduling && node --experimental-strip-types ./src/proposal.ts
