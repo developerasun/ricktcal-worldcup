@@ -28,9 +28,12 @@ import { BadRequestException, NotFoundException, UnAuthorizedException } from '@
 import { logger } from '@/server/logger';
 import { txCastVote, txMint } from '@/server/onchain';
 import { HexType } from '@/types/contract';
+import { english, generateMnemonic, mnemonicToAccount } from 'viem/accounts';
 
 export async function generateWallet(prevState: IAccountCredentials | undefined, formData: FormData) {
-  const { address, mnemonic } = Wallet.createRandom();
+  const mnemonic = generateMnemonic(english);
+  const account = mnemonicToAccount(mnemonic);
+
   let left = Math.floor(Math.random() * (ADJECTIVES.length - 1));
   let right = Math.floor(Math.random() * (HEROS.length - 1));
   let nickname = `${ADJECTIVES[left]} ${HEROS[right]}`;
@@ -45,7 +48,7 @@ export async function generateWallet(prevState: IAccountCredentials | undefined,
     nickname = `${ADJECTIVES[left]} ${HEROS[right]}`;
   }
 
-  const { error, results } = await connection.insert(users).values({ wallet: address, nickname });
+  const { error, results } = await connection.insert(users).values({ wallet: account.address, nickname });
   logger.info({ results });
 
   if (error) {
@@ -54,8 +57,8 @@ export async function generateWallet(prevState: IAccountCredentials | undefined,
   }
 
   const credentials: IAccountCredentials = {
-    address,
-    mnemonic: mnemonic?.phrase,
+    address: account.address,
+    mnemonic,
     nickname,
   };
 
@@ -64,15 +67,15 @@ export async function generateWallet(prevState: IAccountCredentials | undefined,
 }
 
 export async function recoverAndSignIn(prevState: string | undefined, formData: FormData) {
-  const data = formData.get('mnemonic') as string | undefined;
+  const data = formData.get('mnemonic') as string;
 
   // @dev force to return a new ref for react to run useEffect
   let message = `${getKoreanTimezone()}: `;
   let isSuccess = false;
-  const phrase = data ?? '';
+  const phrase = data;
 
   try {
-    const recovered = Wallet.fromPhrase(phrase);
+    const recovered = mnemonicToAccount(phrase);
     const { connection } = await getConnection();
     const result = await connection.select().from(users).where(eq(users.wallet, recovered.address)).get();
 

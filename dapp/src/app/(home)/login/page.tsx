@@ -29,7 +29,13 @@ export default function SignIn({}: Props) {
       <Spacer v={1.5} />
       <Form action={formAction}>
         {state}
-        <Input className="w-full max-w-md m-auto" name="mnemonic" placeholder="패스키를 입력하세요" type="text" />
+        <Input
+          required
+          className="w-full max-w-md m-auto"
+          name="mnemonic"
+          placeholder="패스키를 입력하세요"
+          type="text"
+        />
         <Spacer v={1.5} />
         <div className="flex justify-end">
           <Button type="submit" className="m-auto">
