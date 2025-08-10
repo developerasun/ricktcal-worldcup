@@ -5,7 +5,20 @@
     "version": "0.2"
   },
   "paths": {
-    "/api/webhook": {
+    "/api/webhook/pending": {
+      "post": {
+        "tags": [
+          "ACTIONS"
+        ],
+        "description": "check unconfirmed transaction status and insert/update user data based upon it. coupled with github actions in production.",
+        "responses": {
+          "200": {
+            "description": "number of updated pending transactions by action type"
+          }
+        }
+      }
+    },
+    "/api/webhook/proposal": {
       "post": {
         "tags": [
           "ACTIONS"
