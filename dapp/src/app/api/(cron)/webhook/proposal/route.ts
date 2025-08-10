@@ -8,7 +8,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 /**
  * @swagger
- * /api/webhook:
+ * /api/webhook/proposal:
  *   post:
  *     tags:
  *       - ACTIONS
@@ -45,12 +45,16 @@ export async function POST(request: NextRequest) {
     .from(proposals)
     .where(and(eq(proposals.endAt, today), eq(proposals.status, ProposalStatus.ACTIVE)));
 
+  logger.log({
+    today,
+    startAts: waitings.map((p) => p.startAt),
+    endAts: endings.map((e) => e.endAt),
+  });
+
   // @dev early return for less db ops
   if (waitings.length === 0 && endings.length === 0) {
     return NextResponse.json({ active: [], fisnihed: [] });
   }
-
-  logger.log({ today, startAts: waitings.map((p) => p.startAt) });
 
   const waitingIds = waitings.map((p) => p.id);
   const endingIds = endings.map((e) => e.id);
