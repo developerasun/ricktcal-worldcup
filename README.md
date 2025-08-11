@@ -111,12 +111,12 @@ https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
 | 기능                              | 설명                                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | 월드컵 시작/종료하기              | [깃허브 액션: cron-proposal.yaml](https://github.com/developerasun/ricktcal-worldcup/blob/dev/.github/workflows/cron-proposal.yaml)로 자동화 |
+| 월드컵 보상 부여하기              | [깃허브 액션: cron-reward.yaml](https://github.com/developerasun/ricktcal-worldcup/blob/dev/.github/workflows/cron-reward.yaml)로 자동화     |
 | 미확인 블록체인 트랜잭션 추적하기 | [깃허브 액션: cron-pending.yaml](https://github.com/developerasun/ricktcal-worldcup/blob/dev/.github/workflows/cron-pending.yaml)로 자동화   |
 | 데이터베이스 백업하기             | 로컬/프로덕션 환경 백업 지원                                                                                                                 |
 
 ### TODO
 
-- 월드컵 승리 보상 추가하기(optional)
 - 미확인 트랜잭션 존재 시 추가 투표/엘리프 교환 요청 비활성하기
 
 ## 실행/테스트 환경
