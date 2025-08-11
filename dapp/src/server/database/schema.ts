@@ -107,3 +107,14 @@ export const pendings = sqliteTable('pendings', {
   elifAmount: real().notNull().default(HUMAN_BOOLEAN.zero),
   pointAmount: integer().default(HUMAN_BOOLEAN.zero),
 });
+
+export const rewards = sqliteTable('rewards', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId')
+    .references(() => users.id)
+    .notNull(),
+  proposalId: integer('proposalId')
+    .references(() => proposals.id)
+    .notNull(),
+  pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
+});
