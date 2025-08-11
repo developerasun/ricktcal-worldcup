@@ -31,6 +31,19 @@
         }
       }
     },
+    "/api/webhook/reward": {
+      "post": {
+        "tags": [
+          "ACTIONS"
+        ],
+        "description": "trigger woldcup winning reward grant for voters. coupled with github actions in production.",
+        "responses": {
+          "200": {
+            "description": "return number of voters given grant on success"
+          }
+        }
+      }
+    },
     "/api/health": {
       "get": {
         "tags": [

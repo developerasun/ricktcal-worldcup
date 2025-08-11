@@ -9,6 +9,7 @@ export {
   BRAND_NAME,
   VOTE_POWER,
   ProposalStatus,
+  ProposalReward,
   PointClaimAction,
   HttpStatus,
   ABI_HELPER,
@@ -1404,9 +1405,14 @@ enum ProposalStatus {
   FINISHED = 'finished',
 }
 
+enum ProposalReward {
+  WINNING = 300,
+}
+
 enum PointClaimAction {
   CHEEKPULLING = 'cheekpulling',
   HEADPAT = 'headpat',
+  WINNING = 'winning',
 }
 
 enum PendingOnchainAction {

@@ -1,7 +1,7 @@
 import { ProposalStatus, TRICKCAL_CHARACTERS } from '@/constants';
 import React from 'react';
 
-export type PointClaimActionType = 'cheekpulling' | 'headpat';
+export type PointClaimActionType = 'cheekpulling' | 'headpat' | 'winning';
 export type ProposalStatusType = 'pending' | 'active' | 'finished';
 
 export interface IProposal {
