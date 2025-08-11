@@ -1,0 +1,33 @@
+name: RewardAction
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 0 * * *" # 매일 09:30 KST (UTC 00:30)
+    - cron: "30 4 * * *" # 매일 13:30 KST (UTC 04:30)
+    - cron: "30 8 * * *" # 매일 17:30 KST (UTC 08:30)
+    - cron: "30 12 * * *" # 매일 21:30 KST (UTC 12:30)
+    - cron: "30 16 * * *" # 매일 01:30 KST (다음 날, UTC 16:30)
+    - cron: "30 20 * * *" # 매일 05:30 KST (다음 날, UTC 20:30)
+
+jobs:
+  cronjob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install deps
+        run: |
+          cd scheduling
+          npm install
+
+      - name: Grant worldcup winning rewards
+        env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          WEBHOOK_ENDPOINT: ${{ secrets.WEBHOOK_ENDPOINT }}
+        run: cd scheduling && node --experimental-strip-types ./src/reward.ts
