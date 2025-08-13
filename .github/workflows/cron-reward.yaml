@@ -2,13 +2,13 @@ name: RewardAction
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 0 * * *" # 매일 09:30 KST (UTC 00:30)
-    - cron: "30 4 * * *" # 매일 13:30 KST (UTC 04:30)
-    - cron: "30 8 * * *" # 매일 17:30 KST (UTC 08:30)
-    - cron: "30 12 * * *" # 매일 21:30 KST (UTC 12:30)
-    - cron: "30 16 * * *" # 매일 01:30 KST (다음 날, UTC 16:30)
-    - cron: "30 20 * * *" # 매일 05:30 KST (다음 날, UTC 20:30)
+  # schedule:
+  #   - cron: "30 0 * * *" # 매일 09:30 KST (UTC 00:30)
+  #   - cron: "30 4 * * *" # 매일 13:30 KST (UTC 04:30)
+  #   - cron: "30 8 * * *" # 매일 17:30 KST (UTC 08:30)
+  #   - cron: "30 12 * * *" # 매일 21:30 KST (UTC 12:30)
+  #   - cron: "30 16 * * *" # 매일 01:30 KST (다음 날, UTC 16:30)
+  #   - cron: "30 20 * * *" # 매일 05:30 KST (다음 날, UTC 20:30)
 
 jobs:
   cronjob:

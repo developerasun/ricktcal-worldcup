@@ -20,6 +20,16 @@ https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
 
 ## 데모
 
+_caution_
+
+클라우드플레어 워커 free 플랜 리소스 사용량에 따라 접근이 잠시 불가할 수도 있습니다.
+
+<div align="center">
+
+<img src="./blockchain/docs/6.png" width="49%" />
+
+</div>
+
 - https://demo.developerasun.dpdns.org
 
 ## 설계 의도
@@ -117,6 +127,7 @@ https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
 
 ### TODO
 
+- 프로필 페이지 인앱 메시지 확인하기
 - 미확인 트랜잭션 존재 시 추가 투표/엘리프 교환 요청 비활성하기
 
 ## 실행/테스트 환경
