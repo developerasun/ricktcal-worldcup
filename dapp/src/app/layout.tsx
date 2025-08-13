@@ -8,7 +8,7 @@ import { AuthContextProvider, TourModalProvider } from './store';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/constants/index';
 import { AuthManager } from '@/server/hook';
-import { ILoginCookiePayload } from '@/types/application';
+import { ILoginCookiePayload, NotificationListType } from '@/types/application';
 import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
@@ -26,17 +26,32 @@ export const metadata: Metadata = {
   description: '트릭컬 최애 사도 월드컵을 열어보자',
 };
 
+async function getNotificationList({ wallet }: { wallet: string }) {
+  const response = await fetch(`${process.env.BASE_ENDPOINT}/api/notification/${wallet}`, {
+    cache: 'no-store', // @dev prevent calling fetch build-time
+  });
+  const raw = await response.json();
+  return { raw };
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   let isLogin: ILoginCookiePayload | null = null;
+  let notifications: NotificationListType = [];
+
   const hasLoginCookie = (await cookies()).get(COOKIE_NAME.auth);
   if (hasLoginCookie) {
     const am = new AuthManager();
     const { payload } = await am._useTokenVerify({ token: hasLoginCookie.value });
     payload ? (isLogin = { wallet: payload.wallet }) : (isLogin = null);
+
+    if (payload) {
+      const { raw } = await getNotificationList({ wallet: payload.wallet });
+      notifications = raw as NotificationListType;
+    }
   }
 
   return (
@@ -45,7 +60,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthContextProvider isLogin={isLogin}>
             <TourModalProvider>
-              <Navigation>
+              <Navigation notifications={notifications}>
                 <Spacer v={2} />
                 {children}
                 <Toaster position="top-right" />

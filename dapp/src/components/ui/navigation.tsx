@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { IconCopy, IconGithub, IconUserRoundPen } from './icon';
+import { IconBell, IconBellDot, IconCopy, IconGithub, IconUserRoundPen } from './icon';
 import {
   Dialog,
   DialogClose,
@@ -19,17 +19,20 @@ import {
 } from '@/components/ui/dialog';
 import Form from 'next/form';
 import { generateWallet } from '@/app/actions/index';
-import { Alert, AlertTitle, AlertDescription } from './alert';
+import { Alert, AlertTitle, AlertDescription, AlertEmpty } from './alert';
 import { Spacer } from './spacer';
-import { useCopyText } from '@/lib/client';
+import { useCopyText, useMutator } from '@/lib/client';
 import Link from 'next/link';
 import { useAuth } from '@/app/store';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { NotificationListType } from '@/types/application';
 
 interface Props {
   children: ReactNode;
+  notifications: NotificationListType;
 }
 
-export default function Navigation({ children }: Props) {
+export default function Navigation({ children, notifications }: Props) {
   const { setTheme } = useTheme();
   const [isDark, setIsDark] = useState(true);
   const [state, formAction, isPending] = useActionState(generateWallet, undefined);
@@ -37,6 +40,13 @@ export default function Navigation({ children }: Props) {
 
   const { auth } = useAuth();
   const router = useRouter();
+
+  const requestMessageRead = async (notificationId: number) => {
+    if (auth) {
+      await useMutator({ endpoint: `/api/notification/${auth.wallet}`, body: JSON.stringify({ notificationId }) });
+      router.refresh();
+    }
+  };
 
   useEffect(() => {
     isDark ? setTheme('dark') : setTheme('light');
@@ -77,6 +87,18 @@ export default function Navigation({ children }: Props) {
           <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
         </Button>
+        {auth && notifications.length === 0 && (
+          <>
+            <Popover>
+              <PopoverTrigger className="border border-gray-700 rounded-sm p-2">
+                <IconBell className="h-[1.1rem] w-[1.1rem]" />
+              </PopoverTrigger>
+              <PopoverContent>
+                <AlertEmpty message="메시지가 없습니다." />
+              </PopoverContent>
+            </Popover>
+          </>
+        )}
         {!auth && (
           <Dialog>
             <DialogTrigger className="border border-gray-600 rounded-sm p-2 step-3">
@@ -168,6 +190,35 @@ export default function Navigation({ children }: Props) {
               </Form>
             </DialogContent>
           </Dialog>
+        )}
+        {auth && notifications.length !== 0 && (
+          <Popover>
+            <PopoverTrigger className="border border-gray-700 rounded-sm p-2">
+              <IconBellDot className="h-[1.1rem] w-[1.1rem]" />
+            </PopoverTrigger>
+            <PopoverContent>
+              {notifications.map((n) => {
+                return (
+                  <div key={n.id} className="flex justify-between items-center border-y-2 border-gray-700 p-2">
+                    <ul className="w-full break-all whitespace-normal">
+                      <li>
+                        <b>[New!]</b> {n.title}
+                      </li>
+                      <li>{n.description}</li>
+                      <li className="mt-2 opacity-70 text-sm">{n.sentAt}</li>
+                    </ul>
+                    <Button
+                      className="text-sm"
+                      variant={'outline'}
+                      onClick={async () => await requestMessageRead(n.id)}
+                    >
+                      읽음
+                    </Button>
+                  </div>
+                );
+              })}
+            </PopoverContent>
+          </Popover>
         )}
         {auth && (
           <Button variant="outline" size="icon" onClick={() => router.push(`/profile/${auth.wallet}`)}>
