@@ -5,11 +5,21 @@ import {
   COOKIE_NAME,
   HEROS,
   HttpStatus,
+  NotificationStatus,
   PendingOnchainAction,
   POINT_RATE,
   ProposalStatus,
 } from '@/constants/index';
-import { exchanges, getConnection, onchains, pendings, proposals, users, votes } from '@/server/database/schema';
+import {
+  exchanges,
+  getConnection,
+  notifications,
+  onchains,
+  pendings,
+  proposals,
+  users,
+  votes,
+} from '@/server/database/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -87,7 +97,9 @@ export async function recoverAndSignIn(prevState: string | undefined, formData: 
 
     const { wallet } = result!;
     const am = new AuthManager();
-    const { token } = await am._useTokenEncryption({ wallet });
+    const { token } = await am._useTokenEncryption({
+      wallet,
+    });
 
     (await cookies()).set(COOKIE_NAME.auth, token, {
       httpOnly: true,

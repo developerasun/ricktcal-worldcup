@@ -7,6 +7,8 @@ import {
   ArrowUp,
   ArrowDown,
   MessageCircleQuestionMark,
+  Bell,
+  BellDot,
 } from 'lucide-react';
 
 export const IconGithub = Github;
@@ -17,3 +19,5 @@ export const IconExternalLink = ExternalLink;
 export const IconUp = ArrowUp;
 export const IconDown = ArrowDown;
 export const IconQuestion = MessageCircleQuestionMark;
+export const IconBell = Bell;
+export const IconBellDot = BellDot;
