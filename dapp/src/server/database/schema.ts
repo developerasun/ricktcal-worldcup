@@ -118,3 +118,14 @@ export const rewards = sqliteTable('rewards', {
     .notNull(),
   pointAmount: integer().notNull().default(HUMAN_BOOLEAN.zero),
 });
+
+export const notifications = sqliteTable('notifications', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  userId: integer('userId')
+    .references(() => users.id)
+    .notNull(),
+  status: text(), // @dev keep varchar instead of check for easier migration
+  sentAt: text().notNull(),
+  title: text().notNull().unique(),
+  description: text().notNull(),
+});
