@@ -37,9 +37,19 @@ export interface IVoter {
   elif: number;
 }
 
+export interface INotification {
+  id: number;
+  userId: number;
+  status: string | null;
+  sentAt: string;
+  title: string;
+  description: string;
+}
+
 export type ProposalListType = IProposal[];
 export type VoterListType = IVoter[];
 export type VoteListType = IVote[];
+export type NotificationListType = INotification[];
 
 export type VoteCastType = (typeof TRICKCAL_CHARACTERS)[number];
 export type VoterProfileType = { user: IVoter; voteHistory: { votes: IVote; proposals: IProposal }[] };
@@ -69,6 +79,7 @@ export interface IAccountCredentials {
 
 export interface IAuth {
   wallet: string;
+  hasNotification?: boolean;
 }
 
 export interface IAuthContext {
