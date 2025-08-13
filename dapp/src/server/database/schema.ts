@@ -124,8 +124,8 @@ export const notifications = sqliteTable('notifications', {
   userId: integer('userId')
     .references(() => users.id)
     .notNull(),
-  status: text(), // @dev keep varchar instead of check for easier migration
+  status: text().notNull(), // @dev keep varchar instead of check for easier migration
   sentAt: text().notNull(),
-  title: text().notNull().unique(),
+  title: text().notNull(),
   description: text().notNull(),
 });
