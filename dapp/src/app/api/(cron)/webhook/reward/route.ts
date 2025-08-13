@@ -1,7 +1,7 @@
-import { HttpStatus, PointClaimAction, ProposalReward, ProposalStatus } from '@/constants';
-import { getConnection, points, proposals, rewards, users, votes } from '@/server/database/schema';
+import { HttpStatus, NotificationStatus, PointClaimAction, ProposalReward, ProposalStatus } from '@/constants';
+import { getConnection, notifications, points, proposals, rewards, users, votes } from '@/server/database/schema';
 import { ForbiddenException } from '@/server/error';
-import { fromUTC, toDecimal } from '@/server/hook';
+import { fromUTC, getKoreanTimezone, toDecimal } from '@/server/hook';
 import { logger } from '@/server/logger';
 import { and, between, eq, inArray, not, sql } from 'drizzle-orm';
 import { NextResponse, NextRequest } from 'next/server';
@@ -112,6 +112,13 @@ export async function POST(request: NextRequest) {
           userId: winner.userId,
           score: ProposalReward.WINNING,
           action: PointClaimAction.WINNING,
+        }),
+        connection.insert(notifications).values({
+          userId: winner.userId,
+          title: `월드컵 #${winner.proposalId} 승리 보상`,
+          description: `${ProposalReward.WINNING} 포인트를 획득하셨습니다!`,
+          sentAt: getKoreanTimezone(),
+          status: NotificationStatus.UNREAD,
         }),
         connection
           .update(users)
