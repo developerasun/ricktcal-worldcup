@@ -15,6 +15,7 @@ export {
   ABI_HELPER,
   TRANSACTION_STATUS,
   PendingOnchainAction,
+  NotificationStatus,
 };
 
 const ADJECTIVES = [
@@ -1418,6 +1419,11 @@ enum PointClaimAction {
 enum PendingOnchainAction {
   VOTE = 'vote:burn',
   EXCHANGE = 'exchange:mint',
+}
+
+enum NotificationStatus {
+  UNREAD = 'unread',
+  READ = 'read',
 }
 
 enum HttpStatus {
