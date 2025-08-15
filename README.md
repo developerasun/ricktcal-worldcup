@@ -12,9 +12,9 @@
 
 - 당신의 최애 사도는 누구인가요? 릭트컬 거버넌스에 참여하여 최애 사도 월드컵을 만들고 친구들에게 공유해보세요!
 
-<div align="center" style="width: 1080px; height: 1920px;">
+<div align="center">
     
-https://github.com/user-attachments/assets/1478a337-a1ff-415d-aefe-94d941fcf9e7
+![Image](https://github.com/user-attachments/assets/7297b9b7-8fa4-4bbf-a239-027d91025045)
 
 </div>
 
@@ -128,7 +128,6 @@ _caution_
 
 ### TODO
 
-- 프로필 페이지 인앱 메시지 확인하기
 - 미확인 트랜잭션 존재 시 추가 투표/엘리프 교환 요청 비활성하기
 
 ## 실행/테스트 환경
