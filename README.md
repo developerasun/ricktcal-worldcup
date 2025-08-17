@@ -13,8 +13,8 @@
 - 당신의 최애 사도는 누구인가요? 릭트컬 거버넌스에 참여하여 최애 사도 월드컵을 만들고 친구들에게 공유해보세요!
 
 <div align="center">
-    
-![Image](https://github.com/user-attachments/assets/7297b9b7-8fa4-4bbf-a239-027d91025045)
+
+<img src="./blockchain/docs/thumbnail.gif" width="49%" />
 
 </div>
 
