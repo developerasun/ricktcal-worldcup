@@ -1,3 +1,5 @@
+![GitHub last commit](https://img.shields.io/github/last-commit/asunlabs/mantra)
+![Static Badge](https://img.shields.io/badge/Is_Jake_Working_On_This_Now-No-red)
 # Table of contents
 
 - [프로젝트 개요](#프로젝트-개요)
