@@ -1,5 +1,14 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/developerasun/ricktcal-worldcup)
 ![Static Badge](https://img.shields.io/badge/Is_Jake_Working_On_This_Now-No-red)
+
+<div align="center">
+
+# 주의
+
+\*프로젝트 마이그레이션이 진행중입니다. URL 접속, 일부 기능 등이 원활하지 않을 수 있습니다.
+
+</div>
+
 # Table of contents
 
 - [프로젝트 개요](#프로젝트-개요)
