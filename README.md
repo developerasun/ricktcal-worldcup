@@ -33,7 +33,7 @@ _caution_
 
 </div>
 
-- https://demo.developerasun.dpdns.org
+- https://worldcup.developerasun.dpdns.org
 
 ## 설계 의도
 
